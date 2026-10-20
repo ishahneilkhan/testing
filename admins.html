@@ -1,0 +1,2895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Management | Website Deals</title>
+  <meta
+    name="description"
+    content="Super Admin Admin Management for Website Deals."
+  >
+  <meta name="theme-color" content="#101712">
+
+  <link rel="icon" type="image/png" href="../logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <style>
+    :root {
+      --green: #18a957;
+      --green-dark: #108344;
+      --green-soft: #eaf8f0;
+
+      --black: #101712;
+      --black-2: #18201b;
+
+      --text: #18221c;
+      --muted: #718078;
+
+      --white: #ffffff;
+      --surface: #f6f8f7;
+      --border: #e4eae6;
+
+      --danger: #dc3545;
+      --danger-soft: #fff0f1;
+
+      --warning: #b7791f;
+      --warning-soft: #fff8e8;
+
+      --blue: #2563eb;
+      --blue-soft: #eef4ff;
+
+      --shadow: 0 18px 50px rgba(16, 23, 18, .08);
+      --shadow-sm: 0 8px 25px rgba(16, 23, 18, .06);
+
+      --radius: 18px;
+      --radius-sm: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--surface);
+      color: var(--text);
+      font-family: Inter, "Hind Siliguri", sans-serif;
+      overflow-x: hidden;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =========================================
+       APP
+    ========================================= */
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* =========================================
+       SIDEBAR
+    ========================================= */
+
+    .sidebar {
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 272px;
+      height: 100vh;
+      background: var(--black);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 16px;
+      overflow-y: auto;
+      transition: transform .3s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 8px 26px;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #fff;
+      padding: 4px;
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.4px;
+    }
+
+    .brand-copy span {
+      display: block;
+      margin-top: 3px;
+      font-size: 10px;
+      color: #8e9a92;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+    }
+
+    .nav-label {
+      padding: 0 10px 9px;
+      color: #6f7c73;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 4px;
+    }
+
+    .nav-link {
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 12px;
+      border-radius: 12px;
+      color: #aeb8b1;
+      font-size: 13px;
+      font-weight: 600;
+      transition: .2s ease;
+    }
+
+    .nav-link i {
+      width: 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      background: rgba(255,255,255,.06);
+    }
+
+    .nav-link.active {
+      color: #fff;
+      background: rgba(24,169,87,.16);
+    }
+
+    .nav-link.active i {
+      color: #41d67e;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      min-width: 23px;
+      height: 21px;
+      padding: 0 6px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.08);
+      color: #aeb8b1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    .restricted {
+      margin-top: 25px;
+    }
+
+    .restricted .nav-label {
+      color: #7f6f43;
+    }
+
+    .restricted .nav-link {
+      color: #c5b98f;
+    }
+
+    .restricted .nav-link:hover {
+      background: rgba(255,193,7,.06);
+      color: #fff;
+    }
+
+    .restricted .nav-link.active {
+      color: #fff;
+      background: rgba(24,169,87,.16);
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding-top: 18px;
+    }
+
+    .admin-profile {
+      padding: 13px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 15px;
+      background: rgba(255,255,255,.035);
+    }
+
+    .admin-profile-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--green);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .admin-profile strong {
+      display: block;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .admin-profile span {
+      display: block;
+      margin-top: 3px;
+      color: #77837b;
+      font-size: 10px;
+    }
+
+    .signout-btn {
+      width: 100%;
+      margin-top: 12px;
+      border: 0;
+      background: transparent;
+      color: #8d9891;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 3px;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .signout-btn:hover {
+      color: #fff;
+    }
+
+    /* =========================================
+       MAIN
+    ========================================= */
+
+    .main {
+      width: calc(100% - 272px);
+      margin-left: 272px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 76px;
+      padding: 0 34px;
+      background: rgba(255,255,255,.92);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mobile-menu {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 11px;
+      display: none;
+      place-items: center;
+      color: var(--text);
+    }
+
+    .page-title h1 {
+      font-size: 21px;
+      line-height: 1.1;
+      letter-spacing: -.7px;
+    }
+
+    .page-title p {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .top-btn {
+      min-height: 38px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .top-btn:hover {
+      border-color: #cbd7d0;
+      background: #fafcfb;
+    }
+
+    /* =========================================
+       CONTENT
+    ========================================= */
+
+    .content {
+      padding: 32px 34px 50px;
+      max-width: 1550px;
+      margin: 0 auto;
+    }
+
+    /* Security Banner */
+
+    .security-banner {
+      margin-bottom: 24px;
+      padding: 17px 19px;
+      border: 1px solid #d9e7df;
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 100% 0%, rgba(24,169,87,.10), transparent 32%),
+        #fff;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .security-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: var(--green-soft);
+      color: var(--green-dark);
+    }
+
+    .security-copy strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .security-copy p {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .security-tag {
+      margin-left: auto;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    /* Stats */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      font-size: 14px;
+    }
+
+    .stat-card:nth-child(2) .stat-icon {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .stat-card:nth-child(3) .stat-icon {
+      background: var(--warning-soft);
+      color: var(--warning);
+    }
+
+    .stat-card:nth-child(4) .stat-icon {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .stat-label {
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+
+    .stat-value {
+      margin-top: 5px;
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    /* Toolbar */
+
+    .section-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .section-head {
+      padding: 19px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .section-head h2 {
+      font-size: 15px;
+      letter-spacing: -.3px;
+    }
+
+    .section-head p {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .primary-btn {
+      min-height: 40px;
+      border: 0;
+      background: var(--green);
+      color: #fff;
+      border-radius: 10px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      box-shadow: 0 8px 18px rgba(24,169,87,.18);
+    }
+
+    .primary-btn:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+    }
+
+    .toolbar {
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 230px;
+      position: relative;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a099;
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--border);
+      outline: 0;
+      border-radius: 10px;
+      padding: 0 13px 0 36px;
+      color: var(--text);
+      background: #fbfcfb;
+      font-size: 11px;
+    }
+
+    .search-box input:focus {
+      border-color: #9ad8b5;
+      box-shadow: 0 0 0 3px rgba(24,169,87,.08);
+      background: #fff;
+    }
+
+    .filter-select {
+      height: 40px;
+      min-width: 145px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0 11px;
+      outline: 0;
+      background: #fff;
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* Table */
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 920px;
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 13px 20px;
+      background: #fafcfb;
+      color: #849087;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 15px 20px;
+      border-top: 1px solid #edf1ee;
+      vertical-align: middle;
+      font-size: 11px;
+    }
+
+    tbody tr:hover {
+      background: #fcfdfc;
+    }
+
+    .admin-cell {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .table-avatar {
+      width: 39px;
+      height: 39px;
+      flex: 0 0 39px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #edf8f1;
+      color: var(--green-dark);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .admin-name {
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .admin-email {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .role-badge,
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .role-badge.admin {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .role-badge.manager {
+      background: #f3edff;
+      color: #7c3aed;
+    }
+
+    .role-badge.super {
+      background: var(--warning-soft);
+      color: var(--warning);
+    }
+
+    .status-badge.active {
+      background: var(--green-soft);
+      color: var(--green-dark);
+    }
+
+    .status-badge.suspended {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .date-cell {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .last-login {
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .last-login small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #fff;
+      color: #6f7b73;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+    }
+
+    .icon-btn:hover {
+      color: var(--text);
+      border-color: #c9d5ce;
+      background: #fafcfb;
+    }
+
+    .icon-btn.danger:hover {
+      color: var(--danger);
+      border-color: #f1b8be;
+      background: var(--danger-soft);
+    }
+
+    .icon-btn.success:hover {
+      color: var(--green-dark);
+      border-color: #a8dfbd;
+      background: var(--green-soft);
+    }
+
+    .empty-row td {
+      padding: 55px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: var(--surface);
+      color: #9aa69e;
+    }
+
+    /* =========================================
+       SECURITY FOOTER
+    ========================================= */
+
+    .security-note {
+      margin-top: 20px;
+      padding: 15px 17px;
+      border: 1px solid #eadfbc;
+      border-radius: 14px;
+      background: #fffaf0;
+      color: #79683d;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+    .security-note i {
+      margin-top: 2px;
+    }
+
+    /* =========================================
+       MODAL
+    ========================================= */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      padding: 20px;
+      background: rgba(9,14,11,.58);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(7px);
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(100%, 570px);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.22);
+      animation: modalIn .22s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(.98);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .modal-head {
+      padding: 19px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .modal-head h3 {
+      font-size: 16px;
+      letter-spacing: -.4px;
+    }
+
+    .modal-head p {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      color: #6e7b73;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 7px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: 0;
+      padding: 0 12px;
+      color: var(--text);
+      background: #fff;
+      font-size: 11px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #9ad8b5;
+      box-shadow: 0 0 0 3px rgba(24,169,87,.08);
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .permission-box {
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fafcfb;
+    }
+
+    .permission-box strong {
+      display: block;
+      font-size: 10px;
+    }
+
+    .permission-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px 12px;
+      margin-top: 10px;
+    }
+
+    .permission-list label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #66736b;
+      font-size: 9px;
+    }
+
+    .permission-list input {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--green);
+    }
+
+    .modal-foot {
+      padding: 15px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .secondary-btn {
+      min-height: 40px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0 14px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .secondary-btn:hover {
+      background: #fafcfb;
+    }
+
+    /* Confirm */
+
+    .confirm-content {
+      padding: 28px 24px 22px;
+      text-align: center;
+    }
+
+    .confirm-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 15px;
+      display: grid;
+      place-items: center;
+      border-radius: 17px;
+      background: var(--danger-soft);
+      color: var(--danger);
+      font-size: 18px;
+    }
+
+    .confirm-content h3 {
+      font-size: 17px;
+    }
+
+    .confirm-content p {
+      margin: 8px auto 0;
+      max-width: 420px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
+    .confirm-actions {
+      margin-top: 21px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .danger-btn {
+      min-height: 40px;
+      border: 0;
+      border-radius: 10px;
+      padding: 0 15px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    /* =========================================
+       TOAST
+    ========================================= */
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 5000;
+      width: min(370px, calc(100vw - 30px));
+      padding: 13px 14px;
+      background: #101712;
+      color: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.18);
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      opacity: 0;
+      transform: translateY(15px);
+      pointer-events: none;
+      transition: .25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: none;
+    }
+
+    .toast-icon {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: rgba(24,169,87,.18);
+      color: #4cdb87;
+      font-size: 11px;
+    }
+
+    .toast strong {
+      display: block;
+      font-size: 10px;
+    }
+
+    .toast p {
+      margin-top: 2px;
+      color: #a7b1ab;
+      font-size: 9px;
+    }
+
+    .toast-close {
+      margin-left: auto;
+      border: 0;
+      background: transparent;
+      color: #87938b;
+      font-size: 11px;
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    @media (max-width: 1200px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .mobile-menu {
+        display: grid;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .content {
+        padding: 22px 18px 40px;
+      }
+
+      .security-banner {
+        align-items: flex-start;
+      }
+
+      .security-tag {
+        display: none;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .primary-btn {
+        width: 100%;
+      }
+
+      .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .filter-select {
+        width: 100%;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-title h1 {
+        font-size: 18px;
+      }
+
+      .page-title p {
+        display: none;
+      }
+
+      .topbar-actions .top-btn span {
+        display: none;
+      }
+
+      .top-btn {
+        width: 38px;
+        padding: 0;
+        justify-content: center;
+      }
+
+      .content {
+        padding: 18px 13px 35px;
+      }
+
+      .modal-overlay {
+        padding: 10px;
+      }
+
+      .modal {
+        max-height: calc(100vh - 20px);
+        border-radius: 18px;
+      }
+
+      .permission-list {
+        grid-template-columns: 1fr;
+      }
+
+      .security-banner {
+        padding: 14px;
+      }
+    }
+
+    /* Overlay for mobile sidebar */
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      background: rgba(0,0,0,.45);
+      display: none;
+    }
+
+    .sidebar-overlay.show {
+      display: block;
+    }
+  </style>
+<script src="../js/wd-sync.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =========================================
+       SIDEBAR
+  ========================================== -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <img
+        class="brand-logo"
+        src="../logo.png"
+        alt="Website Deals"
+      >
+
+      <div class="brand-copy">
+        <strong>Website Deals</strong>
+        <span>Control Center</span>
+      </div>
+    </div>
+
+    <div class="nav-label">Marketplace</div>
+
+    <nav class="nav">
+
+      <a class="nav-link" href="dashboard.html">
+        <i class="fa-solid fa-grid-2"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <a class="nav-link" href="websites.html">
+        <i class="fa-solid fa-window-maximize"></i>
+        <span>Websites</span>
+        <span class="nav-badge">11</span>
+      </a>
+
+      <a class="nav-link" href="categories.html">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Categories</span>
+      </a>
+
+      <a class="nav-link" href="orders.html">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>Orders</span>
+        <span class="nav-badge">8</span>
+      </a>
+
+      <a class="nav-link" href="customers.html">
+        <i class="fa-solid fa-users"></i>
+        <span>Customers</span>
+      </a>
+
+      <a class="nav-link" href="newsletter.html">
+        <i class="fa-solid fa-envelope"></i>
+        <span>Newsletter</span>
+      </a>
+
+    </nav>
+
+    <!-- Restricted -->
+    <div class="restricted">
+
+      <div class="nav-label">Restricted Controls</div>
+
+      <nav class="nav">
+
+        <a
+          class="nav-link active"
+          href="admins.html"
+          title="Super Admin only"
+        >
+          <i class="fa-solid fa-user-shield"></i>
+          <span>Admin Management</span>
+        </a>
+
+        <a
+          class="nav-link"
+          href="settings.html"
+          title="Super Admin only"
+        >
+          <i class="fa-solid fa-sliders"></i>
+          <span>System Settings</span>
+        </a>
+
+      </nav>
+
+    </div>
+
+    <div class="sidebar-bottom">
+
+      <div class="admin-profile">
+
+        <div class="admin-profile-top">
+
+          <div class="admin-avatar">
+            SA
+          </div>
+
+          <div>
+            <strong>Super Admin</strong>
+            <span>Full System Access</span>
+          </div>
+
+        </div>
+
+        <button
+          class="signout-btn"
+          type="button"
+          id="signout-btn"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          Sign Out
+        </button>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+  <div
+    class="sidebar-overlay"
+    id="sidebar-overlay"
+  ></div>
+
+  <!-- =========================================
+       MAIN
+  ========================================== -->
+  <main class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button
+          class="mobile-menu"
+          type="button"
+          id="mobile-menu"
+          aria-label="Open menu"
+        >
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-title">
+          <h1>Admin Management</h1>
+          <p>Manage marketplace administrator accounts and access.</p>
+        </div>
+
+      </div>
+
+      <div class="topbar-actions">
+
+        <button
+          class="top-btn"
+          type="button"
+          id="refresh-btn"
+        >
+          <i class="fa-solid fa-rotate"></i>
+          <span>Refresh</span>
+        </button>
+
+      </div>
+
+    </header>
+
+    <!-- Content -->
+    <section class="content">
+
+      <!-- Security -->
+      <div class="security-banner">
+
+        <div class="security-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div class="security-copy">
+          <strong>Super Admin Control Center</strong>
+          <p>
+            This area controls administrator accounts and access levels.
+            Changes should only be made by authorized Super Admin users.
+          </p>
+        </div>
+
+        <div class="security-tag">
+          <i class="fa-solid fa-lock"></i>
+          Restricted
+        </div>
+
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+          </div>
+
+          <div class="stat-label">Total Admins</div>
+          <div class="stat-value" id="total-admins">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon">
+              <i class="fa-solid fa-user-check"></i>
+            </div>
+          </div>
+
+          <div class="stat-label">Active Admins</div>
+          <div class="stat-value" id="active-admins">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon">
+              <i class="fa-solid fa-user-clock"></i>
+            </div>
+          </div>
+
+          <div class="stat-label">Suspended</div>
+          <div class="stat-value" id="suspended-admins">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+          </div>
+
+          <div class="stat-label">Super Admins</div>
+          <div class="stat-value" id="super-admins">1</div>
+        </div>
+
+      </div>
+
+      <!-- Admin Management -->
+      <div class="section-card">
+
+        <div class="section-head">
+
+          <div>
+            <h2>Administrator Accounts</h2>
+            <p>
+              Create, review and manage authorized marketplace admin accounts.
+            </p>
+          </div>
+
+          <button
+            class="primary-btn"
+            type="button"
+            id="add-admin-btn"
+          >
+            <i class="fa-solid fa-plus"></i>
+            Add New Admin
+          </button>
+
+        </div>
+
+        <div class="toolbar">
+
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+              type="search"
+              id="admin-search"
+              placeholder="Search by name or email..."
+              autocomplete="off"
+            >
+          </div>
+
+          <select
+            class="filter-select"
+            id="status-filter"
+          >
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="suspended">Suspended</option>
+          </select>
+
+          <select
+            class="filter-select"
+            id="role-filter"
+          >
+            <option value="all">All Roles</option>
+            <option value="admin">Admin</option>
+            <option value="manager">Manager</option>
+            <option value="superAdmin">Super Admin</option>
+          </select>
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Administrator</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th>Last Login</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="admin-table-body"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+      <div class="security-note">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+        <div>
+          <strong>Production Security Notice:</strong>
+          This page currently uses browser storage for demonstration only.
+          Before production, administrator authentication and role permissions
+          must be enforced with Firebase Authentication and Firestore Security Rules.
+          Hiding this page from the normal Admin menu is not sufficient protection.
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<!-- =========================================
+     ADD / EDIT MODAL
+========================================== -->
+
+<div
+  class="modal-overlay"
+  id="admin-modal"
+  aria-hidden="true"
+>
+
+  <div class="modal">
+
+    <div class="modal-head">
+
+      <div>
+        <h3 id="modal-title">Add New Admin</h3>
+        <p id="modal-subtitle">
+          Create an administrator account.
+        </p>
+      </div>
+
+      <button
+        class="modal-close"
+        type="button"
+        data-close-modal="admin-modal"
+        aria-label="Close"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+    </div>
+
+    <form id="admin-form">
+
+      <div class="modal-body">
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="admin-name">
+              Full Name
+            </label>
+
+            <input
+              id="admin-name"
+              type="text"
+              placeholder="e.g. Rahim Khan"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="admin-email">
+              Email Address
+            </label>
+
+            <input
+              id="admin-email"
+              type="email"
+              placeholder="admin@example.com"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="admin-role">
+              Role
+            </label>
+
+            <select id="admin-role">
+              <option value="admin">Admin</option>
+              <option value="manager">Manager</option>
+            </select>
+
+            <div class="helper">
+              Super Admin role is protected and cannot be created here.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="admin-status">
+              Account Status
+            </label>
+
+            <select id="admin-status">
+              <option value="active">Active</option>
+              <option value="suspended">Suspended</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+
+            <div class="permission-box">
+
+              <strong>Access Permissions</strong>
+
+              <div class="permission-list">
+
+                <label>
+                  <input type="checkbox" value="websites" checked>
+                  Websites
+                </label>
+
+                <label>
+                  <input type="checkbox" value="categories" checked>
+                  Categories
+                </label>
+
+                <label>
+                  <input type="checkbox" value="orders" checked>
+                  Orders
+                </label>
+
+                <label>
+                  <input type="checkbox" value="customers" checked>
+                  Customers
+                </label>
+
+                <label>
+                  <input type="checkbox" value="newsletter" checked>
+                  Newsletter
+                </label>
+
+                <label>
+                  <input type="checkbox" value="dashboard" checked>
+                  Dashboard
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-foot">
+
+        <button
+          class="secondary-btn"
+          type="button"
+          data-close-modal="admin-modal"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="primary-btn"
+          type="submit"
+        >
+          <i class="fa-solid fa-check"></i>
+          <span id="save-admin-text">Create Admin</span>
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- =========================================
+     DELETE CONFIRM
+========================================== -->
+
+<div
+  class="modal-overlay"
+  id="delete-modal"
+  aria-hidden="true"
+>
+
+  <div class="modal">
+
+    <div class="confirm-content">
+
+      <div class="confirm-icon">
+        <i class="fa-solid fa-trash-can"></i>
+      </div>
+
+      <h3>Delete Administrator?</h3>
+
+      <p id="delete-message">
+        This action will remove the administrator from the demo management list.
+      </p>
+
+      <div class="confirm-actions">
+
+        <button
+          class="secondary-btn"
+          type="button"
+          data-close-modal="delete-modal"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="danger-btn"
+          type="button"
+          id="confirm-delete"
+        >
+          Delete Admin
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================================
+     TOAST
+========================================== -->
+
+<div class="toast" id="toast">
+
+  <div class="toast-icon">
+    <i class="fa-solid fa-check"></i>
+  </div>
+
+  <div>
+    <strong id="toast-title">Success</strong>
+    <p id="toast-message">Action completed successfully.</p>
+  </div>
+
+  <button
+    class="toast-close"
+    type="button"
+    id="toast-close"
+  >
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+
+</div>
+
+<script>
+/* =========================================================
+   WEBSITE DEALS — SUPER ADMIN MANAGEMENT
+   Demo storage:
+   websiteDealsAdmins
+========================================================= */
+
+(function () {
+
+  "use strict";
+
+  const STORAGE_KEY = "websiteDealsAdmins";
+
+  const DEFAULT_ADMINS = [
+    {
+      id: "ADM001",
+      name: "Super Admin",
+      email: "superadmin@websitedeals.com",
+      role: "superAdmin",
+      status: "active",
+      joined: "2026-01-05",
+      lastLogin: "Today",
+      lastLoginDevice: "Secure session",
+      permissions: [
+        "dashboard",
+        "websites",
+        "categories",
+        "orders",
+        "customers",
+        "newsletter",
+        "adminManagement",
+        "systemSettings"
+      ]
+    },
+    {
+      id: "ADM002",
+      name: "Rahim Khan",
+      email: "rahim@websitedeals.com",
+      role: "admin",
+      status: "active",
+      joined: "2026-02-12",
+      lastLogin: "Today",
+      lastLoginDevice: "Chrome · Windows",
+      permissions: [
+        "dashboard",
+        "websites",
+        "categories",
+        "orders",
+        "customers",
+        "newsletter"
+      ]
+    },
+    {
+      id: "ADM003",
+      name: "Sara Ahmed",
+      email: "sara@websitedeals.com",
+      role: "manager",
+      status: "active",
+      joined: "2026-03-08",
+      lastLogin: "Yesterday",
+      lastLoginDevice: "Chrome · Windows",
+      permissions: [
+        "dashboard",
+        "websites",
+        "categories",
+        "orders"
+      ]
+    },
+    {
+      id: "ADM004",
+      name: "Mahin Islam",
+      email: "mahin@websitedeals.com",
+      role: "admin",
+      status: "suspended",
+      joined: "2026-04-19",
+      lastLogin: "Sep 27, 2026",
+      lastLoginDevice: "Chrome · Android",
+      permissions: [
+        "dashboard",
+        "websites",
+        "orders"
+      ]
+    },
+    {
+      id: "ADM005",
+      name: "Tanvir Ahmed",
+      email: "tanvir@websitedeals.com",
+      role: "admin",
+      status: "active",
+      joined: "2026-06-21",
+      lastLogin: "Sep 30, 2026",
+      lastLoginDevice: "Edge · Windows",
+      permissions: [
+        "dashboard",
+        "websites",
+        "orders",
+        "customers"
+      ]
+    }
+  ];
+
+  let admins = [];
+  let editingId = null;
+  let deletingId = null;
+  let toastTimer = null;
+
+  /* =========================================================
+     DOM
+  ========================================================= */
+
+  const els = {
+    tableBody: document.getElementById("admin-table-body"),
+
+    totalAdmins: document.getElementById("total-admins"),
+    activeAdmins: document.getElementById("active-admins"),
+    suspendedAdmins: document.getElementById("suspended-admins"),
+    superAdmins: document.getElementById("super-admins"),
+
+    search: document.getElementById("admin-search"),
+    statusFilter: document.getElementById("status-filter"),
+    roleFilter: document.getElementById("role-filter"),
+
+    addBtn: document.getElementById("add-admin-btn"),
+    refreshBtn: document.getElementById("refresh-btn"),
+
+    adminModal: document.getElementById("admin-modal"),
+    deleteModal: document.getElementById("delete-modal"),
+
+    modalTitle: document.getElementById("modal-title"),
+    modalSubtitle: document.getElementById("modal-subtitle"),
+    saveAdminText: document.getElementById("save-admin-text"),
+
+    form: document.getElementById("admin-form"),
+
+    name: document.getElementById("admin-name"),
+    email: document.getElementById("admin-email"),
+    role: document.getElementById("admin-role"),
+    status: document.getElementById("admin-status"),
+
+    deleteMessage: document.getElementById("delete-message"),
+    confirmDelete: document.getElementById("confirm-delete"),
+
+    toast: document.getElementById("toast"),
+    toastTitle: document.getElementById("toast-title"),
+    toastMessage: document.getElementById("toast-message"),
+    toastClose: document.getElementById("toast-close"),
+
+    signout: document.getElementById("signout-btn"),
+
+    mobileMenu: document.getElementById("mobile-menu"),
+    sidebar: document.getElementById("sidebar"),
+    sidebarOverlay: document.getElementById("sidebar-overlay")
+  };
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  function escapeHTML(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function initials(name) {
+    return String(name || "Admin")
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(word => word.charAt(0))
+      .join("")
+      .toUpperCase();
+  }
+
+  function formatDate(value) {
+    if (!value) return "—";
+
+    const date = new Date(value + "T00:00:00");
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    });
+  }
+
+  function roleLabel(role) {
+    if (role === "superAdmin") return "Super Admin";
+    if (role === "manager") return "Manager";
+    return "Admin";
+  }
+
+  function roleClass(role) {
+    if (role === "superAdmin") return "super";
+    if (role === "manager") return "manager";
+    return "admin";
+  }
+
+  function saveAdmins() {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(admins)
+    );
+  }
+
+  function loadAdmins() {
+
+    try {
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+
+      if (saved) {
+
+        const parsed = JSON.parse(saved);
+
+        if (Array.isArray(parsed) && parsed.length) {
+          admins = parsed;
+          return;
+        }
+
+      }
+
+    } catch (error) {
+      console.warn("Could not load admin storage.", error);
+    }
+
+    admins = DEFAULT_ADMINS.map(admin => ({
+      ...admin,
+      permissions: [...admin.permissions]
+    }));
+
+    saveAdmins();
+  }
+
+  function showToast(title, message, type = "success") {
+
+    clearTimeout(toastTimer);
+
+    els.toastTitle.textContent = title;
+    els.toastMessage.textContent = message;
+
+    const icon = els.toast.querySelector(".toast-icon i");
+
+    if (type === "danger") {
+      icon.className = "fa-solid fa-triangle-exclamation";
+      els.toast.querySelector(".toast-icon").style.background =
+        "rgba(220,53,69,.16)";
+      els.toast.querySelector(".toast-icon").style.color =
+        "#ff7080";
+    } else {
+      icon.className = "fa-solid fa-check";
+      els.toast.querySelector(".toast-icon").style.background =
+        "rgba(24,169,87,.18)";
+      els.toast.querySelector(".toast-icon").style.color =
+        "#4cdb87";
+    }
+
+    els.toast.classList.add("show");
+
+    toastTimer = setTimeout(() => {
+      els.toast.classList.remove("show");
+    }, 3200);
+  }
+
+  function openModal(modal) {
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(modal) {
+
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+
+    if (
+      !els.adminModal.classList.contains("show") &&
+      !els.deleteModal.classList.contains("show")
+    ) {
+      document.body.style.overflow = "";
+    }
+  }
+
+  function closeAllModals() {
+    closeModal(els.adminModal);
+    closeModal(els.deleteModal);
+  }
+
+  /* =========================================================
+     FILTER
+  ========================================================= */
+
+  function getFilteredAdmins() {
+
+    const query = els.search.value
+      .trim()
+      .toLowerCase();
+
+    const status = els.statusFilter.value;
+    const role = els.roleFilter.value;
+
+    return admins.filter(admin => {
+
+      const matchesSearch =
+        !query ||
+        admin.name.toLowerCase().includes(query) ||
+        admin.email.toLowerCase().includes(query);
+
+      const matchesStatus =
+        status === "all" ||
+        admin.status === status;
+
+      const matchesRole =
+        role === "all" ||
+        admin.role === role;
+
+      return (
+        matchesSearch &&
+        matchesStatus &&
+        matchesRole
+      );
+    });
+  }
+
+  /* =========================================================
+     RENDER STATS
+  ========================================================= */
+
+  function renderStats() {
+
+    const total = admins.length;
+
+    const active = admins.filter(
+      admin => admin.status === "active"
+    ).length;
+
+    const suspended = admins.filter(
+      admin => admin.status === "suspended"
+    ).length;
+
+    const superAdmins = admins.filter(
+      admin => admin.role === "superAdmin"
+    ).length;
+
+    els.totalAdmins.textContent = total;
+    els.activeAdmins.textContent = active;
+    els.suspendedAdmins.textContent = suspended;
+    els.superAdmins.textContent = superAdmins;
+  }
+
+  /* =========================================================
+     RENDER TABLE
+  ========================================================= */
+
+  function renderTable() {
+
+    const data = getFilteredAdmins();
+
+    if (!data.length) {
+
+      els.tableBody.innerHTML = `
+        <tr class="empty-row">
+          <td colspan="6">
+            <div class="empty-icon">
+              <i class="fa-solid fa-user-slash"></i>
+            </div>
+
+            <strong>No administrators found</strong>
+
+            <div style="margin-top:5px;font-size:10px;">
+              Try changing your search or filters.
+            </div>
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+    els.tableBody.innerHTML = data.map(admin => {
+
+      const isSuper = admin.role === "superAdmin";
+
+      const statusClass =
+        admin.status === "active"
+          ? "active"
+          : "suspended";
+
+      const statusText =
+        admin.status === "active"
+          ? "Active"
+          : "Suspended";
+
+      return `
+        <tr>
+
+          <td>
+
+            <div class="admin-cell">
+
+              <div class="table-avatar">
+                ${escapeHTML(initials(admin.name))}
+              </div>
+
+              <div>
+                <div class="admin-name">
+                  ${escapeHTML(admin.name)}
+                </div>
+
+                <div class="admin-email">
+                  ${escapeHTML(admin.email)}
+                </div>
+              </div>
+
+            </div>
+
+          </td>
+
+          <td>
+            <span class="role-badge ${roleClass(admin.role)}">
+              ${
+                isSuper
+                  ? '<i class="fa-solid fa-crown"></i>'
+                  : '<i class="fa-solid fa-user"></i>'
+              }
+
+              ${escapeHTML(roleLabel(admin.role))}
+            </span>
+          </td>
+
+          <td>
+            <span class="status-badge ${statusClass}">
+              <i class="fa-solid fa-circle" style="font-size:5px;"></i>
+              ${statusText}
+            </span>
+          </td>
+
+          <td>
+            <span class="date-cell">
+              ${escapeHTML(formatDate(admin.joined))}
+            </span>
+          </td>
+
+          <td>
+            <div class="last-login">
+              ${escapeHTML(admin.lastLogin || "Never")}
+              <small>
+                ${escapeHTML(admin.lastLoginDevice || "")}
+              </small>
+            </div>
+          </td>
+
+          <td>
+
+            <div class="actions">
+
+              <button
+                class="icon-btn"
+                type="button"
+                title="Edit Admin"
+                data-action="edit"
+                data-id="${escapeHTML(admin.id)}"
+              >
+                <i class="fa-solid fa-pen"></i>
+              </button>
+
+              ${
+                isSuper
+                  ? ""
+                  : admin.status === "active"
+                    ? `
+                      <button
+                        class="icon-btn danger"
+                        type="button"
+                        title="Suspend Admin"
+                        data-action="suspend"
+                        data-id="${escapeHTML(admin.id)}"
+                      >
+                        <i class="fa-solid fa-user-slash"></i>
+                      </button>
+                    `
+                    : `
+                      <button
+                        class="icon-btn success"
+                        type="button"
+                        title="Reactivate Admin"
+                        data-action="reactivate"
+                        data-id="${escapeHTML(admin.id)}"
+                      >
+                        <i class="fa-solid fa-user-check"></i>
+                      </button>
+                    `
+              }
+
+              ${
+                isSuper
+                  ? ""
+                  : `
+                    <button
+                      class="icon-btn danger"
+                      type="button"
+                      title="Delete Admin"
+                      data-action="delete"
+                      data-id="${escapeHTML(admin.id)}"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  `
+              }
+
+            </div>
+
+          </td>
+
+        </tr>
+      `;
+
+    }).join("");
+  }
+
+  function render() {
+    renderStats();
+    renderTable();
+  }
+
+  /* =========================================================
+     FORM
+  ========================================================= */
+
+  function getPermissions() {
+
+    return Array.from(
+      document.querySelectorAll(
+        '.permission-list input[type="checkbox"]:checked'
+      )
+    ).map(input => input.value);
+  }
+
+  function setPermissions(permissions) {
+
+    const list = Array.isArray(permissions)
+      ? permissions
+      : [];
+
+    document.querySelectorAll(
+      '.permission-list input[type="checkbox"]'
+    ).forEach(input => {
+      input.checked = list.includes(input.value);
+    });
+  }
+
+  function resetForm() {
+
+    els.form.reset();
+
+    editingId = null;
+
+    els.modalTitle.textContent = "Add New Admin";
+
+    els.modalSubtitle.textContent =
+      "Create an administrator account.";
+
+    els.saveAdminText.textContent =
+      "Create Admin";
+
+    els.role.value = "admin";
+    els.status.value = "active";
+
+    setPermissions([
+      "dashboard",
+      "websites",
+      "categories",
+      "orders",
+      "customers",
+      "newsletter"
+    ]);
+  }
+
+  function openAddModal() {
+
+    resetForm();
+
+    openModal(els.adminModal);
+
+    setTimeout(() => {
+      els.name.focus();
+    }, 100);
+  }
+
+  function openEditModal(id) {
+
+    const admin = admins.find(
+      item => item.id === id
+    );
+
+    if (!admin) return;
+
+    if (admin.role === "superAdmin") {
+
+      showToast(
+        "Protected Account",
+        "The primary Super Admin account cannot be modified from this demo.",
+        "danger"
+      );
+
+      return;
+    }
+
+    editingId = id;
+
+    els.modalTitle.textContent =
+      "Edit Administrator";
+
+    els.modalSubtitle.textContent =
+      "Update administrator account details.";
+
+    els.saveAdminText.textContent =
+      "Save Changes";
+
+    els.name.value = admin.name || "";
+    els.email.value = admin.email || "";
+    els.role.value = admin.role || "admin";
+    els.status.value = admin.status || "active";
+
+    setPermissions(admin.permissions);
+
+    openModal(els.adminModal);
+
+    setTimeout(() => {
+      els.name.focus();
+    }, 100);
+  }
+
+  function submitForm(event) {
+
+    event.preventDefault();
+
+    const name = els.name.value.trim();
+    const email = els.email.value.trim().toLowerCase();
+    const role = els.role.value;
+    const status = els.status.value;
+    const permissions = getPermissions();
+
+    if (!name || !email) {
+
+      showToast(
+        "Missing Information",
+        "Please enter the admin name and email.",
+        "danger"
+      );
+
+      return;
+    }
+
+    const duplicate = admins.find(
+      admin =>
+        admin.email.toLowerCase() === email &&
+        admin.id !== editingId
+    );
+
+    if (duplicate) {
+
+      showToast(
+        "Email Already Exists",
+        "Another administrator already uses this email.",
+        "danger"
+      );
+
+      return;
+    }
+
+    if (editingId) {
+
+      const index = admins.findIndex(
+        admin => admin.id === editingId
+      );
+
+      if (index === -1) return;
+
+      admins[index] = {
+        ...admins[index],
+        name,
+        email,
+        role,
+        status,
+        permissions
+      };
+
+      saveAdmins();
+      render();
+      closeModal(els.adminModal);
+
+      showToast(
+        "Admin Updated",
+        `${name}'s account has been updated.`
+      );
+
+      return;
+    }
+
+    const newId =
+      "ADM" +
+      String(
+        admins.length + 1
+      ).padStart(3, "0");
+
+    const newAdmin = {
+      id: newId,
+      name,
+      email,
+      role,
+      status,
+      joined: new Date()
+        .toISOString()
+        .slice(0, 10),
+      lastLogin: "Never",
+      lastLoginDevice: "No login yet",
+      permissions
+    };
+
+    admins.push(newAdmin);
+
+    saveAdmins();
+    render();
+    closeModal(els.adminModal);
+
+    showToast(
+      "Admin Created",
+      `${name} has been added to Admin Management.`
+    );
+  }
+
+  /* =========================================================
+     STATUS ACTIONS
+  ========================================================= */
+
+  function changeStatus(id, status) {
+
+    const admin = admins.find(
+      item => item.id === id
+    );
+
+    if (!admin) return;
+
+    if (admin.role === "superAdmin") {
+
+      showToast(
+        "Protected Account",
+        "Super Admin accounts are protected.",
+        "danger"
+      );
+
+      return;
+    }
+
+    admin.status = status;
+
+    saveAdmins();
+    render();
+
+    if (status === "active") {
+
+      showToast(
+        "Admin Reactivated",
+        `${admin.name} is active again.`
+      );
+
+    } else {
+
+      showToast(
+        "Admin Suspended",
+        `${admin.name}'s access is now suspended.`
+      );
+    }
+  }
+
+  /* =========================================================
+     DELETE
+  ========================================================= */
+
+  function openDeleteModal(id) {
+
+    const admin = admins.find(
+      item => item.id === id
+    );
+
+    if (!admin) return;
+
+    if (admin.role === "superAdmin") {
+
+      showToast(
+        "Protected Account",
+        "The Super Admin account cannot be deleted.",
+        "danger"
+      );
+
+      return;
+    }
+
+    deletingId = id;
+
+    els.deleteMessage.textContent =
+      `You are about to delete ${admin.name} (${admin.email}). This action cannot be undone in the demo.`;
+
+    openModal(els.deleteModal);
+  }
+
+  function confirmDelete() {
+
+    if (!deletingId) return;
+
+    const admin = admins.find(
+      item => item.id === deletingId
+    );
+
+    if (!admin) return;
+
+    if (admin.role === "superAdmin") {
+
+      showToast(
+        "Protected Account",
+        "The Super Admin account cannot be deleted.",
+        "danger"
+      );
+
+      closeModal(els.deleteModal);
+      deletingId = null;
+
+      return;
+    }
+
+    admins = admins.filter(
+      item => item.id !== deletingId
+    );
+
+    saveAdmins();
+    render();
+
+    closeModal(els.deleteModal);
+
+    showToast(
+      "Admin Deleted",
+      `${admin.name} has been removed.`
+    );
+
+    deletingId = null;
+  }
+
+  /* =========================================================
+     TABLE ACTIONS
+  ========================================================= */
+
+  function handleTableClick(event) {
+
+    const button =
+      event.target.closest("[data-action]");
+
+    if (!button) return;
+
+    const action =
+      button.dataset.action;
+
+    const id =
+      button.dataset.id;
+
+    if (action === "edit") {
+      openEditModal(id);
+      return;
+    }
+
+    if (action === "suspend") {
+      changeStatus(id, "suspended");
+      return;
+    }
+
+    if (action === "reactivate") {
+      changeStatus(id, "active");
+      return;
+    }
+
+    if (action === "delete") {
+      openDeleteModal(id);
+    }
+  }
+
+  /* =========================================================
+     MOBILE SIDEBAR
+  ========================================================= */
+
+  function openSidebar() {
+
+    els.sidebar.classList.add("open");
+    els.sidebarOverlay.classList.add("show");
+  }
+
+  function closeSidebar() {
+
+    els.sidebar.classList.remove("open");
+    els.sidebarOverlay.classList.remove("show");
+  }
+
+  /* =========================================================
+     EVENTS
+  ========================================================= */
+
+  els.search.addEventListener(
+    "input",
+    renderTable
+  );
+
+  els.statusFilter.addEventListener(
+    "change",
+    renderTable
+  );
+
+  els.roleFilter.addEventListener(
+    "change",
+    renderTable
+  );
+
+  els.addBtn.addEventListener(
+    "click",
+    openAddModal
+  );
+
+  els.refreshBtn.addEventListener(
+    "click",
+    () => {
+
+      loadAdmins();
+      render();
+
+      showToast(
+        "List Refreshed",
+        "Administrator data has been refreshed."
+      );
+    }
+  );
+
+  els.form.addEventListener(
+    "submit",
+    submitForm
+  );
+
+  els.tableBody.addEventListener(
+    "click",
+    handleTableClick
+  );
+
+  els.confirmDelete.addEventListener(
+    "click",
+    confirmDelete
+  );
+
+  els.toastClose.addEventListener(
+    "click",
+    () => {
+      els.toast.classList.remove("show");
+    }
+  );
+
+  document.querySelectorAll(
+    "[data-close-modal]"
+  ).forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const id =
+          button.dataset.closeModal;
+
+        const modal =
+          document.getElementById(id);
+
+        if (modal) {
+          closeModal(modal);
+        }
+
+      }
+    );
+
+  });
+
+  document.querySelectorAll(
+    ".modal-overlay"
+  ).forEach(overlay => {
+
+    overlay.addEventListener(
+      "click",
+      event => {
+
+        if (event.target === overlay) {
+          closeModal(overlay);
+        }
+
+      }
+    );
+
+  });
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (event.key === "Escape") {
+
+        closeAllModals();
+        closeSidebar();
+
+      }
+
+    }
+  );
+
+  els.mobileMenu.addEventListener(
+    "click",
+    openSidebar
+  );
+
+  els.sidebarOverlay.addEventListener(
+    "click",
+    closeSidebar
+  );
+
+  document.querySelectorAll(
+    ".sidebar a"
+  ).forEach(link => {
+
+    link.addEventListener(
+      "click",
+      () => {
+
+        if (
+          window.innerWidth <= 1024
+        ) {
+          closeSidebar();
+        }
+
+      }
+    );
+
+  });
+
+  els.signout.addEventListener(
+    "click",
+    () => {
+
+      const confirmed =
+        window.confirm(
+          "Sign out from the Super Admin demo?"
+        );
+
+      if (!confirmed) return;
+
+      /*
+        Firebase Authentication logout
+        will be connected here later.
+      */
+
+      window.location.href =
+        "index.html";
+    }
+  );
+
+  /* =========================================================
+     INIT
+  ========================================================= */
+
+  loadAdmins();
+  render();
+
+})();
+</script>
+
+</body>
+</html>

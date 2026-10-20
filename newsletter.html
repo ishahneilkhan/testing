@@ -1,0 +1,3857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" href="../logo.png">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07110b">
+
+<title>Newsletter | Website Deals Admin</title>
+<meta name="description" content="Website Deals Admin — Newsletter Management">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --green:#18a957;
+  --green-dark:#118344;
+  --green-soft:#e9f8ef;
+  --dark:#07110b;
+  --sidebar:#101713;
+  --sidebar-soft:#18231d;
+  --white:#fff;
+  --surface:#f6f8f7;
+  --surface-2:#fbfcfb;
+  --border:#e3eae6;
+  --text:#142019;
+  --muted:#738079;
+  --danger:#dc3d4b;
+  --danger-soft:#fff0f1;
+  --warning:#c88700;
+  --warning-soft:#fff8e8;
+  --blue:#2563eb;
+  --blue-soft:#edf3ff;
+  --shadow:0 14px 40px rgba(8,25,15,.07);
+  --shadow-lg:0 25px 70px rgba(8,25,15,.14);
+  --radius:20px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:"DM Sans",sans-serif;
+  background:var(--surface);
+  color:var(--text);
+  min-height:100vh;
+}
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.app{
+  min-height:100vh;
+  display:flex;
+}
+
+.sidebar{
+  width:270px;
+  background:var(--sidebar);
+  color:#fff;
+  position:fixed;
+  inset:0 auto 0 0;
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  padding:22px 16px;
+  transition:transform .25s ease;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:4px 10px 24px;
+}
+
+.brand-logo{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  object-fit:cover;
+  background:#fff;
+}
+
+.brand-title{
+  font-family:"Manrope",sans-serif;
+  font-weight:800;
+  font-size:15px;
+}
+
+.brand-sub{
+  color:#8c9a91;
+  font-size:11px;
+  margin-top:2px;
+}
+
+.nav{
+  flex:1;
+  overflow:auto;
+}
+
+.nav-section{
+  margin:18px 8px 8px;
+  color:#718077;
+  text-transform:uppercase;
+  font-size:10px;
+  letter-spacing:.12em;
+  font-weight:700;
+}
+
+.nav-link{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:11px 12px;
+  border-radius:12px;
+  color:#aeb9b2;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:3px;
+}
+
+.nav-link:hover{
+  background:var(--sidebar-soft);
+  color:#fff;
+}
+
+.nav-link.active{
+  background:var(--green);
+  color:#fff;
+  box-shadow:0 9px 22px rgba(24,169,87,.18);
+}
+
+.nav-icon{
+  width:18px;
+  text-align:center;
+}
+
+.sidebar-bottom{
+  border-top:1px solid rgba(255,255,255,.07);
+  padding-top:15px;
+  margin-top:12px;
+}
+
+.admin-mini{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 10px;
+}
+
+.admin-avatar{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  background:var(--green);
+  display:grid;
+  place-items:center;
+  font-size:12px;
+  font-weight:800;
+}
+
+.admin-mini-text{
+  min-width:0;
+  flex:1;
+}
+
+.admin-name{
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.admin-role{
+  color:#819087;
+  font-size:10px;
+  margin-top:2px;
+}
+
+.logout-btn{
+  width:100%;
+  border:1px solid rgba(255,255,255,.08);
+  background:transparent;
+  color:#b4c0b8;
+  padding:10px 12px;
+  border-radius:11px;
+  margin-top:8px;
+  font-size:12px;
+  font-weight:700;
+  text-align:left;
+}
+
+.logout-btn:hover{
+  background:rgba(255,255,255,.05);
+  color:#fff;
+}
+
+.main{
+  margin-left:270px;
+  width:calc(100% - 270px);
+  min-width:0;
+}
+
+.topbar{
+  height:74px;
+  background:rgba(255,255,255,.94);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 30px;
+  position:sticky;
+  top:0;
+  z-index:800;
+  backdrop-filter:blur(16px);
+}
+
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.page-kicker{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:600;
+}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+}
+
+.icon-btn,
+.top-btn{
+  min-height:39px;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  border-radius:11px;
+  padding:0 13px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.top-btn:hover,
+.icon-btn:hover{
+  background:var(--surface-2);
+}
+
+.mobile-menu{
+  display:none;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+  padding:30px;
+  max-width:1700px;
+  margin:auto;
+}
+
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:25px;
+  margin-bottom:24px;
+}
+
+.eyebrow{
+  color:var(--green);
+  text-transform:uppercase;
+  letter-spacing:.13em;
+  font-size:10px;
+  font-weight:800;
+  margin-bottom:9px;
+}
+
+.hero h1{
+  font-family:"Manrope",sans-serif;
+  font-size:clamp(28px,3vw,42px);
+  letter-spacing:-.045em;
+  line-height:1.08;
+}
+
+.hero p{
+  color:var(--muted);
+  margin-top:10px;
+  max-width:700px;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.hero-badge{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:12px 15px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  box-shadow:var(--shadow);
+  white-space:nowrap;
+}
+
+.status-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 0 5px var(--green-soft);
+}
+
+.hero-badge strong{
+  display:block;
+  font-size:12px;
+}
+
+.hero-badge span{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:2px;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:20px;
+}
+
+.stat-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:19px;
+  box-shadow:var(--shadow);
+}
+
+.stat-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+}
+
+.stat-icon{
+  width:33px;
+  height:33px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:var(--green-soft);
+  color:var(--green-dark);
+}
+
+.stat-value{
+  margin-top:13px;
+  font-family:"Manrope",sans-serif;
+  font-size:25px;
+  font-weight:800;
+  letter-spacing:-.04em;
+}
+
+.stat-meta{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:6px;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.55fr) minmax(310px,.75fr);
+  gap:18px;
+}
+
+.panel{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+.panel-header{
+  padding:18px 19px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.panel-title{
+  font-family:"Manrope",sans-serif;
+  font-size:15px;
+  font-weight:800;
+}
+
+.panel-subtitle{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+}
+
+.panel-body{
+  padding:18px;
+}
+
+/* =========================
+   CAMPAIGN COMPOSER
+========================= */
+
+.field-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  color:#526058;
+  font-size:10px;
+  font-weight:800;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--border);
+  background:var(--surface-2);
+  border-radius:11px;
+  min-height:42px;
+  padding:10px 12px;
+  outline:none;
+  color:var(--text);
+  font-size:11px;
+}
+
+.field textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:rgba(24,169,87,.55);
+  box-shadow:0 0 0 4px rgba(24,169,87,.08);
+  background:#fff;
+}
+
+.help{
+  color:#8a958f;
+  font-size:9px;
+  line-height:1.5;
+}
+
+.toggle-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--surface-2);
+}
+
+.toggle-copy strong{
+  display:block;
+  font-size:11px;
+}
+
+.toggle-copy span{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  margin-top:3px;
+}
+
+.switch{
+  position:relative;
+  width:43px;
+  height:24px;
+  flex:0 0 43px;
+}
+
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  background:#cfd7d2;
+  border-radius:999px;
+  transition:.2s;
+}
+
+.slider:before{
+  content:"";
+  position:absolute;
+  width:18px;
+  height:18px;
+  left:3px;
+  top:3px;
+  background:#fff;
+  border-radius:50%;
+  transition:.2s;
+  box-shadow:0 2px 5px rgba(0,0,0,.15);
+}
+
+.switch input:checked + .slider{
+  background:var(--green);
+}
+
+.switch input:checked + .slider:before{
+  transform:translateX(19px);
+}
+
+.composer-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:16px;
+  padding-top:16px;
+  border-top:1px solid var(--border);
+}
+
+/* =========================
+   AUDIENCE
+========================= */
+
+.audience-list{
+  display:grid;
+  gap:9px;
+}
+
+.audience-item{
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.audience-check{
+  width:16px;
+  height:16px;
+  accent-color:var(--green);
+}
+
+.audience-icon{
+  width:35px;
+  height:35px;
+  border-radius:10px;
+  background:var(--green-soft);
+  color:var(--green-dark);
+  display:grid;
+  place-items:center;
+  font-size:14px;
+}
+
+.audience-copy{
+  flex:1;
+}
+
+.audience-copy strong{
+  display:block;
+  font-size:11px;
+}
+
+.audience-copy span{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  margin-top:3px;
+}
+
+.audience-count{
+  font-size:11px;
+  font-weight:800;
+}
+
+/* =========================
+   RECENT CAMPAIGNS
+========================= */
+
+.campaign-list{
+  display:grid;
+}
+
+.campaign{
+  padding:14px 18px;
+  border-bottom:1px solid #edf1ee;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.campaign:last-child{
+  border-bottom:0;
+}
+
+.campaign-icon{
+  width:39px;
+  height:39px;
+  border-radius:12px;
+  background:var(--green-soft);
+  color:var(--green-dark);
+  display:grid;
+  place-items:center;
+  flex:0 0 39px;
+}
+
+.campaign-main{
+  min-width:0;
+  flex:1;
+}
+
+.campaign-name{
+  font-weight:800;
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.campaign-meta{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:3px;
+}
+
+.campaign-status{
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:8px;
+  font-weight:800;
+}
+
+.campaign-status.sent{
+  background:var(--green-soft);
+  color:var(--green-dark);
+}
+
+.campaign-status.draft{
+  background:#eef1ef;
+  color:#69756e;
+}
+
+.campaign-status.scheduled{
+  background:var(--blue-soft);
+  color:var(--blue);
+}
+
+.campaign-actions{
+  display:flex;
+  gap:5px;
+}
+
+.small-action{
+  width:30px;
+  height:30px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#fff;
+  font-size:11px;
+}
+
+/* =========================
+   SETTINGS
+========================= */
+
+.settings-list{
+  display:grid;
+  gap:10px;
+}
+
+.setting-item{
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:13px;
+}
+
+.setting-item strong{
+  display:block;
+  font-size:11px;
+}
+
+.setting-item span{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.5;
+  margin-top:4px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:850px;
+}
+
+thead th{
+  background:#fbfcfb;
+  color:#7d8982;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  text-align:left;
+  padding:13px 15px;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+
+tbody td{
+  padding:13px 15px;
+  border-bottom:1px solid #edf1ee;
+  font-size:11px;
+}
+
+.sub{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:3px;
+}
+
+.badge{
+  display:inline-flex;
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:800;
+}
+
+.badge.sent{
+  color:var(--green-dark);
+  background:var(--green-soft);
+}
+
+.badge.draft{
+  color:#68746d;
+  background:#eef1ef;
+}
+
+.badge.scheduled{
+  color:var(--blue);
+  background:var(--blue-soft);
+}
+
+.badge.cancelled{
+  color:var(--danger);
+  background:var(--danger-soft);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+  height:39px;
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:10px;
+  padding:0 13px;
+  font-size:11px;
+  font-weight:700;
+  color:var(--text);
+}
+
+.btn:hover{
+  background:var(--surface);
+}
+
+.btn.primary{
+  background:var(--green);
+  border-color:var(--green);
+  color:#fff;
+}
+
+.btn.dark{
+  background:var(--dark);
+  border-color:var(--dark);
+  color:#fff;
+}
+
+.btn.danger{
+  color:var(--danger);
+  border-color:#f1d2d5;
+}
+
+.btn.small{
+  height:31px;
+  padding:0 9px;
+  font-size:9px;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+  padding:38px 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:3000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(4,12,7,.57);
+  backdrop-filter:blur(7px);
+}
+
+.modal-overlay.show{
+  display:flex;
+}
+
+.modal{
+  width:min(780px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:23px;
+  box-shadow:var(--shadow-lg);
+}
+
+.modal.small{
+  width:min(450px,100%);
+}
+
+.modal-header{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--border);
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.modal-title{
+  font-family:"Manrope",sans-serif;
+  font-size:17px;
+  font-weight:800;
+}
+
+.modal-subtitle{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+}
+
+.close-btn{
+  width:34px;
+  height:34px;
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:9px;
+  font-size:17px;
+}
+
+.modal-body{
+  padding:20px;
+}
+
+.modal-footer{
+  padding:15px 20px;
+  border-top:1px solid var(--border);
+  background:#fbfcfb;
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  z-index:5000;
+  background:var(--dark);
+  color:#fff;
+  border-radius:13px;
+  padding:12px 15px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  box-shadow:var(--shadow-lg);
+  opacity:0;
+  transform:translateY(20px);
+  pointer-events:none;
+  transition:.25s;
+  font-size:11px;
+  font-weight:700;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.toast-icon{
+  width:22px;
+  height:22px;
+  border-radius:7px;
+  background:var(--green);
+  display:grid;
+  place-items:center;
+}
+
+/* =========================
+   OVERLAY
+========================= */
+
+.sidebar-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:900;
+  background:rgba(0,0,0,.45);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer-note{
+  text-align:center;
+  color:#8b958f;
+  font-size:9px;
+  padding:18px 0 5px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1250px){
+  .stats{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .dashboard-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:1050px){
+
+  .sidebar{
+    transform:translateX(-100%);
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .sidebar-overlay.show{
+    display:block;
+  }
+
+  .main{
+    margin-left:0;
+    width:100%;
+  }
+
+  .mobile-menu{
+    display:inline-flex;
+  }
+
+  .topbar{
+    padding:0 18px;
+  }
+
+  .content{
+    padding:22px 18px;
+  }
+}
+
+@media(max-width:760px){
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .hero{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .hero-badge{
+    width:100%;
+  }
+
+  .field-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .composer-actions{
+    flex-wrap:wrap;
+  }
+
+  .composer-actions .btn{
+    flex:1;
+  }
+}
+
+@media(max-width:480px){
+
+  .content{
+    padding:17px 12px;
+  }
+
+  .topbar{
+    height:66px;
+    padding:0 12px;
+  }
+
+  .page-kicker{
+    display:none;
+  }
+
+  .top-actions .marketplace{
+    display:none;
+  }
+
+  .stat-card{
+    padding:14px;
+    border-radius:16px;
+  }
+
+  .stat-value{
+    font-size:21px;
+  }
+
+  .hero h1{
+    font-size:27px;
+  }
+
+  .modal-overlay{
+    padding:10px;
+  }
+
+  .modal{
+    max-height:96vh;
+    border-radius:19px;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer{
+    padding-left:15px;
+    padding-right:15px;
+  }
+
+  .modal-footer{
+    flex-wrap:wrap;
+  }
+
+  .modal-footer .btn{
+    flex:1;
+  }
+
+  .toast{
+    left:12px;
+    right:12px;
+    bottom:12px;
+  }
+}
+
+/* =========================
+   PRINT
+========================= */
+
+@media print{
+
+  @page{
+    size:A4 landscape;
+    margin:12mm;
+  }
+
+  body{
+    background:#fff;
+  }
+
+  .sidebar,
+  .topbar,
+  .hero-badge,
+  .btn,
+  .composer-actions,
+  .campaign-actions,
+  .modal-overlay,
+  .toast,
+  .footer-note{
+    display:none !important;
+  }
+
+  .main{
+    margin:0;
+    width:100%;
+  }
+
+  .content{
+    padding:0;
+  }
+
+  .panel,
+  .stat-card{
+    box-shadow:none;
+  }
+}
+</style>
+<script src="../js/wd-sync.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+    <img src="../logo.png" class="brand-logo" alt="Website Deals">
+
+    <div>
+      <div class="brand-title">Website Deals</div>
+      <div class="brand-sub">Admin Control Center</div>
+    </div>
+  </div>
+
+  <nav class="nav">
+
+    <div class="nav-section">Marketplace</div>
+
+    <a class="nav-link" href="dashboard.html">
+      <span class="nav-icon">⌂</span>
+      Dashboard
+    </a>
+
+    <a class="nav-link" href="websites.html">
+      <span class="nav-icon">◫</span>
+      Websites
+    </a>
+
+    <a class="nav-link" href="categories.html">
+      <span class="nav-icon">▦</span>
+      Categories
+    </a>
+
+    <a class="nav-link" href="orders.html">
+      <span class="nav-icon">◌</span>
+      Orders
+    </a>
+
+    <a class="nav-link" href="payments.html">
+      <span class="nav-icon">৳</span>
+      Payments
+    </a>
+
+    <a class="nav-link" href="customers.html">
+      <span class="nav-icon">♙</span>
+      Customers
+    </a>
+
+    <a class="nav-link active" href="newsletter.html">
+      <span class="nav-icon">✉</span>
+      Newsletter
+    </a>
+
+    <div class="nav-section">Reports</div>
+
+    <a class="nav-link" href="reports.html">
+      <span class="nav-icon">◒</span>
+      Reports
+    </a>
+
+    <a class="nav-link" href="monthly-report.html">
+      <span class="nav-icon">▤</span>
+      Monthly Report
+    </a>
+
+    <div class="nav-section">Restricted Controls</div>
+
+    <a class="nav-link" href="admins.html">
+      <span class="nav-icon">♙</span>
+      Admin Management
+    </a>
+
+    <a class="nav-link" href="settings.html">
+      <span class="nav-icon">⚙</span>
+      System Settings
+    </a>
+
+  </nav>
+
+  <div class="sidebar-bottom">
+
+    <div class="admin-mini">
+
+      <div class="admin-avatar" id="adminAvatar">
+        SA
+      </div>
+
+      <div class="admin-mini-text">
+        <div class="admin-name" id="adminName">
+          Super Admin
+        </div>
+
+        <div class="admin-role" id="adminRole">
+          Super Admin
+        </div>
+      </div>
+
+    </div>
+
+    <button class="logout-btn" onclick="logout()">
+      ↪ &nbsp; Sign Out
+    </button>
+
+  </div>
+
+</aside>
+
+<div
+  class="sidebar-overlay"
+  id="sidebarOverlay"
+  onclick="closeSidebar()"
+></div>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+<header class="topbar">
+
+  <div class="topbar-left">
+
+    <button
+      class="icon-btn mobile-menu"
+      onclick="openSidebar()"
+    >
+      ☰
+    </button>
+
+    <div class="page-kicker">
+      Admin / Newsletter
+    </div>
+
+  </div>
+
+  <div class="top-actions">
+
+    <button
+      class="top-btn"
+      onclick="refreshNewsletter()"
+    >
+      ↻ <span>Refresh</span>
+    </button>
+
+    <a
+      class="top-btn marketplace"
+      href="../index.html"
+    >
+      ↗ <span>Marketplace</span>
+    </a>
+
+  </div>
+
+</header>
+
+
+<section class="content">
+
+<!-- =========================
+     HERO
+========================= -->
+
+<div class="hero">
+
+  <div>
+
+    <div class="eyebrow">
+      Audience & Campaigns
+    </div>
+
+    <h1>
+      Stay connected with your audience.
+    </h1>
+
+    <p>
+      Manage newsletter subscribers, create campaigns,
+      schedule broadcasts and keep your Website Deals
+      community informed.
+    </p>
+
+  </div>
+
+  <div class="hero-badge">
+
+    <span class="status-dot"></span>
+
+    <div>
+      <strong>Newsletter Center</strong>
+      <span>LocalStorage powered prototype</span>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     STATS
+========================= -->
+
+<div class="stats">
+
+  <div class="stat-card">
+
+    <div class="stat-top">
+      <span class="stat-label">
+        Subscribers
+      </span>
+
+      <span class="stat-icon">
+        ✉
+      </span>
+    </div>
+
+    <div
+      class="stat-value"
+      id="statSubscribers"
+    >
+      0
+    </div>
+
+    <div class="stat-meta">
+      Total newsletter audience
+    </div>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    <div class="stat-top">
+      <span class="stat-label">
+        Active
+      </span>
+
+      <span class="stat-icon">
+        ✓
+      </span>
+    </div>
+
+    <div
+      class="stat-value"
+      id="statActive"
+    >
+      0
+    </div>
+
+    <div class="stat-meta">
+      Active subscribers
+    </div>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    <div class="stat-top">
+      <span class="stat-label">
+        Campaigns
+      </span>
+
+      <span class="stat-icon">
+        ◈
+      </span>
+    </div>
+
+    <div
+      class="stat-value"
+      id="statCampaigns"
+    >
+      0
+    </div>
+
+    <div class="stat-meta">
+      Saved campaigns
+    </div>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    <div class="stat-top">
+      <span class="stat-label">
+        Sent
+      </span>
+
+      <span class="stat-icon">
+        ↗
+      </span>
+    </div>
+
+    <div
+      class="stat-value"
+      id="statSent"
+    >
+      0
+    </div>
+
+    <div class="stat-meta">
+      Campaigns sent
+    </div>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    <div class="stat-top">
+      <span class="stat-label">
+        Avg. Open
+      </span>
+
+      <span class="stat-icon">
+        ◉
+      </span>
+    </div>
+
+    <div
+      class="stat-value"
+      id="statOpen"
+    >
+      0%
+    </div>
+
+    <div class="stat-meta">
+      Estimated campaign performance
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     COMPOSER + AUDIENCE
+========================= -->
+
+<div class="dashboard-grid">
+
+
+<!-- COMPOSER -->
+
+<div class="panel">
+
+  <div class="panel-header">
+
+    <div>
+      <div class="panel-title">
+        Create Newsletter Campaign
+      </div>
+
+      <div class="panel-subtitle">
+        Compose your next broadcast.
+      </div>
+    </div>
+
+    <button
+      class="btn small"
+      onclick="clearComposer()"
+    >
+      Clear
+    </button>
+
+  </div>
+
+
+  <div class="panel-body">
+
+    <div class="field-grid">
+
+      <div class="field full">
+
+        <label>
+          Campaign Name
+        </label>
+
+        <input
+          id="campaignName"
+          type="text"
+          placeholder="e.g. October Website Deals"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Email Subject *
+        </label>
+
+        <input
+          id="campaignSubject"
+          type="text"
+          placeholder="Your subject line..."
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Sender Name
+        </label>
+
+        <input
+          id="senderName"
+          type="text"
+          value="Website Deals"
+        >
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          Email Content *
+        </label>
+
+        <textarea
+          id="campaignContent"
+          placeholder="Write your newsletter content here..."
+        ></textarea>
+
+        <div class="help">
+          This prototype stores campaign content locally.
+          Real email delivery requires a backend/email provider.
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Campaign Status
+        </label>
+
+        <select id="campaignStatus">
+
+          <option value="draft">
+            Save as Draft
+          </option>
+
+          <option value="scheduled">
+            Scheduled
+          </option>
+
+          <option value="sent">
+            Mark as Sent
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Schedule Date & Time
+        </label>
+
+        <input
+          id="scheduleDate"
+          type="datetime-local"
+        >
+
+      </div>
+
+
+      <div class="field full">
+
+        <div class="toggle-row">
+
+          <div class="toggle-copy">
+
+            <strong>
+              Include unsubscribe footer
+            </strong>
+
+            <span>
+              Add a standard unsubscribe notice to the campaign.
+            </span>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              id="unsubscribeFooter"
+              type="checkbox"
+              checked
+            >
+
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="composer-actions">
+
+      <button
+        class="btn"
+        onclick="previewCampaign()"
+      >
+        ◉ Preview
+      </button>
+
+      <button
+        class="btn"
+        onclick="saveDraft()"
+      >
+        Save Draft
+      </button>
+
+      <button
+        class="btn primary"
+        onclick="saveCampaign()"
+      >
+        Save Campaign
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- AUDIENCE -->
+
+<div class="panel">
+
+  <div class="panel-header">
+
+    <div>
+      <div class="panel-title">
+        Audience
+      </div>
+
+      <div class="panel-subtitle">
+        Choose your recipient group.
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="panel-body">
+
+    <div class="audience-list">
+
+      <label class="audience-item">
+
+        <input
+          class="audience-check"
+          type="radio"
+          name="audience"
+          value="all"
+          checked
+        >
+
+        <div class="audience-icon">
+          ✉
+        </div>
+
+        <div class="audience-copy">
+
+          <strong>
+            All Subscribers
+          </strong>
+
+          <span>
+            Everyone currently subscribed
+          </span>
+
+        </div>
+
+        <div
+          class="audience-count"
+          id="audienceAll"
+        >
+          0
+        </div>
+
+      </label>
+
+
+      <label class="audience-item">
+
+        <input
+          class="audience-check"
+          type="radio"
+          name="audience"
+          value="active"
+        >
+
+        <div class="audience-icon">
+          ✓
+        </div>
+
+        <div class="audience-copy">
+
+          <strong>
+            Active Subscribers
+          </strong>
+
+          <span>
+            Subscribers marked active
+          </span>
+
+        </div>
+
+        <div
+          class="audience-count"
+          id="audienceActive"
+        >
+          0
+        </div>
+
+      </label>
+
+
+      <label class="audience-item">
+
+        <input
+          class="audience-check"
+          type="radio"
+          name="audience"
+          value="customers"
+        >
+
+        <div class="audience-icon">
+          ♙
+        </div>
+
+        <div class="audience-copy">
+
+          <strong>
+            Customers
+          </strong>
+
+          <span>
+            Existing Website Deals customers
+          </span>
+
+        </div>
+
+        <div
+          class="audience-count"
+          id="audienceCustomers"
+        >
+          0
+        </div>
+
+      </label>
+
+    </div>
+
+
+    <div style="height:14px;"></div>
+
+
+    <div class="settings-list">
+
+      <div class="setting-item">
+
+        <strong>
+          Delivery Mode
+        </strong>
+
+        <span>
+          Prototype mode — campaign records are stored
+          in browser LocalStorage.
+        </span>
+
+      </div>
+
+
+      <div class="setting-item">
+
+        <strong>
+          Email Provider
+        </strong>
+
+        <span>
+          Not connected. Connect an email service later
+          for real campaign delivery.
+        </span>
+
+      </div>
+
+
+      <div class="setting-item">
+
+        <strong>
+          Unsubscribe Protection
+        </strong>
+
+        <span>
+          Keep unsubscribe controls enabled for real
+          production campaigns.
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     RECENT CAMPAIGNS
+========================= -->
+
+<div style="height:18px;"></div>
+
+<div class="panel">
+
+  <div class="panel-header">
+
+    <div>
+
+      <div class="panel-title">
+        Recent Campaigns
+      </div>
+
+      <div class="panel-subtitle">
+        Review saved newsletter campaigns.
+      </div>
+
+    </div>
+
+    <button
+      class="btn small"
+      onclick="window.print()"
+    >
+      ⎙ Print
+    </button>
+
+  </div>
+
+
+  <div
+    class="campaign-list"
+    id="campaignList"
+  ></div>
+
+</div>
+
+
+<!-- =========================
+     SUBSCRIBERS
+========================= -->
+
+<div style="height:18px;"></div>
+
+<div class="panel">
+
+  <div class="panel-header">
+
+    <div>
+
+      <div class="panel-title">
+        Subscriber Directory
+      </div>
+
+      <div class="panel-subtitle">
+        Manage newsletter subscribers.
+      </div>
+
+    </div>
+
+    <button
+      class="btn small"
+      onclick="addDemoSubscriber()"
+    >
+      + Add Demo Subscriber
+    </button>
+
+  </div>
+
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Subscriber</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Joined</th>
+          <th>Source</th>
+          <th>Actions</th>
+        </tr>
+
+      </thead>
+
+      <tbody id="subscriberBody"></tbody>
+
+    </table>
+
+  </div>
+
+  <div
+    class="empty"
+    id="subscriberEmpty"
+    style="display:none;"
+  >
+    No subscribers found.
+  </div>
+
+</div>
+
+
+<div class="footer-note">
+  Website Deals Admin • Newsletter Management • Prototype / LocalStorage
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- =========================
+     PREVIEW MODAL
+========================= -->
+
+<div
+  class="modal-overlay"
+  id="previewModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <div class="modal-title">
+          Newsletter Preview
+        </div>
+
+        <div class="modal-subtitle">
+          Preview the campaign before saving.
+        </div>
+
+      </div>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('previewModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div
+        style="
+          border:1px solid var(--border);
+          border-radius:15px;
+          overflow:hidden;
+        "
+      >
+
+        <div
+          style="
+            background:var(--dark);
+            color:#fff;
+            padding:22px;
+          "
+        >
+
+          <div
+            style="
+              font-size:10px;
+              opacity:.65;
+              text-transform:uppercase;
+              letter-spacing:.12em;
+              font-weight:800;
+            "
+          >
+            Website Deals
+          </div>
+
+          <div
+            id="previewSubject"
+            style="
+              font-family:Manrope,sans-serif;
+              font-size:23px;
+              font-weight:800;
+              margin-top:9px;
+            "
+          >
+            Newsletter Subject
+          </div>
+
+        </div>
+
+
+        <div style="padding:24px;">
+
+          <div
+            id="previewContent"
+            style="
+              white-space:pre-wrap;
+              font-size:12px;
+              line-height:1.8;
+              color:var(--text);
+            "
+          ></div>
+
+          <div
+            style="
+              margin-top:25px;
+              padding-top:15px;
+              border-top:1px solid var(--border);
+              color:var(--muted);
+              font-size:9px;
+            "
+            id="previewFooter"
+          >
+            You are receiving this email because you
+            subscribed to Website Deals.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        class="btn"
+        onclick="closeModal('previewModal')"
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     CAMPAIGN VIEW MODAL
+========================= -->
+
+<div
+  class="modal-overlay"
+  id="campaignViewModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <div
+          class="modal-title"
+          id="viewCampaignTitle"
+        >
+          Campaign
+        </div>
+
+        <div
+          class="modal-subtitle"
+          id="viewCampaignMeta"
+        >
+          Campaign details
+        </div>
+
+      </div>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('campaignViewModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div
+        id="viewCampaignContent"
+        style="
+          white-space:pre-wrap;
+          line-height:1.8;
+          font-size:12px;
+        "
+      ></div>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button
+        class="btn"
+        onclick="closeModal('campaignViewModal')"
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div
+  class="toast"
+  id="toast"
+>
+
+  <div class="toast-icon">
+    ✓
+  </div>
+
+  <span id="toastText">
+    Saved successfully.
+  </span>
+
+</div>
+
+
+<script>
+/* =========================================================
+   WEBSITE DEALS — NEWSLETTER MANAGEMENT
+========================================================= */
+
+const AUTH_KEY = "websiteDealsAdminAuth";
+
+const NEWSLETTER_KEY = "websiteDealsNewsletter";
+const SUBSCRIBERS_KEY = "websiteDealsNewsletterSubscribers";
+const CUSTOMERS_KEY = "websiteDealsCustomers";
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+function getAdminSession(){
+
+  try{
+
+    const raw =
+      sessionStorage.getItem(AUTH_KEY);
+
+    if(!raw){
+      return null;
+    }
+
+    const session =
+      JSON.parse(raw);
+
+    if(
+      !session ||
+      session.authenticated !== true
+    ){
+      return null;
+    }
+
+    return session;
+
+  }catch(error){
+
+    return null;
+
+  }
+
+}
+
+
+const adminSession =
+  getAdminSession();
+
+
+if(!adminSession){
+
+  window.location.replace("login/");
+
+}
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let campaigns = [];
+let subscribers = [];
+
+let editingCampaignId = null;
+
+
+/* =========================================================
+   SAFE JSON
+========================================================= */
+
+function parseArray(key){
+
+  try{
+
+    const raw =
+      localStorage.getItem(key);
+
+    if(!raw){
+      return [];
+    }
+
+    const data =
+      JSON.parse(raw);
+
+    return Array.isArray(data)
+      ? data
+      : [];
+
+  }catch(error){
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function validDate(value){
+
+  if(!value){
+    return null;
+  }
+
+  const date =
+    new Date(value);
+
+  return Number.isNaN(date.getTime())
+    ? null
+    : date;
+
+}
+
+
+function formatDate(value){
+
+  const date =
+    validDate(value);
+
+  if(!date){
+    return "—";
+  }
+
+  return date.toLocaleDateString(
+    "en-GB",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+function formatDateTime(value){
+
+  const date =
+    validDate(value);
+
+  if(!date){
+    return "—";
+  }
+
+  return date.toLocaleString(
+    "en-GB",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+
+/* =========================================================
+   ID
+========================================================= */
+
+function generateCampaignId(){
+
+  return (
+    "CMP-" +
+    Date.now().toString(36).toUpperCase()
+  );
+
+}
+
+
+function generateSubscriberId(){
+
+  const numbers =
+    subscribers
+      .map(s =>
+        parseInt(
+          String(s.id || "")
+            .replace(/\D/g,""),
+          10
+        )
+      )
+      .filter(Number.isFinite);
+
+  return (
+    "SUB-" +
+    (Math.max(1000,...numbers) + 1)
+  );
+
+}
+
+
+/* =========================================================
+   DEMO SUBSCRIBERS
+========================================================= */
+
+function getDemoSubscribers(){
+  return [];
+
+  const now = Date.now();
+
+  function ago(days){
+
+    return new Date(
+      now -
+      days * 24 * 60 * 60 * 1000
+    ).toISOString();
+
+  }
+
+  return [
+
+    {
+      id:"SUB-1001",
+      name:"Nusrat Jahan",
+      email:"nusrat@example.com",
+      status:"active",
+      joined:ago(4),
+      source:"Website"
+    },
+
+    {
+      id:"SUB-1002",
+      name:"Rahim Ahmed",
+      email:"rahim@example.com",
+      status:"active",
+      joined:ago(12),
+      source:"Checkout"
+    },
+
+    {
+      id:"SUB-1003",
+      name:"Sadia Islam",
+      email:"sadia@example.com",
+      status:"active",
+      joined:ago(18),
+      source:"Homepage"
+    },
+
+    {
+      id:"SUB-1004",
+      name:"Tanvir Hasan",
+      email:"tanvir@example.com",
+      status:"unsubscribed",
+      joined:ago(39),
+      source:"Website"
+    },
+
+    {
+      id:"SUB-1005",
+      name:"Mahi Rahman",
+      email:"mahi@example.com",
+      status:"active",
+      joined:ago(52),
+      source:"Checkout"
+    }
+
+  ];
+
+}
+
+
+/* =========================================================
+   DEMO CAMPAIGNS
+========================================================= */
+
+function getDemoCampaigns(){
+  return [];
+
+  return [
+
+    {
+      id:"CMP-1001",
+      name:"Welcome Campaign",
+      subject:"Welcome to Website Deals",
+      sender:"Website Deals",
+      content:"Discover premium websites that are ready to launch.",
+      status:"sent",
+      audience:"all",
+      createdAt:"2026-09-15T10:00:00",
+      sentAt:"2026-09-15T12:00:00",
+      openRate:42
+    },
+
+    {
+      id:"CMP-1002",
+      name:"New Website Collection",
+      subject:"New websites just arrived",
+      sender:"Website Deals",
+      content:"Explore our latest website collection and discover your next digital project.",
+      status:"sent",
+      audience:"active",
+      createdAt:"2026-09-24T09:30:00",
+      sentAt:"2026-09-24T11:00:00",
+      openRate:48
+    },
+
+    {
+      id:"CMP-1003",
+      name:"October Launch",
+      subject:"October Website Deals",
+      sender:"Website Deals",
+      content:"New month. New websites. New opportunities.",
+      status:"scheduled",
+      audience:"all",
+      createdAt:"2026-09-30T14:00:00",
+      scheduledAt:"2026-10-05T10:00:00",
+      openRate:0
+    }
+
+  ];
+
+}
+
+
+/* =========================================================
+   LOAD
+========================================================= */
+
+function loadNewsletter(){
+
+  campaigns =
+    parseArray(NEWSLETTER_KEY);
+
+  subscribers =
+    parseArray(SUBSCRIBERS_KEY);
+
+
+  /*
+    Demo records only when the related local storage
+    does not exist yet.
+  */
+
+  if(!campaigns.length){
+
+    campaigns =
+      getDemoCampaigns();
+
+  }
+
+
+  if(!subscribers.length){
+
+    subscribers =
+      getDemoSubscribers();
+
+  }
+
+
+  /*
+    If real customers exist, use them as a potential
+    subscriber audience without automatically changing
+    existing subscriber records.
+  */
+
+  updateStats();
+
+  renderCampaigns();
+
+  renderSubscribers();
+
+}
+
+
+/* =========================================================
+   ADMIN IDENTITY
+========================================================= */
+
+function setAdminIdentity(){
+
+  const name =
+    adminSession?.name ||
+    adminSession?.email ||
+    "Super Admin";
+
+  const role =
+    adminSession?.role ||
+    "Super Admin";
+
+  const initials =
+    name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0,2)
+      .map(
+        part =>
+          part.charAt(0).toUpperCase()
+      )
+      .join("") || "SA";
+
+  document.getElementById("adminName")
+    .textContent = name;
+
+  document.getElementById("adminRole")
+    .textContent = role;
+
+  document.getElementById("adminAvatar")
+    .textContent = initials;
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    setAdminIdentity();
+
+    loadNewsletter();
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if(event.key === "Escape"){
+
+          document
+            .querySelectorAll(
+              ".modal-overlay.show"
+            )
+            .forEach(modal => {
+
+              modal.classList.remove("show");
+
+            });
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats(){
+
+  const total =
+    subscribers.length;
+
+  const active =
+    subscribers.filter(
+      s =>
+        String(s.status || "")
+          .toLowerCase() === "active"
+    ).length;
+
+  const campaignCount =
+    campaigns.length;
+
+  const sent =
+    campaigns.filter(
+      c =>
+        String(c.status || "")
+          .toLowerCase() === "sent"
+    ).length;
+
+  const sentCampaigns =
+    campaigns.filter(
+      c =>
+        String(c.status || "")
+          .toLowerCase() === "sent"
+    );
+
+  let openRate = 0;
+
+  if(sentCampaigns.length){
+
+    openRate =
+      sentCampaigns.reduce(
+        (sum,c) =>
+          sum + (Number(c.openRate) || 0),
+        0
+      ) /
+      sentCampaigns.length;
+
+  }
+
+
+  document.getElementById(
+    "statSubscribers"
+  ).textContent = total;
+
+  document.getElementById(
+    "statActive"
+  ).textContent = active;
+
+  document.getElementById(
+    "statCampaigns"
+  ).textContent = campaignCount;
+
+  document.getElementById(
+    "statSent"
+  ).textContent = sent;
+
+  document.getElementById(
+    "statOpen"
+  ).textContent =
+    Math.round(openRate) + "%";
+
+
+  document.getElementById(
+    "audienceAll"
+  ).textContent = total;
+
+  document.getElementById(
+    "audienceActive"
+  ).textContent = active;
+
+
+  const customers =
+    parseArray(CUSTOMERS_KEY);
+
+  document.getElementById(
+    "audienceCustomers"
+  ).textContent =
+    customers.length;
+
+}
+
+
+/* =========================================================
+   RENDER CAMPAIGNS
+========================================================= */
+
+function renderCampaigns(){
+
+  const container =
+    document.getElementById("campaignList");
+
+
+  if(!campaigns.length){
+
+    container.innerHTML = `
+      <div class="empty">
+        No campaigns created yet.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  const sorted =
+    [...campaigns].sort(
+      (a,b) =>
+        new Date(
+          b.createdAt || 0
+        ) -
+        new Date(
+          a.createdAt || 0
+        )
+    );
+
+
+  container.innerHTML =
+    sorted
+      .slice(0,8)
+      .map(campaign => {
+
+        const status =
+          String(
+            campaign.status || "draft"
+          ).toLowerCase();
+
+        return `
+
+          <div class="campaign">
+
+            <div class="campaign-icon">
+              ✉
+            </div>
+
+            <div class="campaign-main">
+
+              <div class="campaign-name">
+                ${escapeHTML(
+                  campaign.name ||
+                  campaign.subject ||
+                  "Untitled Campaign"
+                )}
+              </div>
+
+              <div class="campaign-meta">
+                ${escapeHTML(
+                  campaign.subject || "No subject"
+                )}
+                •
+                ${formatDate(
+                  campaign.createdAt
+                )}
+              </div>
+
+            </div>
+
+            <span class="campaign-status ${escapeHTML(status)}">
+              ${escapeHTML(status)}
+            </span>
+
+            <div class="campaign-actions">
+
+              <button
+                class="small-action"
+                title="View"
+                onclick="viewCampaign('${escapeJS(campaign.id)}')"
+              >
+                ◉
+              </button>
+
+              <button
+                class="small-action"
+                title="Edit"
+                onclick="editCampaign('${escapeJS(campaign.id)}')"
+              >
+                ✎
+              </button>
+
+              <button
+                class="small-action"
+                title="Delete"
+                onclick="deleteCampaign('${escapeJS(campaign.id)}')"
+              >
+                ×
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================================
+   RENDER SUBSCRIBERS
+========================================================= */
+
+function renderSubscribers(){
+
+  const body =
+    document.getElementById(
+      "subscriberBody"
+    );
+
+  const empty =
+    document.getElementById(
+      "subscriberEmpty"
+    );
+
+
+  if(!subscribers.length){
+
+    body.innerHTML = "";
+
+    empty.style.display = "block";
+
+    return;
+
+  }
+
+
+  empty.style.display = "none";
+
+
+  body.innerHTML =
+    subscribers.map(subscriber => {
+
+      const status =
+        String(
+          subscriber.status || "active"
+        ).toLowerCase();
+
+      return `
+
+        <tr>
+
+          <td>
+
+            <strong>
+              ${escapeHTML(
+                subscriber.name ||
+                "Subscriber"
+              )}
+            </strong>
+
+            <div class="sub">
+              ${escapeHTML(
+                subscriber.id || ""
+              )}
+            </div>
+
+          </td>
+
+          <td>
+            ${escapeHTML(
+              subscriber.email || "—"
+            )}
+          </td>
+
+          <td>
+
+            <span
+              class="badge ${
+                status === "active"
+                  ? "sent"
+                  : "cancelled"
+              }"
+            >
+              ${escapeHTML(status)}
+            </span>
+
+          </td>
+
+          <td>
+            ${formatDate(
+              subscriber.joined
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              subscriber.source || "Website"
+            )}
+          </td>
+
+          <td>
+
+            <button
+              class="btn small"
+              onclick="toggleSubscriber('${escapeJS(subscriber.id)}')"
+            >
+              ${
+                status === "active"
+                  ? "Suspend"
+                  : "Activate"
+              }
+            </button>
+
+            <button
+              class="btn small danger"
+              onclick="deleteSubscriber('${escapeJS(subscriber.id)}')"
+            >
+              Delete
+            </button>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }).join("");
+
+}
+
+
+/* =========================================================
+   SAVE STORAGE
+========================================================= */
+
+function saveNewsletter(){
+
+  localStorage.setItem(
+    NEWSLETTER_KEY,
+    JSON.stringify(campaigns)
+  );
+
+}
+
+
+function saveSubscribers(){
+
+  localStorage.setItem(
+    SUBSCRIBERS_KEY,
+    JSON.stringify(subscribers)
+  );
+
+}
+
+
+/* =========================================================
+   COMPOSER
+========================================================= */
+
+function getSelectedAudience(){
+
+  const selected =
+    document.querySelector(
+      'input[name="audience"]:checked'
+    );
+
+  return selected
+    ? selected.value
+    : "all";
+
+}
+
+
+function getComposerData(){
+
+  return {
+
+    id:
+      editingCampaignId ||
+      generateCampaignId(),
+
+    name:
+      document
+        .getElementById("campaignName")
+        .value
+        .trim(),
+
+    subject:
+      document
+        .getElementById("campaignSubject")
+        .value
+        .trim(),
+
+    sender:
+      document
+        .getElementById("senderName")
+        .value
+        .trim() ||
+      "Website Deals",
+
+    content:
+      document
+        .getElementById("campaignContent")
+        .value
+        .trim(),
+
+    status:
+      document
+        .getElementById("campaignStatus")
+        .value,
+
+    audience:
+      getSelectedAudience(),
+
+    scheduledAt:
+      document
+        .getElementById("scheduleDate")
+        .value,
+
+    unsubscribeFooter:
+      document
+        .getElementById("unsubscribeFooter")
+        .checked,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+}
+
+
+/* =========================================================
+   SAVE CAMPAIGN
+========================================================= */
+
+function saveCampaign(){
+
+  const data =
+    getComposerData();
+
+
+  if(!data.subject){
+
+    showToast(
+      "Email subject is required."
+    );
+
+    document
+      .getElementById("campaignSubject")
+      .focus();
+
+    return;
+
+  }
+
+
+  if(!data.content){
+
+    showToast(
+      "Email content is required."
+    );
+
+    document
+      .getElementById("campaignContent")
+      .focus();
+
+    return;
+
+  }
+
+
+  if(
+    data.status === "scheduled" &&
+    !data.scheduledAt
+  ){
+
+    showToast(
+      "Choose a schedule date and time."
+    );
+
+    return;
+
+  }
+
+
+  const existingIndex =
+    campaigns.findIndex(
+      c => c.id === editingCampaignId
+    );
+
+
+  if(existingIndex !== -1){
+
+    data.createdAt =
+      campaigns[existingIndex].createdAt ||
+      data.createdAt;
+
+    campaigns[existingIndex] =
+      {
+        ...campaigns[existingIndex],
+        ...data
+      };
+
+  }else{
+
+    campaigns.unshift(data);
+
+  }
+
+
+  saveNewsletter();
+
+  updateStats();
+
+  renderCampaigns();
+
+  clearComposer();
+
+  editingCampaignId = null;
+
+  showToast(
+    "Campaign saved successfully."
+  );
+
+}
+
+
+/* =========================================================
+   SAVE DRAFT
+========================================================= */
+
+function saveDraft(){
+
+  document.getElementById(
+    "campaignStatus"
+  ).value = "draft";
+
+  saveCampaign();
+
+}
+
+
+/* =========================================================
+   EDIT
+========================================================= */
+
+function editCampaign(id){
+
+  const campaign =
+    campaigns.find(
+      c => c.id === id
+    );
+
+  if(!campaign){
+    return;
+  }
+
+
+  editingCampaignId =
+    campaign.id;
+
+
+  document.getElementById(
+    "campaignName"
+  ).value =
+    campaign.name || "";
+
+  document.getElementById(
+    "campaignSubject"
+  ).value =
+    campaign.subject || "";
+
+  document.getElementById(
+    "senderName"
+  ).value =
+    campaign.sender ||
+    "Website Deals";
+
+  document.getElementById(
+    "campaignContent"
+  ).value =
+    campaign.content || "";
+
+  document.getElementById(
+    "campaignStatus"
+  ).value =
+    campaign.status || "draft";
+
+  document.getElementById(
+    "scheduleDate"
+  ).value =
+    campaign.scheduledAt || "";
+
+  document.getElementById(
+    "unsubscribeFooter"
+  ).checked =
+    campaign.unsubscribeFooter !== false;
+
+
+  const radio =
+    document.querySelector(
+      `input[name="audience"][value="${CSS.escape(
+        campaign.audience || "all"
+      )}"]`
+    );
+
+  if(radio){
+    radio.checked = true;
+  }
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+
+  showToast(
+    "Campaign loaded for editing."
+  );
+
+}
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+function clearComposer(){
+
+  editingCampaignId = null;
+
+  document.getElementById(
+    "campaignName"
+  ).value = "";
+
+  document.getElementById(
+    "campaignSubject"
+  ).value = "";
+
+  document.getElementById(
+    "senderName"
+  ).value = "Website Deals";
+
+  document.getElementById(
+    "campaignContent"
+  ).value = "";
+
+  document.getElementById(
+    "campaignStatus"
+  ).value = "draft";
+
+  document.getElementById(
+    "scheduleDate"
+  ).value = "";
+
+  document.getElementById(
+    "unsubscribeFooter"
+  ).checked = true;
+
+  const all =
+    document.querySelector(
+      'input[name="audience"][value="all"]'
+    );
+
+  if(all){
+    all.checked = true;
+  }
+
+}
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+function previewCampaign(){
+
+  const subject =
+    document
+      .getElementById("campaignSubject")
+      .value
+      .trim();
+
+  const content =
+    document
+      .getElementById("campaignContent")
+      .value
+      .trim();
+
+  if(!subject && !content){
+
+    showToast(
+      "Add a subject or content first."
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "previewSubject"
+  ).textContent =
+    subject || "Newsletter Subject";
+
+
+  document.getElementById(
+    "previewContent"
+  ).textContent =
+    content ||
+    "Your newsletter content will appear here.";
+
+
+  const footer =
+    document.getElementById(
+      "previewFooter"
+    );
+
+  footer.style.display =
+    document.getElementById(
+      "unsubscribeFooter"
+    ).checked
+      ? "block"
+      : "none";
+
+
+  document.getElementById(
+    "previewModal"
+  ).classList.add("show");
+
+}
+
+
+/* =========================================================
+   VIEW
+========================================================= */
+
+function viewCampaign(id){
+
+  const campaign =
+    campaigns.find(
+      c => c.id === id
+    );
+
+  if(!campaign){
+    return;
+  }
+
+
+  document.getElementById(
+    "viewCampaignTitle"
+  ).textContent =
+    campaign.subject ||
+    campaign.name ||
+    "Campaign";
+
+
+  document.getElementById(
+    "viewCampaignMeta"
+  ).textContent =
+    `${String(
+      campaign.status || "draft"
+    ).toUpperCase()} • ${
+      formatDateTime(
+        campaign.createdAt
+      )
+    }`;
+
+
+  document.getElementById(
+    "viewCampaignContent"
+  ).textContent =
+    campaign.content ||
+    "No campaign content.";
+
+
+  document.getElementById(
+    "campaignViewModal"
+  ).classList.add("show");
+
+}
+
+
+/* =========================================================
+   DELETE CAMPAIGN
+========================================================= */
+
+function deleteCampaign(id){
+
+  const campaign =
+    campaigns.find(
+      c => c.id === id
+    );
+
+  if(!campaign){
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      `Delete campaign "${campaign.name || campaign.subject}"?`
+    );
+
+
+  if(!confirmed){
+    return;
+  }
+
+
+  campaigns =
+    campaigns.filter(
+      c => c.id !== id
+    );
+
+
+  saveNewsletter();
+
+  updateStats();
+
+  renderCampaigns();
+
+  showToast(
+    "Campaign deleted."
+  );
+
+}
+
+
+/* =========================================================
+   SUBSCRIBERS
+========================================================= */
+
+function addDemoSubscriber(){
+
+  const number =
+    subscribers.length + 1;
+
+  subscribers.unshift({
+
+    id:generateSubscriberId(),
+
+    name:
+      "New Subscriber " +
+      number,
+
+    email:
+      `subscriber${number}@example.com`,
+
+    status:"active",
+
+    joined:
+      new Date().toISOString(),
+
+    source:"Admin"
+
+  });
+
+
+  saveSubscribers();
+
+  updateStats();
+
+  renderSubscribers();
+
+  showToast(
+    "Subscriber added."
+  );
+
+}
+
+
+function toggleSubscriber(id){
+
+  const subscriber =
+    subscribers.find(
+      s => s.id === id
+    );
+
+  if(!subscriber){
+    return;
+  }
+
+
+  subscriber.status =
+    String(
+      subscriber.status || "active"
+    ).toLowerCase() === "active"
+      ? "unsubscribed"
+      : "active";
+
+
+  saveSubscribers();
+
+  updateStats();
+
+  renderSubscribers();
+
+  showToast(
+    subscriber.status === "active"
+      ? "Subscriber activated."
+      : "Subscriber unsubscribed."
+  );
+
+}
+
+
+function deleteSubscriber(id){
+
+  const subscriber =
+    subscribers.find(
+      s => s.id === id
+    );
+
+  if(!subscriber){
+    return;
+  }
+
+
+  if(
+    !confirm(
+      `Delete ${subscriber.email}?`
+    )
+  ){
+    return;
+  }
+
+
+  subscribers =
+    subscribers.filter(
+      s => s.id !== id
+    );
+
+
+  saveSubscribers();
+
+  updateStats();
+
+  renderSubscribers();
+
+  showToast(
+    "Subscriber deleted."
+  );
+
+}
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+function refreshNewsletter(){
+
+  campaigns =
+    parseArray(NEWSLETTER_KEY);
+
+  subscribers =
+    parseArray(SUBSCRIBERS_KEY);
+
+
+  /*
+    If the storage is empty, retain useful demo data.
+  */
+
+  if(!campaigns.length){
+    campaigns = getDemoCampaigns();
+  }
+
+  if(!subscribers.length){
+    subscribers = getDemoSubscribers();
+  }
+
+
+  updateStats();
+
+  renderCampaigns();
+
+  renderSubscribers();
+
+  showToast(
+    "Newsletter data refreshed."
+  );
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function closeModal(id){
+
+  const modal =
+    document.getElementById(id);
+
+  if(modal){
+    modal.classList.remove("show");
+  }
+
+}
+
+
+document
+  .querySelectorAll(".modal-overlay")
+  .forEach(overlay => {
+
+    overlay.addEventListener(
+      "click",
+      event => {
+
+        if(
+          event.target === overlay
+        ){
+
+          overlay.classList.remove(
+            "show"
+          );
+
+        }
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+function openSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.add("open");
+
+  document
+    .getElementById("sidebarOverlay")
+    .classList.add("show");
+
+}
+
+
+function closeSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+  document
+    .getElementById("sidebarOverlay")
+    .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function logout(){
+
+  sessionStorage.removeItem(
+    AUTH_KEY
+  );
+
+  window.location.href =
+    "login/";
+
+}
+
+
+/* =========================================================
+   ESCAPE JS
+========================================================= */
+
+function escapeJS(value){
+
+  return String(value ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/"/g,'\\"')
+    .replace(/\n/g,"\\n")
+    .replace(/\r/g,"\\r");
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer = null;
+
+function showToast(message){
+
+  const toast =
+    document.getElementById("toast");
+
+  document.getElementById(
+    "toastText"
+  ).textContent = message;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(
+      () => {
+        toast.classList.remove(
+          "show"
+        );
+      },
+      2800
+    );
+
+}
+</script>
+
+</body>
+</html>

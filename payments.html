@@ -1,0 +1,3520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Payments Manager | Website Deals</title>
+<meta name="description" content="Website Deals Admin Payment Manager">
+
+<link rel="icon" href="../logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --green:#18a957;
+  --green-dark:#118743;
+  --green-soft:#eaf8f0;
+  --dark:#101713;
+  --dark-2:#151d18;
+  --dark-3:#1d2821;
+  --text:#17211b;
+  --muted:#748078;
+  --bg:#f5f7f6;
+  --card:#fff;
+  --border:#e3e9e5;
+  --danger:#dc4545;
+  --danger-soft:#fff0f0;
+  --warning:#e39a22;
+  --warning-soft:#fff7e8;
+  --blue:#3578e5;
+  --blue-soft:#edf4ff;
+  --shadow:0 14px 40px rgba(16,23,19,.06);
+  --shadow-lg:0 24px 60px rgba(16,23,19,.10);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+  position:fixed;
+  z-index:1000;
+  inset:0 auto 0 0;
+  width:260px;
+  background:var(--dark);
+  color:#fff;
+  padding:20px 14px;
+  overflow-y:auto;
+  transition:.25s ease;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:5px 10px 24px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  margin-bottom:10px;
+}
+
+.brand-logo{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:11px;
+  padding:4px;
+}
+
+.brand-name{
+  font:700 18px "Space Grotesk";
+}
+
+.brand-sub{
+  display:block;
+  margin-top:2px;
+  color:#758179;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:1.4px;
+}
+
+.nav-title{
+  padding:18px 11px 7px;
+  color:#69756e;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.nav-link{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  width:100%;
+  min-height:43px;
+  padding:10px 12px;
+  margin:2px 0;
+  border-radius:10px;
+  color:#aeb8b1;
+  font-size:12px;
+  font-weight:600;
+  transition:.18s;
+}
+
+.nav-link:hover{
+  background:var(--dark-3);
+  color:#fff;
+}
+
+.nav-link.active{
+  background:#1d2b22;
+  color:#fff;
+  box-shadow:inset 3px 0 var(--green);
+}
+
+.nav-icon{
+  width:20px;
+  text-align:center;
+  font-size:15px;
+}
+
+.sidebar-bottom{
+  margin-top:22px;
+  padding:13px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;
+  background:rgba(255,255,255,.025);
+}
+
+.sidebar-status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#87938b;
+  font-size:10px;
+}
+
+.status-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 0 4px rgba(24,169,87,.1);
+}
+
+.logout-btn{
+  width:100%;
+  margin-top:11px;
+  border:0;
+  background:#202b24;
+  color:#b8c1bb;
+  border-radius:9px;
+  padding:9px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.logout-btn:hover{
+  background:#29362e;
+  color:#fff;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+  margin-left:260px;
+  width:calc(100% - 260px);
+  min-height:100vh;
+  padding:28px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  margin-bottom:24px;
+}
+
+.eyebrow{
+  color:var(--green);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+h1{
+  margin-top:4px;
+  font:700 30px "Space Grotesk";
+  letter-spacing:-.8px;
+}
+
+.subtitle{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.admin-badge{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 13px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:11px;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+  box-shadow:var(--shadow);
+}
+
+.admin-dot{
+  width:7px;
+  height:7px;
+  background:var(--green);
+  border-radius:50%;
+}
+
+.mobile-menu{
+  display:none;
+  width:42px;
+  height:42px;
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:11px;
+  font-size:19px;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:11px;
+  margin-bottom:18px;
+}
+
+.stat{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+
+.stat-icon{
+  width:31px;
+  height:31px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:var(--green-soft);
+  color:var(--green-dark);
+  font-size:14px;
+}
+
+.stat-label{
+  margin-top:11px;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+}
+
+.stat-value{
+  margin-top:5px;
+  font:700 22px "Space Grotesk";
+}
+
+.stat-value.green{
+  color:var(--green);
+}
+
+.stat-value.orange{
+  color:var(--warning);
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(340px,.8fr);
+  gap:18px;
+  align-items:start;
+}
+
+.panel{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:22px;
+  margin-bottom:18px;
+}
+
+.panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:15px;
+  margin-bottom:18px;
+}
+
+.panel-title{
+  font:700 18px "Space Grotesk";
+}
+
+.panel-desc{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.55;
+}
+
+.panel-tag{
+  padding:6px 9px;
+  border-radius:8px;
+  background:var(--green-soft);
+  color:var(--green-dark);
+  font-size:9px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+/* =========================
+   PAYMENT METHODS
+========================= */
+
+.method-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.method-card{
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr) auto auto;
+  align-items:center;
+  gap:13px;
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  transition:.18s;
+}
+
+.method-card:hover{
+  border-color:#cfd9d2;
+  box-shadow:0 8px 24px rgba(16,23,19,.04);
+}
+
+.method-card.disabled{
+  opacity:.58;
+}
+
+.method-logo{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:#f0f3f1;
+  font:800 13px "Space Grotesk";
+}
+
+.method-info h3{
+  font:700 13px "Space Grotesk";
+}
+
+.method-info p{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.method-meta{
+  display:flex;
+  gap:6px;
+  margin-top:6px;
+}
+
+.badge{
+  padding:5px 7px;
+  border-radius:6px;
+  background:#f0f3f1;
+  color:#68746c;
+  font-size:8px;
+  font-weight:800;
+}
+
+.badge.active{
+  background:var(--green-soft);
+  color:var(--green-dark);
+}
+
+.badge.manual{
+  background:var(--warning-soft);
+  color:#a56c10;
+}
+
+.method-actions{
+  display:flex;
+  gap:5px;
+}
+
+.icon-btn{
+  width:30px;
+  height:30px;
+  border:1px solid var(--border);
+  background:#fff;
+  color:#5f6b63;
+  border-radius:8px;
+  font-size:12px;
+}
+
+.icon-btn:hover{
+  background:#f0f3f1;
+}
+
+.icon-btn.delete:hover{
+  color:var(--danger);
+  background:var(--danger-soft);
+}
+
+/* =========================
+   SWITCH
+========================= */
+
+.switch{
+  position:relative;
+  width:42px;
+  height:23px;
+  flex-shrink:0;
+}
+
+.switch input{
+  display:none;
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  background:#d6ddd8;
+  border-radius:30px;
+  transition:.2s;
+}
+
+.slider:before{
+  content:"";
+  position:absolute;
+  width:17px;
+  height:17px;
+  left:3px;
+  top:3px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow:0 1px 3px rgba(0,0,0,.15);
+  transition:.2s;
+}
+
+.switch input:checked + .slider{
+  background:var(--green);
+}
+
+.switch input:checked + .slider:before{
+  transform:translateX(19px);
+}
+
+/* =========================
+   EDITOR
+========================= */
+
+.editor{
+  display:none;
+}
+
+.editor.show{
+  display:block;
+}
+
+.fields{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:#344039;
+  font-size:10px;
+  font-weight:800;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  border:1px solid var(--border);
+  outline:none;
+  background:#fff;
+  color:var(--text);
+  border-radius:10px;
+  padding:11px 12px;
+  font-size:12px;
+}
+
+.field textarea{
+  min-height:92px;
+  resize:vertical;
+  line-height:1.55;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(24,169,87,.08);
+}
+
+.helper{
+  margin-top:6px;
+  color:#8c9790;
+  font-size:9px;
+  line-height:1.5;
+}
+
+.editor-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:18px;
+}
+
+.btn{
+  border:0;
+  border-radius:9px;
+  padding:10px 14px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.btn-primary{
+  background:var(--green);
+  color:#fff;
+}
+
+.btn-secondary{
+  background:#edf1ee;
+  color:#29342d;
+}
+
+.btn-danger{
+  background:var(--danger-soft);
+  color:var(--danger);
+}
+
+.btn-blue{
+  background:var(--blue-soft);
+  color:#2f67c6;
+}
+
+/* =========================
+   TRANSACTION TABLE
+========================= */
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+.transaction-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
+}
+
+.transaction-table th{
+  padding:10px;
+  text-align:left;
+  color:#89938d;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  border-bottom:1px solid var(--border);
+}
+
+.transaction-table td{
+  padding:13px 10px;
+  border-bottom:1px solid #edf1ee;
+  font-size:10px;
+}
+
+.transaction-table tr:last-child td{
+  border-bottom:0;
+}
+
+.tx-id{
+  font-weight:800;
+}
+
+.tx-customer{
+  font-weight:600;
+}
+
+.tx-date{
+  color:var(--muted);
+}
+
+.tx-amount{
+  font-weight:800;
+}
+
+.payment-status{
+  display:inline-flex;
+  padding:5px 8px;
+  border-radius:7px;
+  font-size:8px;
+  font-weight:800;
+}
+
+.payment-status.paid{
+  color:var(--green-dark);
+  background:var(--green-soft);
+}
+
+.payment-status.pending{
+  color:#a56c10;
+  background:var(--warning-soft);
+}
+
+.payment-status.failed{
+  color:var(--danger);
+  background:var(--danger-soft);
+}
+
+/* =========================
+   SECURITY CARD
+========================= */
+
+.security-card{
+  padding:14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#fafcfb;
+}
+
+.security-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:11px 0;
+  border-bottom:1px solid #e8ede9;
+}
+
+.security-row:last-child{
+  border-bottom:0;
+}
+
+.security-copy strong{
+  display:block;
+  font-size:10px;
+}
+
+.security-copy small{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:8px;
+  line-height:1.5;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.summary-item{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding-bottom:10px;
+  border-bottom:1px solid #edf1ee;
+  font-size:10px;
+}
+
+.summary-item:last-child{
+  border-bottom:0;
+  padding-bottom:0;
+}
+
+.summary-item span{
+  color:var(--muted);
+}
+
+.summary-item strong{
+  font-weight:800;
+}
+
+/* =========================
+   SAVE BAR
+========================= */
+
+.save-bar{
+  position:sticky;
+  bottom:14px;
+  z-index:20;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  padding:12px 14px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:0 18px 45px rgba(16,23,19,.1);
+}
+
+.save-status{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.save-status strong{
+  color:var(--text);
+}
+
+.save-actions{
+  display:flex;
+  gap:8px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  z-index:2000;
+  right:24px;
+  bottom:24px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:13px 16px;
+  border-radius:11px;
+  background:#111713;
+  color:#fff;
+  box-shadow:0 18px 40px rgba(0,0,0,.18);
+  font-size:11px;
+  font-weight:700;
+  opacity:0;
+  transform:translateY(10px);
+  pointer-events:none;
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.toast-icon{
+  width:21px;
+  height:21px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:var(--green);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.sidebar-overlay{
+  display:none;
+  position:fixed;
+  z-index:900;
+  inset:0;
+  background:rgba(0,0,0,.42);
+}
+
+@media(max-width:1100px){
+
+  .content-grid{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:850px){
+
+  .sidebar{
+    transform:translateX(-100%);
+    box-shadow:20px 0 50px rgba(0,0,0,.18);
+  }
+
+  .sidebar.mobile-open{
+    transform:translateX(0);
+  }
+
+  .sidebar-overlay.show{
+    display:block;
+  }
+
+  .main{
+    margin-left:0;
+    width:100%;
+    padding:18px;
+  }
+
+  .mobile-menu{
+    display:block;
+  }
+
+  .admin-badge{
+    display:none;
+  }
+
+}
+
+@media(max-width:650px){
+
+  .main{
+    padding:14px;
+  }
+
+  h1{
+    font-size:25px;
+  }
+
+  .panel{
+    padding:17px;
+    border-radius:15px;
+  }
+
+  .fields{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .method-card{
+    grid-template-columns:42px minmax(0,1fr);
+  }
+
+  .method-actions{
+    grid-column:2;
+  }
+
+  .switch{
+    grid-column:2;
+  }
+
+  .save-bar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .save-actions{
+    width:100%;
+  }
+
+  .save-actions .btn{
+    flex:1;
+  }
+
+}
+
+@media(max-width:430px){
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+}
+</style>
+<script src="../js/wd-sync.js"></script>
+</head>
+
+<body>
+
+<div
+  class="sidebar-overlay"
+  id="sidebarOverlay"
+></div>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside
+  class="sidebar"
+  id="sidebar"
+>
+
+  <div class="brand">
+
+    <img
+      src="../logo.png"
+      class="brand-logo"
+      alt="Website Deals"
+    >
+
+    <div>
+
+      <div class="brand-name">
+        Website Deals
+      </div>
+
+      <small class="brand-sub">
+        ADMIN PANEL
+      </small>
+
+    </div>
+
+  </div>
+
+
+  <nav>
+
+    <div class="nav-title">
+      Core
+    </div>
+
+    <a
+      class="nav-link"
+      href="dashboard.html"
+    >
+      <span class="nav-icon">▦</span>
+      <span>Dashboard</span>
+    </a>
+
+    <a
+      class="nav-link"
+      href="websites.html"
+    >
+      <span class="nav-icon">◫</span>
+      <span>Websites</span>
+    </a>
+
+    <a
+      class="nav-link"
+      href="categories.html"
+    >
+      <span class="nav-icon">◈</span>
+      <span>Categories</span>
+    </a>
+
+    <a
+      class="nav-link"
+      href="orders.html"
+    >
+      <span class="nav-icon">⌁</span>
+      <span>Orders</span>
+    </a>
+
+    <a
+      class="nav-link"
+      href="customers.html"
+    >
+      <span class="nav-icon">♙</span>
+      <span>Customers</span>
+    </a>
+
+
+    <div class="nav-title">
+      UI Management
+    </div>
+
+    <a
+      class="nav-link"
+      href="browse-ui.html"
+    >
+      <span class="nav-icon">◉</span>
+      <span>Browse UI</span>
+    </a>
+
+    <a
+      class="nav-link"
+      href="homepage.html"
+    >
+      <span class="nav-icon">⌂</span>
+      <span>Homepage</span>
+    </a>
+
+    <a
+      class="nav-link"
+      href="banners.html"
+    >
+      <span class="nav-icon">▣</span>
+      <span>Banners</span>
+    </a>
+
+
+    <div class="nav-title">
+      Business
+    </div>
+
+    <a
+      class="nav-link"
+      href="newsletter.html"
+    >
+      <span class="nav-icon">✉</span>
+      <span>Newsletter</span>
+    </a>
+
+    <a
+      class="nav-link active"
+      href="payments.html"
+    >
+      <span class="nav-icon">৳</span>
+      <span>Payments</span>
+    </a>
+
+    <a
+      class="nav-link"
+      href="monthly-report.html"
+    >
+      <span class="nav-icon">⌁</span>
+      <span>Reports</span>
+    </a>
+
+
+    <div
+      class="nav-title"
+      id="superAdminTitle"
+    >
+      Super Admin
+    </div>
+
+    <a
+      class="nav-link"
+      id="adminsLink"
+      href="admins.html"
+    >
+      <span class="nav-icon">♙</span>
+      <span>Admin Management</span>
+    </a>
+
+    <a
+      class="nav-link"
+      id="settingsLink"
+      href="settings.html"
+    >
+      <span class="nav-icon">⚙</span>
+      <span>System Settings</span>
+    </a>
+
+  </nav>
+
+
+  <div class="sidebar-bottom">
+
+    <div class="sidebar-status">
+
+      <span class="status-dot"></span>
+
+      <span>
+        Admin session active
+      </span>
+
+    </div>
+
+    <button
+      class="logout-btn"
+      id="logoutBtn"
+    >
+      Logout
+    </button>
+
+  </div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+  <header class="topbar">
+
+    <div>
+
+      <div class="eyebrow">
+        Business
+      </div>
+
+      <h1>
+        Payments
+      </h1>
+
+      <p class="subtitle">
+        Manage payment methods, transactions and checkout settings.
+      </p>
+
+    </div>
+
+
+    <div class="top-actions">
+
+      <button
+        class="mobile-menu"
+        id="mobileMenu"
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
+
+      <div class="admin-badge">
+
+        <span class="admin-dot"></span>
+
+        <span id="adminName">
+          Admin Panel
+        </span>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       STATS
+  ========================== -->
+
+  <div class="stats">
+
+    <div class="stat">
+
+      <div class="stat-icon">
+        ৳
+      </div>
+
+      <div class="stat-label">
+        Total Revenue
+      </div>
+
+      <div class="stat-value green">
+        ৳8.42L
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+        ✓
+      </div>
+
+      <div class="stat-label">
+        Paid Transactions
+      </div>
+
+      <div
+        class="stat-value"
+        id="paidCount"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+        ◷
+      </div>
+
+      <div class="stat-label">
+        Pending
+      </div>
+
+      <div
+        class="stat-value orange"
+        id="pendingCount"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+        #
+      </div>
+
+      <div class="stat-label">
+        Payment Methods
+      </div>
+
+      <div
+        class="stat-value"
+        id="methodCount"
+      >
+        0
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="content-grid">
+
+    <!-- =====================
+         LEFT
+    ====================== -->
+
+    <div>
+
+      <!-- PAYMENT METHODS -->
+
+      <section class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2 class="panel-title">
+              Payment Methods
+            </h2>
+
+            <p class="panel-desc">
+              Enable the payment options customers can use during checkout.
+            </p>
+
+          </div>
+
+          <button
+            class="btn btn-primary"
+            id="addMethodBtn"
+            type="button"
+          >
+            + Add Method
+          </button>
+
+        </div>
+
+
+        <div
+          class="method-list"
+          id="methodList"
+        ></div>
+
+      </section>
+
+
+      <!-- METHOD EDITOR -->
+
+      <section
+        class="panel editor"
+        id="methodEditor"
+      >
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2
+              class="panel-title"
+              id="editorTitle"
+            >
+              Add Payment Method
+            </h2>
+
+            <p class="panel-desc">
+              Configure a customer-facing payment option.
+            </p>
+
+          </div>
+
+          <span class="panel-tag">
+            EDITOR
+          </span>
+
+        </div>
+
+
+        <div class="fields">
+
+          <div class="field">
+
+            <label for="methodName">
+              Method Name
+            </label>
+
+            <input
+              id="methodName"
+              placeholder="bKash"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="methodType">
+              Payment Type
+            </label>
+
+            <select id="methodType">
+
+              <option value="Mobile Banking">
+                Mobile Banking
+              </option>
+
+              <option value="Bank Transfer">
+                Bank Transfer
+              </option>
+
+              <option value="Card">
+                Card
+              </option>
+
+              <option value="Manual">
+                Manual Payment
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="accountNumber">
+              Account / Merchant Number
+            </label>
+
+            <input
+              id="accountNumber"
+              placeholder="01XXXXXXXXX"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="paymentLabel">
+              Customer Label
+            </label>
+
+            <input
+              id="paymentLabel"
+              placeholder="Send Money"
+            >
+
+          </div>
+
+
+          <div class="field full">
+
+            <label for="methodInstructions">
+              Payment Instructions
+            </label>
+
+            <textarea
+              id="methodInstructions"
+              placeholder="Send the exact order amount to the merchant account and keep the transaction ID."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <div class="switch-row">
+
+          <div class="switch-copy">
+
+            <strong>
+              Enable Payment Method
+            </strong>
+
+            <small>
+              Customers will see this option at checkout when enabled.
+            </small>
+
+          </div>
+
+          <label class="switch">
+
+            <input
+              type="checkbox"
+              id="methodActive"
+              checked
+            >
+
+            <i class="slider"></i>
+
+          </label>
+
+        </div>
+
+
+        <div class="editor-actions">
+
+          <button
+            class="btn btn-danger"
+            id="deleteMethodBtn"
+            type="button"
+            style="display:none"
+          >
+            Delete
+          </button>
+
+          <button
+            class="btn btn-secondary"
+            id="cancelMethodBtn"
+            type="button"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="btn btn-primary"
+            id="saveMethodBtn"
+            type="button"
+          >
+            Save Method
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- TRANSACTIONS -->
+
+      <section class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2 class="panel-title">
+              Recent Transactions
+            </h2>
+
+            <p class="panel-desc">
+              Latest payment activity from the marketplace.
+            </p>
+
+          </div>
+
+          <button
+            class="btn btn-secondary"
+            id="exportTransactions"
+            type="button"
+          >
+            Export CSV
+          </button>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+          <table class="transaction-table">
+
+            <thead>
+
+              <tr>
+                <th>Transaction</th>
+                <th>Customer</th>
+                <th>Method</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="transactionTable"></tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- SAVE BAR -->
+
+      <div class="save-bar">
+
+        <div class="save-status">
+
+          Status:
+          <strong id="saveStatus">
+            All changes saved
+          </strong>
+
+        </div>
+
+
+        <div class="save-actions">
+
+          <button
+            class="btn btn-secondary"
+            id="resetBtn"
+            type="button"
+          >
+            Reset
+          </button>
+
+          <button
+            class="btn btn-primary"
+            id="saveAllBtn"
+            type="button"
+          >
+            Save Changes
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================
+         RIGHT
+    ====================== -->
+
+    <div>
+
+      <div class="preview-sticky">
+
+        <!-- CHECKOUT PREVIEW -->
+
+        <section class="panel">
+
+          <div class="panel-header">
+
+            <div>
+
+              <h2 class="panel-title">
+                Checkout Preview
+              </h2>
+
+              <p class="panel-desc">
+                Customer payment selection preview.
+              </p>
+
+            </div>
+
+            <span class="panel-tag">
+              LIVE
+            </span>
+
+          </div>
+
+
+          <div
+            class="security-card"
+            id="checkoutPreview"
+          >
+
+            <div
+              style="
+                font:700 16px 'Space Grotesk';
+                margin-bottom:5px;
+              "
+            >
+              Choose payment method
+            </div>
+
+            <div
+              style="
+                color:#748078;
+                font-size:9px;
+                margin-bottom:15px;
+              "
+            >
+              Select how you would like to complete your order.
+            </div>
+
+
+            <div
+              id="previewMethods"
+              style="
+                display:flex;
+                flex-direction:column;
+                gap:8px;
+              "
+            ></div>
+
+
+            <div
+              style="
+                margin-top:14px;
+                padding:10px;
+                border-radius:9px;
+                background:#eaf8f0;
+                color:#118743;
+                font-size:8px;
+                font-weight:700;
+                line-height:1.5;
+              "
+            >
+              ✓ Secure payment information
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- PAYMENT SUMMARY -->
+
+        <section class="panel">
+
+          <div class="panel-header">
+
+            <div>
+
+              <h2 class="panel-title">
+                Payment Summary
+              </h2>
+
+              <p class="panel-desc">
+                Current marketplace payment overview.
+              </p>
+
+            </div>
+
+            <span class="panel-tag">
+              OVERVIEW
+            </span>
+
+          </div>
+
+
+          <div class="summary-list">
+
+            <div class="summary-item">
+
+              <span>
+                Gross revenue
+              </span>
+
+              <strong>
+                ৳8,42,000
+              </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+              <span>
+                Successful orders
+              </span>
+
+              <strong id="summaryPaid">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+              <span>
+                Pending payments
+              </span>
+
+              <strong id="summaryPending">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+              <span>
+                Active methods
+              </span>
+
+              <strong id="summaryMethods">
+                0
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- SECURITY -->
+
+        <section class="panel">
+
+          <div class="panel-header">
+
+            <div>
+
+              <h2 class="panel-title">
+                Payment Security
+              </h2>
+
+              <p class="panel-desc">
+                Checkout protection preferences.
+              </p>
+
+            </div>
+
+            <span class="panel-tag">
+              SECURITY
+            </span>
+
+          </div>
+
+
+          <div class="security-card">
+
+            <div class="security-row">
+
+              <div class="security-copy">
+
+                <strong>
+                  Order Verification
+                </strong>
+
+                <small>
+                  Require payment reference before confirming manual payments.
+                </small>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  id="orderVerification"
+                  checked
+                >
+
+                <i class="slider"></i>
+
+              </label>
+
+            </div>
+
+
+            <div class="security-row">
+
+              <div class="security-copy">
+
+                <strong>
+                  Payment Screenshot
+                </strong>
+
+                <small>
+                  Allow customers to submit payment proof.
+                </small>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  id="paymentScreenshot"
+                  checked
+                >
+
+                <i class="slider"></i>
+
+              </label>
+
+            </div>
+
+
+            <div class="security-row">
+
+              <div class="security-copy">
+
+                <strong>
+                  Duplicate Protection
+                </strong>
+
+                <small>
+                  Flag duplicate transaction IDs for review.
+                </small>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  id="duplicateProtection"
+                  checked
+                >
+
+                <i class="slider"></i>
+
+              </label>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div
+  class="toast"
+  id="toast"
+>
+
+  <span class="toast-icon">
+    ✓
+  </span>
+
+  <span id="toastText">
+    Saved successfully.
+  </span>
+
+</div>
+
+
+<script>
+/* =========================================================
+   WEBSITE DEALS — PAYMENTS MANAGER
+========================================================= */
+
+const METHODS_KEY =
+  "websiteDealsPaymentMethods";
+
+const PAYMENT_SETTINGS_KEY =
+  "websiteDealsPaymentSettings";
+
+const TRANSACTIONS_KEY =
+  "websiteDealsTransactions";
+
+const AUTH_KEY =
+  "websiteDealsAdminAuth";
+
+
+/* =========================================================
+   HELPER
+========================================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+
+/* =========================================================
+   DEFAULT METHODS
+========================================================= */
+
+const DEFAULT_METHODS = [
+
+  {
+    id:"method-bkash",
+    name:"bKash",
+    type:"Mobile Banking",
+    account:"01XXXXXXXXX",
+    label:"Send Money",
+    instructions:"Send the exact order amount to the merchant number and keep the transaction ID.",
+    active:true
+  },
+
+  {
+    id:"method-nagad",
+    name:"Nagad",
+    type:"Mobile Banking",
+    account:"01XXXXXXXXX",
+    label:"Send Money",
+    instructions:"Send the exact order amount to the merchant number and keep the transaction ID.",
+    active:true
+  },
+
+  {
+    id:"method-bank",
+    name:"Bank Transfer",
+    type:"Bank Transfer",
+    account:"Account details in checkout",
+    label:"Bank Transfer",
+    instructions:"Complete the bank transfer and submit the payment reference with your order.",
+    active:true
+  },
+
+  {
+    id:"method-card",
+    name:"Card Payment",
+    type:"Card",
+    account:"Gateway",
+    label:"Pay Securely",
+    instructions:"Complete your payment through the secure card checkout.",
+    active:false
+  }
+
+];
+
+
+/* =========================================================
+   DEFAULT SETTINGS
+========================================================= */
+
+const DEFAULT_PAYMENT_SETTINGS = {
+
+  orderVerification:true,
+
+  paymentScreenshot:true,
+
+  duplicateProtection:true
+
+};
+
+
+/* =========================================================
+   DEFAULT TRANSACTIONS
+========================================================= */
+
+const DEFAULT_TRANSACTIONS = [
+
+  {
+    id:"WD-1028",
+    customer:"Rahim Ahmed",
+    method:"bKash",
+    amount:6500,
+    status:"paid",
+    date:"2026-09-30"
+  },
+
+  {
+    id:"WD-1027",
+    customer:"Nusrat Jahan",
+    method:"Nagad",
+    amount:4900,
+    status:"paid",
+    date:"2026-09-29"
+  },
+
+  {
+    id:"WD-1026",
+    customer:"Tanvir Hasan",
+    method:"Bank Transfer",
+    amount:8500,
+    status:"pending",
+    date:"2026-09-28"
+  },
+
+  {
+    id:"WD-1025",
+    customer:"Sadia Islam",
+    method:"bKash",
+    amount:3500,
+    status:"paid",
+    date:"2026-09-27"
+  },
+
+  {
+    id:"WD-1024",
+    customer:"Arif Khan",
+    method:"Nagad",
+    amount:5500,
+    status:"failed",
+    date:"2026-09-26"
+  }
+
+];
+
+
+let methods = [];
+
+let transactions = [];
+
+let paymentSettings = {};
+
+let editingMethodId = null;
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+function getAdminSession(){
+
+  try{
+
+    const raw =
+      sessionStorage.getItem(
+        AUTH_KEY
+      );
+
+    if(!raw){
+      return null;
+    }
+
+    const session =
+      JSON.parse(raw);
+
+    if(
+      !session ||
+      session.authenticated !== true
+    ){
+      return null;
+    }
+
+    return session;
+
+  }catch(error){
+
+    return null;
+
+  }
+
+}
+
+
+const adminSession =
+  getAdminSession();
+
+
+if(!adminSession){
+
+  window.location.replace(
+    "login/"
+  );
+
+}
+
+
+if(adminSession){
+
+  const role =
+    String(
+      adminSession.role || ""
+    ).toLowerCase();
+
+
+  $("adminName").textContent =
+    adminSession.name ||
+    adminSession.email ||
+    "Admin";
+
+
+  if(role !== "superadmin"){
+
+    $("superAdminTitle").style.display =
+      "none";
+
+    $("adminsLink").style.display =
+      "none";
+
+    $("settingsLink").style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD
+========================================================= */
+
+function loadAll(){
+
+  try{
+
+    const methodsRaw =
+      localStorage.getItem(
+        METHODS_KEY
+      );
+
+    methods =
+      methodsRaw
+        ? JSON.parse(methodsRaw)
+        : DEFAULT_METHODS.map(
+            item => ({...item})
+          );
+
+    if(!Array.isArray(methods)){
+      methods = [];
+    }
+
+  }catch(error){
+
+    methods =
+      DEFAULT_METHODS.map(
+        item => ({...item})
+      );
+
+  }
+
+
+  try{
+
+    const transactionsRaw =
+      localStorage.getItem(
+        TRANSACTIONS_KEY
+      );
+
+    transactions =
+      transactionsRaw
+        ? JSON.parse(transactionsRaw)
+        : DEFAULT_TRANSACTIONS.map(
+            item => ({...item})
+          );
+
+    if(!Array.isArray(transactions)){
+      transactions = [];
+    }
+
+  }catch(error){
+
+    transactions = [];
+
+  }
+
+
+  try{
+
+    const settingsRaw =
+      localStorage.getItem(
+        PAYMENT_SETTINGS_KEY
+      );
+
+    paymentSettings =
+      settingsRaw
+        ? {
+            ...DEFAULT_PAYMENT_SETTINGS,
+            ...JSON.parse(settingsRaw)
+          }
+        : {
+            ...DEFAULT_PAYMENT_SETTINGS
+          };
+
+  }catch(error){
+
+    paymentSettings =
+      {
+        ...DEFAULT_PAYMENT_SETTINGS
+      };
+
+  }
+
+
+  fillSecuritySettings();
+
+  renderMethods();
+
+  renderTransactions();
+
+}
+
+
+/* =========================================================
+   RENDER METHODS
+========================================================= */
+
+function renderMethods(){
+
+  const list =
+    $("methodList");
+
+  list.innerHTML = "";
+
+
+  methods.forEach(
+    (method,index) => {
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "method-card" +
+        (!method.active
+          ? " disabled"
+          : "");
+
+
+      card.innerHTML = `
+
+        <div class="method-logo">
+          ${escapeHTML(
+            method.name
+              .slice(0,2)
+              .toUpperCase()
+          )}
+        </div>
+
+
+        <div class="method-info">
+
+          <h3>
+            ${escapeHTML(method.name)}
+          </h3>
+
+          <p>
+            ${escapeHTML(method.account || "Not configured")}
+          </p>
+
+          <div class="method-meta">
+
+            <span class="badge">
+              ${escapeHTML(method.type)}
+            </span>
+
+            <span class="badge ${
+              method.active
+                ? "active"
+                : ""
+            }">
+              ${
+                method.active
+                  ? "ACTIVE"
+                  : "DISABLED"
+              }
+            </span>
+
+            ${
+              method.type === "Manual"
+                ? `
+                  <span class="badge manual">
+                    MANUAL
+                  </span>
+                `
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            data-toggle="${method.id}"
+            ${method.active ? "checked" : ""}
+          >
+
+          <i class="slider"></i>
+
+        </label>
+
+
+        <div class="method-actions">
+
+          <button
+            class="icon-btn"
+            data-action="edit"
+            data-id="${method.id}"
+            title="Edit"
+          >
+            ✎
+          </button>
+
+          <button
+            class="icon-btn delete"
+            data-action="delete"
+            data-id="${method.id}"
+            title="Delete"
+          >
+            ×
+          </button>
+
+        </div>
+
+      `;
+
+
+      list.appendChild(card);
+
+    }
+  );
+
+
+  updatePaymentStats();
+
+  updateCheckoutPreview();
+
+}
+
+
+/* =========================================================
+   METHOD ACTIONS
+========================================================= */
+
+$("methodList").addEventListener(
+  "click",
+  function(event){
+
+    const actionButton =
+      event.target.closest(
+        "[data-action]"
+      );
+
+    if(!actionButton){
+      return;
+    }
+
+
+    const id =
+      actionButton.dataset.id;
+
+    const action =
+      actionButton.dataset.action;
+
+
+    if(action === "edit"){
+
+      editMethod(id);
+
+    }
+
+
+    if(action === "delete"){
+
+      deleteMethod(id);
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   TOGGLE METHOD
+========================================================= */
+
+$("methodList").addEventListener(
+  "change",
+  function(event){
+
+    const toggle =
+      event.target.closest(
+        "[data-toggle]"
+      );
+
+    if(!toggle){
+      return;
+    }
+
+
+    const id =
+      toggle.dataset.toggle;
+
+
+    const method =
+      methods.find(
+        item => item.id === id
+      );
+
+
+    if(!method){
+      return;
+    }
+
+
+    method.active =
+      toggle.checked;
+
+
+    renderMethods();
+
+    markDirty();
+
+    showToast(
+      `${method.name} ${
+        method.active
+          ? "enabled"
+          : "disabled"
+      }.`
+    );
+
+  }
+);
+
+
+/* =========================================================
+   ADD METHOD
+========================================================= */
+
+$("addMethodBtn").addEventListener(
+  "click",
+  function(){
+
+    editingMethodId = null;
+
+    $("editorTitle").textContent =
+      "Add Payment Method";
+
+    $("deleteMethodBtn").style.display =
+      "none";
+
+    clearMethodForm();
+
+    $("methodEditor").classList.add(
+      "show"
+    );
+
+    $("methodEditor").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+  }
+);
+
+
+/* =========================================================
+   EDIT METHOD
+========================================================= */
+
+function editMethod(id){
+
+  const method =
+    methods.find(
+      item => item.id === id
+    );
+
+  if(!method){
+    return;
+  }
+
+
+  editingMethodId =
+    id;
+
+
+  $("editorTitle").textContent =
+    "Edit Payment Method";
+
+
+  $("methodName").value =
+    method.name || "";
+
+  $("methodType").value =
+    method.type || "Mobile Banking";
+
+  $("accountNumber").value =
+    method.account || "";
+
+  $("paymentLabel").value =
+    method.label || "";
+
+  $("methodInstructions").value =
+    method.instructions || "";
+
+  $("methodActive").checked =
+    method.active !== false;
+
+
+  $("deleteMethodBtn").style.display =
+    "inline-block";
+
+
+  $("methodEditor").classList.add(
+    "show"
+  );
+
+
+  $("methodEditor").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+}
+
+
+/* =========================================================
+   CLEAR FORM
+========================================================= */
+
+function clearMethodForm(){
+
+  $("methodName").value =
+    "";
+
+  $("methodType").value =
+    "Mobile Banking";
+
+  $("accountNumber").value =
+    "";
+
+  $("paymentLabel").value =
+    "Send Money";
+
+  $("methodInstructions").value =
+    "";
+
+  $("methodActive").checked =
+    true;
+
+}
+
+
+/* =========================================================
+   SAVE METHOD
+========================================================= */
+
+$("saveMethodBtn").addEventListener(
+  "click",
+  function(){
+
+    const name =
+      $("methodName").value.trim();
+
+
+    if(!name){
+
+      showToast(
+        "Please enter a payment method name."
+      );
+
+      $("methodName").focus();
+
+      return;
+
+    }
+
+
+    const data = {
+
+      name,
+
+      type:
+        $("methodType").value,
+
+      account:
+        $("accountNumber").value.trim(),
+
+      label:
+        $("paymentLabel").value.trim() ||
+        "Pay Now",
+
+      instructions:
+        $("methodInstructions").value.trim(),
+
+      active:
+        $("methodActive").checked
+
+    };
+
+
+    if(editingMethodId){
+
+      const index =
+        methods.findIndex(
+          item =>
+            item.id === editingMethodId
+        );
+
+
+      if(index >= 0){
+
+        methods[index] = {
+
+          ...methods[index],
+
+          ...data
+
+        };
+
+      }
+
+    }else{
+
+      methods.push({
+
+        id:
+          "method-" +
+          Date.now(),
+
+        ...data
+
+      });
+
+    }
+
+
+    renderMethods();
+
+    $("methodEditor").classList.remove(
+      "show"
+    );
+
+
+    editingMethodId = null;
+
+    markDirty();
+
+    showToast(
+      "Payment method updated."
+    );
+
+  }
+);
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+$("cancelMethodBtn").addEventListener(
+  "click",
+  function(){
+
+    editingMethodId = null;
+
+    $("methodEditor").classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+$("deleteMethodBtn").addEventListener(
+  "click",
+  function(){
+
+    if(editingMethodId){
+
+      deleteMethod(
+        editingMethodId
+      );
+
+    }
+
+  }
+);
+
+
+function deleteMethod(id){
+
+  const method =
+    methods.find(
+      item => item.id === id
+    );
+
+  if(!method){
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      `Delete "${method.name}"?`
+    );
+
+
+  if(!confirmed){
+    return;
+  }
+
+
+  methods =
+    methods.filter(
+      item => item.id !== id
+    );
+
+
+  if(editingMethodId === id){
+
+    editingMethodId = null;
+
+    $("methodEditor").classList.remove(
+      "show"
+    );
+
+  }
+
+
+  renderMethods();
+
+  markDirty();
+
+  showToast(
+    "Payment method removed."
+  );
+
+}
+
+
+/* =========================================================
+   TRANSACTIONS
+========================================================= */
+
+function renderTransactions(){
+
+  const tbody =
+    $("transactionTable");
+
+  tbody.innerHTML = "";
+
+
+  transactions.forEach(
+    transaction => {
+
+      const tr =
+        document.createElement("tr");
+
+
+      tr.innerHTML = `
+
+        <td>
+          <span class="tx-id">
+            ${escapeHTML(transaction.id)}
+          </span>
+        </td>
+
+        <td>
+          <span class="tx-customer">
+            ${escapeHTML(transaction.customer)}
+          </span>
+        </td>
+
+        <td>
+          ${escapeHTML(transaction.method)}
+        </td>
+
+        <td>
+          <span class="tx-amount">
+            ৳${Number(
+              transaction.amount || 0
+            ).toLocaleString()}
+          </span>
+        </td>
+
+        <td>
+
+          <span class="payment-status ${
+            transaction.status
+          }">
+
+            ${escapeHTML(
+              transaction.status
+                .toUpperCase()
+            )}
+
+          </span>
+
+        </td>
+
+        <td>
+          <span class="tx-date">
+            ${escapeHTML(transaction.date)}
+          </span>
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    }
+  );
+
+
+  updatePaymentStats();
+
+}
+
+
+/* =========================================================
+   PAYMENT STATS
+========================================================= */
+
+function updatePaymentStats(){
+
+  const paid =
+    transactions.filter(
+      item =>
+        item.status === "paid"
+    ).length;
+
+
+  const pending =
+    transactions.filter(
+      item =>
+        item.status === "pending"
+    ).length;
+
+
+  const activeMethods =
+    methods.filter(
+      item =>
+        item.active
+    ).length;
+
+
+  $("paidCount").textContent =
+    paid;
+
+  $("pendingCount").textContent =
+    pending;
+
+  $("methodCount").textContent =
+    methods.length;
+
+
+  $("summaryPaid").textContent =
+    paid;
+
+  $("summaryPending").textContent =
+    pending;
+
+  $("summaryMethods").textContent =
+    activeMethods;
+
+}
+
+
+/* =========================================================
+   CHECKOUT PREVIEW
+========================================================= */
+
+function updateCheckoutPreview(){
+
+  const container =
+    $("previewMethods");
+
+  container.innerHTML = "";
+
+
+  const active =
+    methods.filter(
+      item => item.active
+    );
+
+
+  if(!active.length){
+
+    container.innerHTML = `
+      <div
+        style="
+          padding:15px;
+          text-align:center;
+          border:1px dashed #d5ddd7;
+          border-radius:9px;
+          color:#8a948e;
+          font-size:9px;
+        "
+      >
+        No active payment methods.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  active.forEach(
+    method => {
+
+      const item =
+        document.createElement("div");
+
+
+      item.style.cssText = `
+        display:flex;
+        align-items:center;
+        gap:9px;
+        padding:10px;
+        border:1px solid #e3e9e5;
+        border-radius:9px;
+        background:#fff;
+      `;
+
+
+      item.innerHTML = `
+
+        <div
+          style="
+            width:28px;
+            height:28px;
+            display:grid;
+            place-items:center;
+            border-radius:7px;
+            background:#eaf8f0;
+            color:#118743;
+            font-size:8px;
+            font-weight:800;
+          "
+        >
+          ${escapeHTML(
+            method.name
+              .slice(0,2)
+              .toUpperCase()
+          )}
+        </div>
+
+        <div style="flex:1">
+
+          <strong
+            style="
+              display:block;
+              font-size:9px;
+            "
+          >
+            ${escapeHTML(method.name)}
+          </strong>
+
+          <small
+            style="
+              display:block;
+              margin-top:2px;
+              color:#87918b;
+              font-size:7px;
+            "
+          >
+            ${escapeHTML(
+              method.label || method.type
+            )}
+          </small>
+
+        </div>
+
+        <span
+          style="
+            color:#18a957;
+            font-size:10px;
+          "
+        >
+          →
+        </span>
+
+      `;
+
+
+      container.appendChild(item);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   SECURITY SETTINGS
+========================================================= */
+
+function fillSecuritySettings(){
+
+  $("orderVerification").checked =
+    paymentSettings.orderVerification !== false;
+
+  $("paymentScreenshot").checked =
+    paymentSettings.paymentScreenshot !== false;
+
+  $("duplicateProtection").checked =
+    paymentSettings.duplicateProtection !== false;
+
+}
+
+
+/* =========================================================
+   SECURITY INPUTS
+========================================================= */
+
+[
+  "orderVerification",
+  "paymentScreenshot",
+  "duplicateProtection"
+].forEach(
+  id => {
+
+    $(id).addEventListener(
+      "change",
+      function(){
+
+        markDirty();
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   SAVE ALL
+========================================================= */
+
+$("saveAllBtn").addEventListener(
+  "click",
+  function(){
+
+    saveEverything();
+
+  }
+);
+
+
+/* =========================================================
+   SAVE NEWS
+========================================================= */
+
+function saveEverything(){
+
+  paymentSettings = {
+
+    orderVerification:
+      $("orderVerification").checked,
+
+    paymentScreenshot:
+      $("paymentScreenshot").checked,
+
+    duplicateProtection:
+      $("duplicateProtection").checked
+
+  };
+
+
+  localStorage.setItem(
+    METHODS_KEY,
+    JSON.stringify(methods)
+  );
+
+
+  localStorage.setItem(
+    PAYMENT_SETTINGS_KEY,
+    JSON.stringify(paymentSettings)
+  );
+
+
+  localStorage.setItem(
+    TRANSACTIONS_KEY,
+    JSON.stringify(transactions)
+  );
+
+
+  setSavedState();
+
+  showToast(
+    "All payment changes saved successfully."
+  );
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+$("resetBtn").addEventListener(
+  "click",
+  function(){
+
+    const confirmed =
+      confirm(
+        "Reset payment settings, methods and demo transactions?"
+      );
+
+
+    if(!confirmed){
+      return;
+    }
+
+
+    methods =
+      DEFAULT_METHODS.map(
+        item => ({...item})
+      );
+
+
+    transactions =
+      DEFAULT_TRANSACTIONS.map(
+        item => ({...item})
+      );
+
+
+    paymentSettings =
+      {
+        ...DEFAULT_PAYMENT_SETTINGS
+      };
+
+
+    localStorage.removeItem(
+      METHODS_KEY
+    );
+
+    localStorage.removeItem(
+      PAYMENT_SETTINGS_KEY
+    );
+
+    localStorage.removeItem(
+      TRANSACTIONS_KEY
+    );
+
+
+    fillSecuritySettings();
+
+    renderMethods();
+
+    renderTransactions();
+
+    $("methodEditor").classList.remove(
+      "show"
+    );
+
+
+    editingMethodId = null;
+
+    setSavedState();
+
+    showToast(
+      "Payment settings reset."
+    );
+
+  }
+);
+
+
+/* =========================================================
+   EXPORT CSV
+========================================================= */
+
+$("exportTransactions").addEventListener(
+  "click",
+  function(){
+
+    if(!transactions.length){
+
+      showToast(
+        "No transactions available."
+      );
+
+      return;
+
+    }
+
+
+    const rows = [
+
+      [
+        "Transaction",
+        "Customer",
+        "Method",
+        "Amount",
+        "Status",
+        "Date"
+      ]
+
+    ];
+
+
+    transactions.forEach(
+      item => {
+
+        rows.push([
+
+          item.id,
+
+          item.customer,
+
+          item.method,
+
+          item.amount,
+
+          item.status,
+
+          item.date
+
+        ]);
+
+      }
+    );
+
+
+    const csv =
+      rows
+        .map(
+          row =>
+            row
+              .map(
+                value =>
+                  `"${String(value)
+                    .replace(/"/g,'""')}"`
+              )
+              .join(",")
+        )
+        .join("\n");
+
+
+    const blob =
+      new Blob(
+        [csv],
+        {
+          type:
+            "text/csv;charset=utf-8;"
+        }
+      );
+
+
+    const url =
+      URL.createObjectURL(blob);
+
+
+    const link =
+      document.createElement("a");
+
+
+    link.href =
+      url;
+
+    link.download =
+      "website-deals-transactions.csv";
+
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+
+    showToast(
+      "Transaction CSV exported."
+    );
+
+  }
+);
+
+
+/* =========================================================
+   DIRTY STATE
+========================================================= */
+
+function markDirty(){
+
+  $("saveStatus").textContent =
+    "Unsaved changes";
+
+  $("saveStatus").style.color =
+    "#e39a22";
+
+}
+
+
+function setSavedState(){
+
+  $("saveStatus").textContent =
+    "All changes saved";
+
+  $("saveStatus").style.color =
+    "";
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+$("logoutBtn").addEventListener(
+  "click",
+  function(){
+
+    const confirmed =
+      confirm(
+        "Logout from the admin panel?"
+      );
+
+
+    if(!confirmed){
+      return;
+    }
+
+
+    sessionStorage.removeItem(
+      AUTH_KEY
+    );
+
+
+    window.location.replace(
+      "login/"
+    );
+
+  }
+);
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar =
+  $("sidebar");
+
+const overlay =
+  $("sidebarOverlay");
+
+const mobileMenu =
+  $("mobileMenu");
+
+
+mobileMenu.addEventListener(
+  "click",
+  function(){
+
+    sidebar.classList.add(
+      "mobile-open"
+    );
+
+    overlay.classList.add(
+      "show"
+    );
+
+  }
+);
+
+
+overlay.addEventListener(
+  "click",
+  function(){
+
+    sidebar.classList.remove(
+      "mobile-open"
+    );
+
+    overlay.classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+document.querySelectorAll(
+  ".nav-link"
+).forEach(
+  link => {
+
+    link.addEventListener(
+      "click",
+      function(){
+
+        sidebar.classList.remove(
+          "mobile-open"
+        );
+
+        overlay.classList.remove(
+          "show"
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(message){
+
+  const toast =
+    $("toast");
+
+
+  $("toastText").textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toastTimer =
+    setTimeout(
+      function(){
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2400
+    );
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+loadAll();
+
+</script>
+
+</body>
+</html>

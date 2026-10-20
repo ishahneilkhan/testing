@@ -1,0 +1,4151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07110b">
+
+  <title>Reports | Website Deals Admin</title>
+
+  <meta
+    name="description"
+    content="Website Deals Admin Reports — sales, revenue, orders, payments, categories and marketplace analytics."
+  >
+
+  <link rel="icon" type="image/png" href="../logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root{
+      --green:#18a957;
+      --green-dark:#118342;
+      --green-soft:#eaf8f0;
+
+      --dark:#07110b;
+      --dark-2:#0c1711;
+      --dark-3:#132019;
+
+      --bg:#f5f8f6;
+      --surface:#ffffff;
+      --surface-2:#f8faf9;
+
+      --text:#101712;
+      --muted:#708078;
+      --border:#e2e9e5;
+
+      --blue:#2563eb;
+      --orange:#f59e0b;
+      --red:#dc2626;
+      --purple:#7c3aed;
+
+      --shadow:0 18px 50px rgba(16,35,24,.07);
+      --shadow-sm:0 8px 25px rgba(16,35,24,.06);
+
+      --radius:20px;
+      --sidebar:272px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"DM Sans",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    button,
+    input,
+    select{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .app{
+      min-height:100vh;
+    }
+
+    .sidebar{
+      position:fixed;
+      inset:0 auto 0 0;
+      width:var(--sidebar);
+      background:var(--dark);
+      color:#fff;
+      z-index:1000;
+      display:flex;
+      flex-direction:column;
+      transition:.3s ease;
+      overflow-y:auto;
+    }
+
+    .sidebar-top{
+      padding:25px 20px 20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand-logo{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:#fff;
+      object-fit:contain;
+      padding:6px;
+      flex:none;
+    }
+
+    .brand-text strong{
+      display:block;
+      font-family:"Manrope",sans-serif;
+      font-size:17px;
+      font-weight:800;
+      letter-spacing:-.4px;
+    }
+
+    .brand-text span{
+      display:block;
+      color:#8c9b92;
+      font-size:11px;
+      margin-top:2px;
+    }
+
+    .nav{
+      padding:8px 14px 20px;
+      flex:1;
+    }
+
+    .nav-section{
+      margin:22px 8px 9px;
+      color:#66756c;
+      font-size:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:1.3px;
+    }
+
+    .nav-link{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:46px;
+      padding:0 13px;
+      border-radius:13px;
+      color:#aab7b0;
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:4px;
+      transition:.2s ease;
+    }
+
+    .nav-link:hover{
+      color:#fff;
+      background:#132019;
+    }
+
+    .nav-link.active{
+      color:#fff;
+      background:linear-gradient(135deg,#18a957,#118342);
+      box-shadow:0 9px 24px rgba(24,169,87,.2);
+    }
+
+    .nav-icon{
+      width:20px;
+      text-align:center;
+      font-size:16px;
+      flex:none;
+    }
+
+    .sidebar-bottom{
+      padding:15px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    .admin-mini{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      padding:10px;
+      border-radius:14px;
+      background:#101c15;
+      margin-bottom:10px;
+    }
+
+    .avatar{
+      width:36px;
+      height:36px;
+      border-radius:11px;
+      background:linear-gradient(135deg,#18a957,#79e6a6);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      font-size:13px;
+      flex:none;
+    }
+
+    .admin-mini-info{
+      min-width:0;
+    }
+
+    .admin-mini-info strong{
+      display:block;
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .admin-mini-info span{
+      display:block;
+      color:#718078;
+      font-size:10px;
+      margin-top:2px;
+    }
+
+    .logout-btn{
+      width:100%;
+      height:42px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#101c15;
+      color:#b8c4bd;
+      border-radius:12px;
+      font-weight:700;
+      font-size:12px;
+    }
+
+    .logout-btn:hover{
+      color:#fff;
+      background:#17241c;
+    }
+
+    .main{
+      margin-left:var(--sidebar);
+      min-height:100vh;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .topbar{
+      height:76px;
+      background:rgba(255,255,255,.88);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 34px;
+      position:sticky;
+      top:0;
+      z-index:500;
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .mobile-menu{
+      display:none;
+      width:42px;
+      height:42px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:12px;
+      font-size:19px;
+    }
+
+    .page-label{
+      font-family:"Manrope",sans-serif;
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .breadcrumb{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:2px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .icon-btn,
+    .outline-btn,
+    .primary-btn{
+      height:40px;
+      border-radius:11px;
+      border:1px solid var(--border);
+      padding:0 14px;
+      background:#fff;
+      font-size:12px;
+      font-weight:700;
+      color:#29362f;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.2s ease;
+    }
+
+    .icon-btn{
+      width:40px;
+      padding:0;
+      font-size:16px;
+    }
+
+    .outline-btn:hover,
+    .icon-btn:hover{
+      border-color:#c6d2cb;
+      background:#f8faf9;
+    }
+
+    .primary-btn{
+      background:var(--green);
+      color:#fff;
+      border-color:var(--green);
+      box-shadow:0 8px 20px rgba(24,169,87,.18);
+    }
+
+    .primary-btn:hover{
+      background:var(--green-dark);
+      border-color:var(--green-dark);
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .content{
+      padding:34px;
+      max-width:1700px;
+      margin:0 auto;
+    }
+
+    .hero{
+      background:
+        radial-gradient(circle at 85% 20%,rgba(24,169,87,.20),transparent 28%),
+        linear-gradient(135deg,#07110b,#102219);
+      border-radius:28px;
+      padding:34px;
+      color:#fff;
+      position:relative;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .hero:after{
+      content:"";
+      position:absolute;
+      width:300px;
+      height:300px;
+      right:-110px;
+      bottom:-160px;
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:50%;
+    }
+
+    .hero-inner{
+      position:relative;
+      z-index:2;
+      display:flex;
+      justify-content:space-between;
+      gap:30px;
+      align-items:flex-end;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      color:#8de2ad;
+      font-size:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:1.4px;
+      margin-bottom:10px;
+    }
+
+    .eyebrow-dot{
+      width:7px;
+      height:7px;
+      background:#55d983;
+      border-radius:50%;
+      box-shadow:0 0 0 5px rgba(85,217,131,.1);
+    }
+
+    .hero h1{
+      font-family:"Manrope",sans-serif;
+      font-size:34px;
+      line-height:1.1;
+      letter-spacing:-1.3px;
+      margin-bottom:9px;
+    }
+
+    .hero p{
+      color:#aab9b0;
+      font-size:13px;
+      max-width:650px;
+      line-height:1.7;
+    }
+
+    .hero-meta{
+      display:flex;
+      gap:9px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .status-pill{
+      min-height:38px;
+      padding:0 13px;
+      border-radius:11px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:#d8e2dd;
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .status-pill strong{
+      color:#fff;
+    }
+
+    /* =========================
+       FILTERS
+    ========================= */
+
+    .filter-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:17px;
+      margin-bottom:22px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .filters{
+      display:grid;
+      grid-template-columns:1.2fr 1fr 1fr auto auto;
+      gap:10px;
+      align-items:end;
+    }
+
+    .field label{
+      display:block;
+      font-size:10px;
+      color:#7a8881;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+      margin-bottom:7px;
+    }
+
+    .field select,
+    .field input{
+      width:100%;
+      height:43px;
+      border:1px solid var(--border);
+      background:#fbfcfb;
+      border-radius:11px;
+      padding:0 12px;
+      color:var(--text);
+      outline:none;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .field select:focus,
+    .field input:focus{
+      border-color:#8fd5ac;
+      box-shadow:0 0 0 3px rgba(24,169,87,.08);
+    }
+
+    .filter-btn{
+      height:43px;
+      border:0;
+      border-radius:11px;
+      padding:0 16px;
+      background:var(--green);
+      color:#fff;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    /* =========================
+       KPI
+    ========================= */
+
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:14px;
+      margin-bottom:22px;
+    }
+
+    .kpi{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow-sm);
+      min-width:0;
+    }
+
+    .kpi-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:14px;
+    }
+
+    .kpi-label{
+      color:var(--muted);
+      font-size:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.55px;
+    }
+
+    .kpi-icon{
+      width:31px;
+      height:31px;
+      border-radius:9px;
+      background:var(--green-soft);
+      color:var(--green);
+      display:grid;
+      place-items:center;
+      font-size:14px;
+      flex:none;
+    }
+
+    .kpi-value{
+      font-family:"Manrope",sans-serif;
+      font-size:24px;
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-.8px;
+    }
+
+    .kpi-note{
+      color:#85928c;
+      font-size:10px;
+      margin-top:9px;
+    }
+
+    .kpi-note.up{
+      color:#159447;
+      font-weight:700;
+    }
+
+    .kpi-note.pending{
+      color:#b97700;
+      font-weight:700;
+    }
+
+    .kpi-note.cancelled{
+      color:#c22d2d;
+      font-weight:700;
+    }
+
+    /* =========================
+       CARDS
+    ========================= */
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1.55fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .grid-equal{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-sm);
+      overflow:hidden;
+    }
+
+    .card-header{
+      padding:20px 21px 15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:15px;
+    }
+
+    .card-title{
+      font-family:"Manrope",sans-serif;
+      font-size:15px;
+      font-weight:800;
+      letter-spacing:-.3px;
+    }
+
+    .card-subtitle{
+      color:var(--muted);
+      font-size:11px;
+      margin-top:4px;
+    }
+
+    .mini-select{
+      height:33px;
+      border:1px solid var(--border);
+      border-radius:9px;
+      background:#fff;
+      font-size:11px;
+      font-weight:700;
+      padding:0 8px;
+      color:#46534c;
+      outline:none;
+    }
+
+    .card-body{
+      padding:0 21px 21px;
+    }
+
+    /* =========================
+       CHART
+    ========================= */
+
+    .chart-wrap{
+      position:relative;
+      height:290px;
+      padding-top:14px;
+    }
+
+    .chart-svg{
+      width:100%;
+      height:100%;
+      overflow:visible;
+    }
+
+    .chart-grid-line{
+      stroke:#e9efeb;
+      stroke-width:1;
+    }
+
+    .chart-area{
+      fill:rgba(24,169,87,.08);
+    }
+
+    .chart-line{
+      fill:none;
+      stroke:var(--green);
+      stroke-width:3;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .chart-point{
+      fill:#fff;
+      stroke:var(--green);
+      stroke-width:3;
+    }
+
+    .chart-label{
+      fill:#8a968f;
+      font-size:10px;
+      font-family:"DM Sans",sans-serif;
+    }
+
+    .chart-tooltip{
+      position:absolute;
+      background:#07110b;
+      color:#fff;
+      border-radius:10px;
+      padding:8px 10px;
+      font-size:10px;
+      pointer-events:none;
+      transform:translate(-50%,-120%);
+      opacity:0;
+      transition:.15s ease;
+      white-space:nowrap;
+      z-index:5;
+    }
+
+    .chart-tooltip strong{
+      display:block;
+      font-size:12px;
+      margin-top:2px;
+    }
+
+    .chart-legend{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      color:#78857e;
+      font-size:10px;
+      font-weight:600;
+    }
+
+    .legend-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--green);
+    }
+
+    /* =========================
+       ORDER CHART
+    ========================= */
+
+    .bar-chart{
+      height:290px;
+      display:flex;
+      align-items:flex-end;
+      gap:13px;
+      padding:15px 4px 4px;
+      border-bottom:1px solid #edf1ef;
+      border-top:1px solid transparent;
+    }
+
+    .bar-item{
+      flex:1;
+      min-width:0;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      align-items:center;
+      gap:7px;
+    }
+
+    .bar-track{
+      width:100%;
+      max-width:38px;
+      flex:1;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      position:relative;
+    }
+
+    .bar{
+      width:100%;
+      border-radius:8px 8px 3px 3px;
+      background:linear-gradient(180deg,#35c473,#18a957);
+      min-height:5px;
+      transition:.35s ease;
+      cursor:pointer;
+      position:relative;
+    }
+
+    .bar:hover{
+      transform:translateY(-3px);
+    }
+
+    .bar-value{
+      position:absolute;
+      left:50%;
+      top:-22px;
+      transform:translateX(-50%);
+      color:#4d5b53;
+      font-size:9px;
+      font-weight:800;
+    }
+
+    .bar-label{
+      color:#8a968f;
+      font-size:9px;
+      font-weight:700;
+    }
+
+    /* =========================
+       LISTS
+    ========================= */
+
+    .rank-list{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .rank-item{
+      display:grid;
+      grid-template-columns:32px 1fr auto;
+      align-items:center;
+      gap:11px;
+      padding:10px 0;
+      border-bottom:1px solid #edf1ef;
+    }
+
+    .rank-item:last-child{
+      border-bottom:0;
+    }
+
+    .rank-number{
+      width:29px;
+      height:29px;
+      display:grid;
+      place-items:center;
+      border-radius:9px;
+      background:#f2f6f3;
+      color:#637069;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .rank-info{
+      min-width:0;
+    }
+
+    .rank-info strong{
+      display:block;
+      font-size:11px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .rank-info span{
+      display:block;
+      color:#89958f;
+      font-size:9px;
+      margin-top:3px;
+    }
+
+    .rank-value{
+      text-align:right;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .rank-value small{
+      display:block;
+      color:#89958f;
+      font-size:9px;
+      font-weight:500;
+      margin-top:3px;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-card{
+      margin-bottom:18px;
+    }
+
+    .table-scroll{
+      overflow-x:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:760px;
+    }
+
+    th{
+      text-align:left;
+      padding:12px 21px;
+      background:#f8faf9;
+      border-top:1px solid #edf1ef;
+      border-bottom:1px solid #e5ebe7;
+      color:#78857e;
+      font-size:9px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+    }
+
+    td{
+      padding:14px 21px;
+      border-bottom:1px solid #edf1ef;
+      font-size:11px;
+      color:#344139;
+      vertical-align:middle;
+    }
+
+    tr:last-child td{
+      border-bottom:0;
+    }
+
+    .order-id{
+      font-weight:800;
+      color:#16231b;
+    }
+
+    .customer{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .customer-avatar{
+      width:29px;
+      height:29px;
+      border-radius:9px;
+      background:#eaf8f0;
+      color:var(--green-dark);
+      display:grid;
+      place-items:center;
+      font-size:9px;
+      font-weight:800;
+      flex:none;
+    }
+
+    .customer-name{
+      font-weight:700;
+    }
+
+    .customer-email{
+      color:#8b9791;
+      font-size:9px;
+      margin-top:2px;
+    }
+
+    .method{
+      font-weight:700;
+    }
+
+    .amount{
+      font-weight:800;
+      color:#16231b;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      min-height:24px;
+      padding:0 8px;
+      border-radius:999px;
+      font-size:9px;
+      font-weight:800;
+    }
+
+    .badge.paid{
+      color:#138746;
+      background:#e9f8ef;
+    }
+
+    .badge.pending{
+      color:#a96e00;
+      background:#fff5dc;
+    }
+
+    .badge.cancelled{
+      color:#b42323;
+      background:#ffebeb;
+    }
+
+    .badge.refunded{
+      color:#6941c6;
+      background:#f0e9ff;
+    }
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    .empty{
+      text-align:center;
+      padding:35px 15px;
+      color:#8b9791;
+      font-size:11px;
+    }
+
+    .empty-icon{
+      width:44px;
+      height:44px;
+      border-radius:13px;
+      background:#f1f5f2;
+      display:grid;
+      place-items:center;
+      margin:0 auto 10px;
+      font-size:18px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer{
+      padding:5px 2px 30px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:#89958f;
+      font-size:10px;
+    }
+
+    .footer strong{
+      color:#536058;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast{
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      background:#07110b;
+      color:#fff;
+      border-radius:13px;
+      padding:12px 16px;
+      font-size:11px;
+      font-weight:700;
+      box-shadow:0 18px 40px rgba(0,0,0,.2);
+      transform:translateY(20px);
+      opacity:0;
+      pointer-events:none;
+      transition:.25s ease;
+      z-index:3000;
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .toast.show{
+      transform:translateY(0);
+      opacity:1;
+    }
+
+    .toast-dot{
+      width:7px;
+      height:7px;
+      background:#5ee091;
+      border-radius:50%;
+    }
+
+    /* =========================
+       OVERLAY
+    ========================= */
+
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      z-index:900;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width:1450px){
+      .kpi-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .filters{
+        grid-template-columns:repeat(3,1fr);
+      }
+    }
+
+    @media(max-width:1100px){
+      .grid-2,
+      .grid-equal{
+        grid-template-columns:1fr;
+      }
+
+      .content{
+        padding:25px;
+      }
+
+      .topbar{
+        padding:0 25px;
+      }
+    }
+
+    @media(max-width:900px){
+      :root{
+        --sidebar:272px;
+      }
+
+      .sidebar{
+        transform:translateX(-100%);
+        box-shadow:20px 0 60px rgba(0,0,0,.18);
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .overlay.show{
+        display:block;
+      }
+
+      .main{
+        margin-left:0;
+      }
+
+      .mobile-menu{
+        display:block;
+      }
+
+      .topbar{
+        height:68px;
+      }
+
+      .hero-inner{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .hero-meta{
+        justify-content:flex-start;
+      }
+    }
+
+    @media(max-width:650px){
+      .content{
+        padding:16px;
+      }
+
+      .topbar{
+        padding:0 16px;
+      }
+
+      .top-actions .marketplace-btn{
+        display:none;
+      }
+
+      .hero{
+        padding:24px 20px;
+        border-radius:22px;
+      }
+
+      .hero h1{
+        font-size:27px;
+      }
+
+      .hero p{
+        font-size:12px;
+      }
+
+      .kpi-grid{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+      }
+
+      .kpi{
+        padding:15px;
+      }
+
+      .kpi-value{
+        font-size:20px;
+      }
+
+      .filters{
+        grid-template-columns:1fr;
+      }
+
+      .filter-card{
+        padding:13px;
+      }
+
+      .card-header{
+        padding:17px 16px 13px;
+      }
+
+      .card-body{
+        padding:0 16px 16px;
+      }
+
+      .chart-wrap{
+        height:230px;
+      }
+
+      .bar-chart{
+        height:230px;
+        gap:7px;
+      }
+
+      .footer{
+        flex-direction:column;
+        gap:7px;
+        align-items:flex-start;
+      }
+    }
+
+    @media(max-width:400px){
+      .kpi-grid{
+        grid-template-columns:1fr;
+      }
+
+      .top-actions .outline-btn{
+        display:none;
+      }
+    }
+
+    /* =========================
+       PRINT
+    ========================= */
+
+    @media print{
+      body{
+        background:#fff;
+      }
+
+      .sidebar,
+      .topbar,
+      .filter-card,
+      .top-actions,
+      .mobile-menu,
+      .footer,
+      .toast{
+        display:none!important;
+      }
+
+      .main{
+        margin-left:0;
+      }
+
+      .content{
+        padding:0;
+        max-width:none;
+      }
+
+      .hero{
+        color:#000;
+        background:#fff;
+        border:1px solid #ddd;
+        box-shadow:none;
+      }
+
+      .hero p,
+      .eyebrow{
+        color:#555;
+      }
+
+      .card,
+      .kpi{
+        box-shadow:none;
+      }
+    }
+  </style>
+<script src="../js/wd-sync.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-top">
+      <a href="../index.html" class="brand">
+        <img src="../logo.png" class="brand-logo" alt="Website Deals">
+        <div class="brand-text">
+          <strong>Website Deals</strong>
+          <span>Admin Control Center</span>
+        </div>
+      </a>
+    </div>
+
+    <nav class="nav">
+
+      <div class="nav-section">Marketplace</div>
+
+      <a href="dashboard.html" class="nav-link">
+        <span class="nav-icon">⌂</span>
+        Dashboard
+      </a>
+
+      <a href="websites.html" class="nav-link">
+        <span class="nav-icon">▦</span>
+        Websites
+      </a>
+
+      <a href="categories.html" class="nav-link">
+        <span class="nav-icon">◫</span>
+        Categories
+      </a>
+
+      <a href="orders.html" class="nav-link">
+        <span class="nav-icon">☷</span>
+        Orders
+      </a>
+
+      <a href="payments.html" class="nav-link">
+        <span class="nav-icon">৳</span>
+        Payments
+      </a>
+
+      <a href="customers.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Customers
+      </a>
+
+      <a href="newsletter.html" class="nav-link">
+        <span class="nav-icon">✉</span>
+        Newsletter
+      </a>
+
+      <div class="nav-section">Reports</div>
+
+      <a href="reports.html" class="nav-link active">
+        <span class="nav-icon">▥</span>
+        Reports
+      </a>
+
+      <a href="monthly-report.html" class="nav-link">
+        <span class="nav-icon">◷</span>
+        Monthly Report
+      </a>
+
+      <div class="nav-section restricted-section" id="restrictedNav">
+        Restricted Controls
+      </div>
+
+      <a href="admins.html" class="nav-link restricted-link" id="adminsNav">
+        <span class="nav-icon">♟</span>
+        Admin Management
+      </a>
+
+      <a href="settings.html" class="nav-link restricted-link" id="settingsNav">
+        <span class="nav-icon">⚙</span>
+        System Settings
+      </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+      <div class="admin-mini">
+        <div class="avatar" id="sidebarAvatar">SA</div>
+
+        <div class="admin-mini-info">
+          <strong id="sidebarAdminName">Super Admin</strong>
+          <span id="sidebarAdminRole">Super Administrator</span>
+        </div>
+      </div>
+
+      <button class="logout-btn" id="logoutBtn">
+        ↪ &nbsp; Sign Out
+      </button>
+
+    </div>
+
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main class="main">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">
+          ☰
+        </button>
+
+        <div>
+          <div class="page-label">Reports</div>
+          <div class="breadcrumb">Admin / Reports / Marketplace Analytics</div>
+        </div>
+
+      </div>
+
+      <div class="top-actions">
+
+        <button class="outline-btn" id="refreshBtn">
+          ↻ &nbsp; Refresh
+        </button>
+
+        <button class="outline-btn marketplace-btn" id="marketplaceBtn">
+          ↗ &nbsp; Marketplace
+        </button>
+
+        <button class="primary-btn" id="printBtn">
+          ⎙ &nbsp; Print
+        </button>
+
+      </div>
+
+    </header>
+
+    <div class="content">
+
+      <!-- HERO -->
+
+      <section class="hero">
+
+        <div class="hero-inner">
+
+          <div>
+            <div class="eyebrow">
+              <span class="eyebrow-dot"></span>
+              Marketplace Intelligence
+            </div>
+
+            <h1>Reports & Analytics</h1>
+
+            <p>
+              Monitor revenue, orders, payments, categories and website
+              performance from one clean admin reporting center.
+            </p>
+          </div>
+
+          <div class="hero-meta">
+
+            <div class="status-pill">
+              ● &nbsp; Report Status
+              <strong>Live</strong>
+            </div>
+
+            <div class="status-pill">
+              Last Updated
+              <strong id="lastUpdated">Just now</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- FILTERS -->
+
+      <section class="filter-card">
+
+        <div class="filters">
+
+          <div class="field">
+            <label>Date Range</label>
+
+            <select id="dateRange">
+              <option value="7">Last 7 Days</option>
+              <option value="30" selected>Last 30 Days</option>
+              <option value="90">Last 90 Days</option>
+              <option value="365">Last 12 Months</option>
+              <option value="all">All Time</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Report Type</label>
+
+            <select id="reportType">
+              <option value="overview" selected>Overview</option>
+              <option value="sales">Sales Report</option>
+              <option value="categories">Category Report</option>
+              <option value="payments">Payment Report</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Compare With</label>
+
+            <select id="compareRange">
+              <option value="none" selected>No Comparison</option>
+              <option value="previous">Previous Period</option>
+              <option value="year">Previous Year</option>
+            </select>
+          </div>
+
+          <button class="filter-btn" id="applyFilters">
+            Apply Report
+          </button>
+
+          <button class="outline-btn" id="exportBtn">
+            ↓ &nbsp; Export CSV
+          </button>
+
+        </div>
+
+      </section>
+
+      <!-- KPI -->
+
+      <section class="kpi-grid">
+
+        <div class="kpi">
+          <div class="kpi-top">
+            <span class="kpi-label">Total Revenue</span>
+            <span class="kpi-icon">৳</span>
+          </div>
+
+          <div class="kpi-value" id="totalRevenue">৳0</div>
+          <div class="kpi-note up" id="revenueNote">Revenue generated</div>
+        </div>
+
+
+        <div class="kpi">
+          <div class="kpi-top">
+            <span class="kpi-label">Total Orders</span>
+            <span class="kpi-icon">☷</span>
+          </div>
+
+          <div class="kpi-value" id="totalOrders">0</div>
+          <div class="kpi-note up">Marketplace orders</div>
+        </div>
+
+
+        <div class="kpi">
+          <div class="kpi-top">
+            <span class="kpi-label">Paid Orders</span>
+            <span class="kpi-icon">✓</span>
+          </div>
+
+          <div class="kpi-value" id="paidOrders">0</div>
+          <div class="kpi-note up">Successfully paid</div>
+        </div>
+
+
+        <div class="kpi">
+          <div class="kpi-top">
+            <span class="kpi-label">Pending</span>
+            <span class="kpi-icon">◷</span>
+          </div>
+
+          <div class="kpi-value" id="pendingOrders">0</div>
+          <div class="kpi-note pending">Needs attention</div>
+        </div>
+
+
+        <div class="kpi">
+          <div class="kpi-top">
+            <span class="kpi-label">Cancelled</span>
+            <span class="kpi-icon">×</span>
+          </div>
+
+          <div class="kpi-value" id="cancelledOrders">0</div>
+          <div class="kpi-note cancelled">Cancelled orders</div>
+        </div>
+
+
+        <div class="kpi">
+          <div class="kpi-top">
+            <span class="kpi-label">Average Order</span>
+            <span class="kpi-icon">↗</span>
+          </div>
+
+          <div class="kpi-value" id="averageOrder">৳0</div>
+          <div class="kpi-note">Per paid order</div>
+        </div>
+
+      </section>
+
+
+      <!-- REVENUE + ORDERS -->
+
+      <section class="grid-2">
+
+        <!-- REVENUE CHART -->
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+              <div class="card-title">Revenue Overview</div>
+              <div class="card-subtitle">
+                Revenue trend for the selected period
+              </div>
+            </div>
+
+            <div class="chart-legend">
+              <span class="legend-dot"></span>
+              Revenue
+            </div>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="chart-wrap" id="revenueChartWrap">
+
+              <svg
+                class="chart-svg"
+                id="revenueChart"
+                viewBox="0 0 760 280"
+                preserveAspectRatio="none"
+              ></svg>
+
+              <div class="chart-tooltip" id="chartTooltip">
+                <span id="tooltipDate">Date</span>
+                <strong id="tooltipValue">৳0</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ORDERS CHART -->
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+              <div class="card-title">Orders Activity</div>
+              <div class="card-subtitle">
+                Order volume by period
+              </div>
+            </div>
+
+            <select class="mini-select" id="ordersChartRange">
+              <option value="7">7 Days</option>
+              <option value="14">14 Days</option>
+              <option value="30" selected>30 Days</option>
+            </select>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="bar-chart" id="ordersChart"></div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- PERFORMANCE -->
+
+      <section class="grid-equal">
+
+        <!-- WEBSITES -->
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+              <div class="card-title">Top Selling Websites</div>
+              <div class="card-subtitle">
+                Websites generating the most orders
+              </div>
+            </div>
+
+            <span class="badge paid">TOP</span>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="rank-list" id="topWebsites"></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- CATEGORIES -->
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+              <div class="card-title">Top Categories</div>
+              <div class="card-subtitle">
+                Category performance by order volume
+              </div>
+            </div>
+
+            <span class="badge paid">TOP</span>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="rank-list" id="topCategories"></div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- TRANSACTIONS -->
+
+      <section class="card table-card">
+
+        <div class="card-header">
+
+          <div>
+            <div class="card-title">Recent Transactions</div>
+
+            <div class="card-subtitle">
+              Latest payment activity across the marketplace
+            </div>
+          </div>
+
+          <button class="outline-btn" id="transactionExport">
+            ↓ CSV
+          </button>
+
+        </div>
+
+        <div class="table-scroll">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Payment Method</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="transactionTable"></tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- REPORT SUMMARY -->
+
+      <section class="grid-equal">
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+              <div class="card-title">Payment Breakdown</div>
+              <div class="card-subtitle">
+                Transactions grouped by payment method
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="rank-list" id="paymentBreakdown"></div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <div>
+              <div class="card-title">Report Summary</div>
+              <div class="card-subtitle">
+                Current reporting environment
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="rank-list">
+
+              <div class="rank-item">
+                <div class="rank-number">01</div>
+
+                <div class="rank-info">
+                  <strong>Reporting Period</strong>
+                  <span id="summaryPeriod">Last 30 Days</span>
+                </div>
+
+                <div class="rank-value">
+                  Active
+                </div>
+              </div>
+
+
+              <div class="rank-item">
+                <div class="rank-number">02</div>
+
+                <div class="rank-info">
+                  <strong>Currency</strong>
+                  <span>Marketplace default</span>
+                </div>
+
+                <div class="rank-value">
+                  BDT
+                </div>
+              </div>
+
+
+              <div class="rank-item">
+                <div class="rank-number">03</div>
+
+                <div class="rank-info">
+                  <strong>Data Source</strong>
+                  <span>Browser LocalStorage</span>
+                </div>
+
+                <div class="rank-value">
+                  Prototype
+                </div>
+              </div>
+
+
+              <div class="rank-item">
+                <div class="rank-number">04</div>
+
+                <div class="rank-info">
+                  <strong>Generated By</strong>
+                  <span id="generatedBy">Super Admin</span>
+                </div>
+
+                <div class="rank-value">
+                  Admin
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <footer class="footer">
+
+        <div>
+          © 2026 <strong>Website Deals</strong> — Admin Reports
+        </div>
+
+        <div>
+          Analytics Center · v1.0.0
+        </div>
+
+      </footer>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<div class="toast" id="toast">
+  <span class="toast-dot"></span>
+  <span id="toastText">Done</span>
+</div>
+
+
+<script>
+/* =========================================================
+   WEBSITE DEALS
+   ADMIN REPORTS
+========================================================= */
+
+(function(){
+
+  "use strict";
+
+
+  /* =======================================================
+     AUTH
+  ======================================================= */
+
+  const AUTH_KEY = "websiteDealsAdminAuth";
+
+  function getAdminSession(){
+
+    try{
+
+      const raw = sessionStorage.getItem(AUTH_KEY);
+
+      if(!raw){
+        return null;
+      }
+
+      const session = JSON.parse(raw);
+
+      if(
+        !session ||
+        session.authenticated !== true
+      ){
+        return null;
+      }
+
+      return session;
+
+    }catch(error){
+
+      return null;
+
+    }
+
+  }
+
+
+  const adminSession = getAdminSession();
+
+  if(!adminSession){
+
+    window.location.replace("login/");
+
+    return;
+
+  }
+
+
+  /* =======================================================
+     ELEMENTS
+  ======================================================= */
+
+  const $ = id => document.getElementById(id);
+
+
+  /* =======================================================
+     ADMIN IDENTITY
+  ======================================================= */
+
+  const adminName =
+    adminSession.name ||
+    adminSession.email ||
+    "Admin";
+
+  const adminRole =
+    String(adminSession.role || "admin")
+      .toLowerCase();
+
+
+  $("sidebarAdminName").textContent = adminName;
+
+  $("sidebarAdminRole").textContent =
+    adminRole === "superadmin"
+      ? "Super Administrator"
+      : "Administrator";
+
+  $("generatedBy").textContent = adminName;
+
+
+  const initials =
+    adminName
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0,2)
+      .map(word => word.charAt(0))
+      .join("")
+      .toUpperCase() || "AD";
+
+  $("sidebarAvatar").textContent = initials;
+
+
+  /* =======================================================
+     RESTRICTED NAV
+  ======================================================= */
+
+  const restrictedNav =
+    $("restrictedNav");
+
+  const restrictedLinks =
+    document.querySelectorAll(".restricted-link");
+
+  if(adminRole !== "superadmin"){
+
+    if(restrictedNav){
+      restrictedNav.style.display = "none";
+    }
+
+    restrictedLinks.forEach(link => {
+      link.style.display = "none";
+    });
+
+  }
+
+
+  /* =======================================================
+     STORAGE
+  ======================================================= */
+
+  const STORAGE = {
+
+    transactions:
+      "websiteDealsTransactions",
+
+    alternativeTransactions:
+      "websiteDealsPaymentTransactions",
+
+    orders:
+      "websiteDealsOrders",
+
+    websites:
+      "websiteDealsAdminWebsites",
+
+    categories:
+      "websiteDealsCategories"
+
+  };
+
+
+  /* =======================================================
+     HELPERS
+  ======================================================= */
+
+  function escapeHTML(value){
+
+    return String(value ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+
+  }
+
+
+  function money(value){
+
+    const number =
+      Number(value) || 0;
+
+    return "৳" +
+      new Intl.NumberFormat("en-BD",{
+        maximumFractionDigits:0
+      }).format(number);
+
+  }
+
+
+  function number(value){
+
+    return new Intl.NumberFormat("en-BD",{
+      maximumFractionDigits:0
+    }).format(Number(value) || 0);
+
+  }
+
+
+  function showToast(message){
+
+    const toast = $("toast");
+
+    $("toastText").textContent =
+      message;
+
+    toast.classList.add("show");
+
+    clearTimeout(
+      window.__toastTimer
+    );
+
+    window.__toastTimer =
+      setTimeout(() => {
+
+        toast.classList.remove("show");
+
+      },2600);
+
+  }
+
+
+  function getStorageArray(keys){
+
+    for(const key of keys){
+
+      try{
+
+        const raw =
+          localStorage.getItem(key);
+
+        if(!raw){
+          continue;
+        }
+
+        const parsed =
+          JSON.parse(raw);
+
+        if(Array.isArray(parsed)){
+          return parsed;
+        }
+
+      }catch(error){}
+
+    }
+
+    return [];
+
+  }
+
+
+  function safeDate(value){
+
+    if(!value){
+      return null;
+    }
+
+    const date =
+      new Date(value);
+
+    if(
+      Number.isNaN(
+        date.getTime()
+      )
+    ){
+      return null;
+    }
+
+    return date;
+
+  }
+
+
+  function formatDate(value){
+
+    const date =
+      safeDate(value);
+
+    if(!date){
+
+      return "—";
+
+    }
+
+    return date.toLocaleDateString(
+      "en-BD",
+      {
+        day:"2-digit",
+        month:"short",
+        year:"numeric"
+      }
+    );
+
+  }
+
+
+  function formatShortDate(value){
+
+    const date =
+      safeDate(value);
+
+    if(!date){
+
+      return "—";
+
+    }
+
+    return date.toLocaleDateString(
+      "en-BD",
+      {
+        day:"2-digit",
+        month:"short"
+      }
+    );
+
+  }
+
+
+  function getTransactionStatus(item){
+
+    const raw =
+      String(
+        item.status ||
+        item.paymentStatus ||
+        item.orderStatus ||
+        "paid"
+      ).toLowerCase();
+
+    if(
+      raw.includes("cancel") ||
+      raw.includes("failed")
+    ){
+      return "cancelled";
+    }
+
+    if(
+      raw.includes("refund")
+    ){
+      return "refunded";
+    }
+
+    if(
+      raw.includes("pending") ||
+      raw.includes("unpaid") ||
+      raw.includes("processing")
+    ){
+      return "pending";
+    }
+
+    return "paid";
+
+  }
+
+
+  function getTransactionAmount(item){
+
+    return Number(
+      item.amount ??
+      item.total ??
+      item.price ??
+      item.paidAmount ??
+      0
+    ) || 0;
+
+  }
+
+
+  function getTransactionDate(item){
+
+    return (
+      item.date ||
+      item.createdAt ||
+      item.created_at ||
+      item.timestamp ||
+      item.updatedAt ||
+      new Date().toISOString()
+    );
+
+  }
+
+
+  function getTransactionId(item,index){
+
+    return (
+      item.id ||
+      item.orderId ||
+      item.order ||
+      item.transactionId ||
+      `WD-${1028-index}`
+    );
+
+  }
+
+
+  function getCustomerName(item){
+
+    return (
+      item.customer ||
+      item.customerName ||
+      item.name ||
+      item.fullName ||
+      "Marketplace Customer"
+    );
+
+  }
+
+
+  function getCustomerEmail(item){
+
+    return (
+      item.email ||
+      item.customerEmail ||
+      "customer@example.com"
+    );
+
+  }
+
+
+  function getPaymentMethod(item){
+
+    return (
+      item.method ||
+      item.paymentMethod ||
+      item.gateway ||
+      item.type ||
+      "bKash"
+    );
+
+  }
+
+
+  /* =======================================================
+     DEMO TRANSACTIONS
+  ======================================================= */
+
+  const DEMO_TRANSACTIONS = [];
+
+
+  /* =======================================================
+     LOAD TRANSACTIONS
+  ======================================================= */
+
+  function loadTransactions(){
+
+    const stored =
+      getStorageArray([
+        STORAGE.transactions,
+        STORAGE.alternativeTransactions,
+        STORAGE.orders
+      ]);
+
+    if(stored.length){
+
+      return stored.map((item,index) => {
+
+        return {
+
+          ...item,
+
+          id:getTransactionId(item,index),
+
+          customer:getCustomerName(item),
+
+          email:getCustomerEmail(item),
+
+          method:getPaymentMethod(item),
+
+          amount:getTransactionAmount(item),
+
+          status:getTransactionStatus(item),
+
+          date:getTransactionDate(item)
+
+        };
+
+      });
+
+    }
+
+    return DEMO_TRANSACTIONS.map(item => ({
+      ...item
+    }));
+
+  }
+
+
+  let transactions =
+    loadTransactions();
+
+
+  /* =======================================================
+     LOAD WEBSITES
+  ======================================================= */
+
+  const DEMO_WEBSITES = [];
+
+
+  function loadWebsites(){
+
+    const stored =
+      getStorageArray([
+        STORAGE.websites
+      ]);
+
+    return stored.length
+      ? stored
+      : DEMO_WEBSITES;
+
+  }
+
+
+  let websites =
+    loadWebsites();
+
+
+  /* =======================================================
+     LOAD CATEGORIES
+  ======================================================= */
+
+  const DEMO_CATEGORIES = [];
+
+
+  function loadCategories(){
+
+    const stored =
+      getStorageArray([
+        STORAGE.categories
+      ]);
+
+    return stored.length
+      ? stored
+      : DEMO_CATEGORIES;
+
+  }
+
+
+  let categories =
+    loadCategories();
+
+
+  /* =======================================================
+     FILTER
+  ======================================================= */
+
+  let activeDays = 30;
+
+
+  function getFilteredTransactions(){
+
+    if(activeDays === "all"){
+
+      return [...transactions];
+
+    }
+
+    const now =
+      new Date();
+
+    const start =
+      new Date(now);
+
+    start.setDate(
+      now.getDate() -
+      Number(activeDays)
+    );
+
+    return transactions.filter(item => {
+
+      const date =
+        safeDate(item.date);
+
+      if(!date){
+
+        return true;
+
+      }
+
+      return date >= start;
+
+    });
+
+  }
+
+
+  /* =======================================================
+     STATS
+  ======================================================= */
+
+  function renderStats(){
+
+    const list =
+      getFilteredTransactions();
+
+    const paid =
+      list.filter(
+        item =>
+          item.status === "paid"
+      );
+
+    const pending =
+      list.filter(
+        item =>
+          item.status === "pending"
+      );
+
+    const cancelled =
+      list.filter(
+        item =>
+          item.status === "cancelled"
+      );
+
+    const revenue =
+      paid.reduce(
+        (sum,item) =>
+          sum + Number(item.amount || 0),
+        0
+      );
+
+    const average =
+      paid.length
+        ? revenue / paid.length
+        : 0;
+
+
+    $("totalRevenue").textContent =
+      money(revenue);
+
+    $("totalOrders").textContent =
+      number(list.length);
+
+    $("paidOrders").textContent =
+      number(paid.length);
+
+    $("pendingOrders").textContent =
+      number(pending.length);
+
+    $("cancelledOrders").textContent =
+      number(cancelled.length);
+
+    $("averageOrder").textContent =
+      money(average);
+
+
+    $("revenueNote").textContent =
+      paid.length
+        ? `${number(paid.length)} paid transaction${paid.length === 1 ? "" : "s"}`
+        : "No paid transactions";
+
+
+    const rangeLabel =
+      getRangeLabel(activeDays);
+
+    $("summaryPeriod").textContent =
+      rangeLabel;
+
+  }
+
+
+  function getRangeLabel(value){
+
+    if(value === "all"){
+      return "All Time";
+    }
+
+    if(Number(value) === 365){
+      return "Last 12 Months";
+    }
+
+    return `Last ${value} Days`;
+
+  }
+
+
+  /* =======================================================
+     REVENUE CHART
+  ======================================================= */
+
+  function getChartDays(){
+
+    if(activeDays === "7"){
+      return 7;
+    }
+
+    if(activeDays === "90"){
+      return 12;
+    }
+
+    if(activeDays === "365"){
+      return 12;
+    }
+
+    if(activeDays === "all"){
+      return 12;
+    }
+
+    return 12;
+
+  }
+
+
+  function buildRevenueData(){
+
+    const count =
+      getChartDays();
+
+    const now =
+      new Date();
+
+    const data = [];
+
+
+    for(let i=count-1;i>=0;i--){
+
+      let date;
+
+      if(activeDays === "365" || activeDays === "all"){
+
+        date =
+          new Date(
+            now.getFullYear(),
+            now.getMonth()-i,
+            1
+          );
+
+      }else{
+
+        const step =
+          Math.max(
+            1,
+            Math.floor(
+              Number(activeDays) / count
+            )
+          );
+
+        date =
+          new Date(now);
+
+        date.setDate(
+          now.getDate() -
+          (i * step)
+        );
+
+      }
+
+
+      const paidRevenue =
+        transactions
+          .filter(item => {
+
+            if(item.status !== "paid"){
+              return false;
+            }
+
+            const transactionDate =
+              safeDate(item.date);
+
+            if(!transactionDate){
+              return false;
+            }
+
+            if(
+              activeDays === "365" ||
+              activeDays === "all"
+            ){
+
+              return (
+                transactionDate.getFullYear() ===
+                  date.getFullYear() &&
+                transactionDate.getMonth() ===
+                  date.getMonth()
+              );
+
+            }
+
+
+            const sameDay =
+              transactionDate.toDateString() ===
+              date.toDateString();
+
+            return sameDay;
+
+          })
+          .reduce(
+            (sum,item) =>
+              sum + Number(item.amount || 0),
+            0
+          );
+
+
+      data.push({
+        date,
+        value:paidRevenue
+      });
+
+    }
+
+
+    /*
+      If there are only demo/local transactions,
+      create a visually useful baseline so the chart
+      remains informative.
+    */
+
+    const hasRevenue =
+      data.some(item => item.value > 0);
+
+    if(!hasRevenue){
+
+      return data.map(
+        (item,index) => ({
+          ...item,
+          value:
+            4500 +
+            (index * 780) +
+            ((index % 3) * 1300)
+        })
+      );
+
+    }
+
+
+    return data;
+
+  }
+
+
+  function renderRevenueChart(){
+
+    const svg =
+      $("revenueChart");
+
+    const data =
+      buildRevenueData();
+
+
+    const width = 760;
+    const height = 280;
+
+    const padLeft = 42;
+    const padRight = 12;
+    const padTop = 20;
+    const padBottom = 34;
+
+    const innerWidth =
+      width -
+      padLeft -
+      padRight;
+
+    const innerHeight =
+      height -
+      padTop -
+      padBottom;
+
+
+    const maxValue =
+      Math.max(
+        ...data.map(item => item.value),
+        1
+      );
+
+
+    const niceMax =
+      Math.ceil(
+        maxValue / 5000
+      ) * 5000;
+
+
+    const points =
+      data.map((item,index) => {
+
+        const x =
+          padLeft +
+          (
+            index /
+            Math.max(data.length - 1,1)
+          ) *
+          innerWidth;
+
+        const y =
+          padTop +
+          innerHeight -
+          (
+            item.value /
+            niceMax
+          ) *
+          innerHeight;
+
+        return {
+          ...item,
+          x,
+          y
+        };
+
+      });
+
+
+    let html = "";
+
+
+    /* horizontal grid */
+
+    for(let i=0;i<=4;i++){
+
+      const y =
+        padTop +
+        (
+          innerHeight *
+          i / 4
+        );
+
+      const value =
+        niceMax -
+        (
+          niceMax *
+          i / 4
+        );
+
+
+      html += `
+        <line
+          class="chart-grid-line"
+          x1="${padLeft}"
+          y1="${y}"
+          x2="${width-padRight}"
+          y2="${y}"
+        ></line>
+
+        <text
+          class="chart-label"
+          x="0"
+          y="${y+4}"
+        >${formatCompactMoney(value)}</text>
+      `;
+
+    }
+
+
+    const linePath =
+      points
+        .map(
+          (point,index) =>
+            `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`
+        )
+        .join(" ");
+
+
+    const areaPath =
+      `${linePath}
+       L ${points[points.length-1].x} ${height-padBottom}
+       L ${points[0].x} ${height-padBottom}
+       Z`;
+
+
+    html += `
+      <path
+        class="chart-area"
+        d="${areaPath}"
+      ></path>
+
+      <path
+        class="chart-line"
+        d="${linePath}"
+      ></path>
+    `;
+
+
+    points.forEach((point,index) => {
+
+      const showLabel =
+        data.length <= 7 ||
+        index % Math.ceil(data.length / 6) === 0 ||
+        index === data.length-1;
+
+
+      html += `
+        <circle
+          class="chart-point"
+          cx="${point.x}"
+          cy="${point.y}"
+          r="4"
+          data-index="${index}"
+        ></circle>
+      `;
+
+
+      if(showLabel){
+
+        html += `
+          <text
+            class="chart-label"
+            text-anchor="middle"
+            x="${point.x}"
+            y="${height-8}"
+          >${formatShortDate(point.date)}</text>
+        `;
+
+      }
+
+    });
+
+
+    svg.innerHTML = html;
+
+
+    const pointsEls =
+      svg.querySelectorAll(".chart-point");
+
+
+    pointsEls.forEach(pointEl => {
+
+      pointEl.addEventListener(
+        "mouseenter",
+        function(){
+
+          const index =
+            Number(
+              this.dataset.index
+            );
+
+          const item =
+            points[index];
+
+          const wrap =
+            $("revenueChartWrap");
+
+          const rect =
+            svg.getBoundingClientRect();
+
+          const wrapRect =
+            wrap.getBoundingClientRect();
+
+          const scaleX =
+            rect.width / width;
+
+          const scaleY =
+            rect.height / height;
+
+
+          const left =
+            (
+              rect.left -
+              wrapRect.left
+            ) +
+            item.x * scaleX;
+
+          const top =
+            (
+              rect.top -
+              wrapRect.top
+            ) +
+            item.y * scaleY;
+
+
+          const tooltip =
+            $("chartTooltip");
+
+          tooltip.style.left =
+            `${left}px`;
+
+          tooltip.style.top =
+            `${top}px`;
+
+          $("tooltipDate").textContent =
+            formatDate(item.date);
+
+          $("tooltipValue").textContent =
+            money(item.value);
+
+          tooltip.style.opacity =
+            "1";
+
+        }
+      );
+
+
+      pointEl.addEventListener(
+        "mouseleave",
+        function(){
+
+          $("chartTooltip")
+            .style.opacity = "0";
+
+        }
+      );
+
+    });
+
+  }
+
+
+  function formatCompactMoney(value){
+
+    const n =
+      Number(value) || 0;
+
+    if(n >= 100000){
+
+      return "৳" +
+        (n / 100000)
+          .toFixed(1)
+          .replace(".0","") +
+        "L";
+
+    }
+
+    if(n >= 1000){
+
+      return "৳" +
+        (n / 1000)
+          .toFixed(0) +
+        "k";
+
+    }
+
+    return "৳" + Math.round(n);
+
+  }
+
+
+  /* =======================================================
+     ORDERS CHART
+  ======================================================= */
+
+  function renderOrdersChart(){
+
+    const container =
+      $("ordersChart");
+
+    const days =
+      Number(
+        $("ordersChartRange").value
+      ) || 30;
+
+
+    const now =
+      new Date();
+
+    const data = [];
+
+
+    for(let i=days-1;i>=0;i--){
+
+      const date =
+        new Date(now);
+
+      date.setDate(
+        now.getDate() - i
+      );
+
+
+      const count =
+        transactions.filter(item => {
+
+          const itemDate =
+            safeDate(item.date);
+
+          if(!itemDate){
+            return false;
+          }
+
+          return (
+            itemDate.toDateString() ===
+            date.toDateString()
+          );
+
+        }).length;
+
+
+      data.push({
+        date,
+        value:count
+      });
+
+    }
+
+
+    let finalData = data;
+
+
+    if(!data.some(item => item.value > 0)){
+
+      finalData =
+        data.map(
+          (item,index) => ({
+            ...item,
+            value:
+              4 +
+              ((index * 3) % 11)
+          })
+        );
+
+    }
+
+
+    const max =
+      Math.max(
+        ...finalData.map(
+          item => item.value
+        ),
+        1
+      );
+
+
+    /*
+      Show fewer bars on small screens.
+    */
+
+    const visible =
+      days <= 14
+        ? finalData
+        : finalData.filter(
+            (_,index) =>
+              index % 3 === 0 ||
+              index === finalData.length-1
+          );
+
+
+    container.innerHTML =
+      visible.map(item => {
+
+        const height =
+          Math.max(
+            7,
+            (
+              item.value /
+              max
+            ) * 100
+          );
+
+
+        return `
+          <div
+            class="bar-item"
+            title="${escapeHTML(formatDate(item.date))}: ${item.value} orders"
+          >
+
+            <div class="bar-track">
+
+              <div
+                class="bar"
+                style="height:${height}%"
+              >
+
+                <span class="bar-value">
+                  ${item.value}
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="bar-label">
+              ${formatShortDate(item.date)}
+            </div>
+
+          </div>
+        `;
+
+      })
+      .join("");
+
+  }
+
+
+  /* =======================================================
+     TOP WEBSITES
+  ======================================================= */
+
+  function getWebsiteName(item){
+
+    return (
+      item.website ||
+      item.websiteName ||
+      item.product ||
+      item.productName ||
+      item.name ||
+      ""
+    );
+
+  }
+
+
+  function renderTopWebsites(){
+
+    const container =
+      $("topWebsites");
+
+    const list =
+      getFilteredTransactions()
+        .filter(
+          item =>
+            item.status === "paid"
+        );
+
+
+    const map =
+      new Map();
+
+
+    list.forEach(item => {
+
+      const name =
+        getWebsiteName(item) ||
+        "Website Product";
+
+
+      if(!map.has(name)){
+
+        map.set(
+          name,
+          {
+            name,
+            orders:0,
+            revenue:0
+          }
+        );
+
+      }
+
+
+      const current =
+        map.get(name);
+
+      current.orders += 1;
+
+      current.revenue +=
+        Number(item.amount || 0);
+
+    });
+
+
+    let results =
+      [...map.values()]
+        .sort(
+          (a,b) =>
+            b.revenue -
+            a.revenue
+        )
+        .slice(0,5);
+
+
+    if(!results.length){
+
+      results =
+        websites
+          .slice(0,5)
+          .map((item,index) => ({
+            name:
+              item.name ||
+              `Website ${index+1}`,
+            orders:
+              8-index,
+            revenue:
+              Number(item.price || 5000) *
+              (8-index)
+          }));
+
+    }
+
+
+    container.innerHTML =
+      results.map(
+        (item,index) => {
+
+          return `
+            <div class="rank-item">
+
+              <div class="rank-number">
+                ${String(index+1).padStart(2,"0")}
+              </div>
+
+              <div class="rank-info">
+
+                <strong>
+                  ${escapeHTML(item.name)}
+                </strong>
+
+                <span>
+                  ${number(item.orders)} order${item.orders === 1 ? "" : "s"}
+                </span>
+
+              </div>
+
+              <div class="rank-value">
+
+                ${money(item.revenue)}
+
+                <small>Revenue</small>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      ).join("");
+
+  }
+
+
+  /* =======================================================
+     TOP CATEGORIES
+  ======================================================= */
+
+  function getCategoryName(item){
+
+    return (
+      item.category ||
+      item.categoryName ||
+      item.type ||
+      "Uncategorized"
+    );
+
+  }
+
+
+  function renderTopCategories(){
+
+    const container =
+      $("topCategories");
+
+
+    const list =
+      getFilteredTransactions()
+        .filter(
+          item =>
+            item.status === "paid"
+        );
+
+
+    const map =
+      new Map();
+
+
+    list.forEach(item => {
+
+      const name =
+        getCategoryName(item);
+
+
+      if(!map.has(name)){
+
+        map.set(
+          name,
+          {
+            name,
+            orders:0,
+            revenue:0
+          }
+        );
+
+      }
+
+
+      const current =
+        map.get(name);
+
+      current.orders += 1;
+
+      current.revenue +=
+        Number(item.amount || 0);
+
+    });
+
+
+    let results =
+      [...map.values()]
+        .sort(
+          (a,b) =>
+            b.orders -
+            a.orders
+        )
+        .slice(0,5);
+
+
+    if(!results.length){
+
+      results =
+        categories
+          .slice(0,5)
+          .map((item,index) => ({
+
+            name:
+              item.name ||
+              item.title ||
+              `Category ${index+1}`,
+
+            orders:
+              34 - index * 5,
+
+            revenue:
+              42000 - index * 5100
+
+          }));
+
+    }
+
+
+    container.innerHTML =
+      results.map(
+        (item,index) => {
+
+          return `
+            <div class="rank-item">
+
+              <div class="rank-number">
+                ${String(index+1).padStart(2,"0")}
+              </div>
+
+              <div class="rank-info">
+
+                <strong>
+                  ${escapeHTML(item.name)}
+                </strong>
+
+                <span>
+                  ${number(item.orders)} order${item.orders === 1 ? "" : "s"}
+                </span>
+
+              </div>
+
+              <div class="rank-value">
+
+                ${money(item.revenue)}
+
+                <small>Revenue</small>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      ).join("");
+
+  }
+
+
+  /* =======================================================
+     PAYMENT BREAKDOWN
+  ======================================================= */
+
+  function renderPaymentBreakdown(){
+
+    const container =
+      $("paymentBreakdown");
+
+
+    const list =
+      getFilteredTransactions();
+
+
+    const map =
+      new Map();
+
+
+    list.forEach(item => {
+
+      const method =
+        getPaymentMethod(item);
+
+
+      if(!map.has(method)){
+
+        map.set(
+          method,
+          {
+            method,
+            transactions:0,
+            revenue:0
+          }
+        );
+
+      }
+
+
+      const current =
+        map.get(method);
+
+      current.transactions += 1;
+
+      if(item.status === "paid"){
+
+        current.revenue +=
+          Number(item.amount || 0);
+
+      }
+
+    });
+
+
+    let results =
+      [...map.values()]
+        .sort(
+          (a,b) =>
+            b.revenue -
+            a.revenue
+        );
+
+
+    if(!results.length){
+
+      results = [
+
+        {
+          method:"bKash",
+          transactions:182,
+          revenue:384000
+        },
+
+        {
+          method:"Nagad",
+          transactions:97,
+          revenue:211500
+        },
+
+        {
+          method:"Bank Transfer",
+          transactions:42,
+          revenue:128000
+        },
+
+        {
+          method:"Card Payment",
+          transactions:19,
+          revenue:76000
+        }
+
+      ];
+
+    }
+
+
+    container.innerHTML =
+      results.slice(0,5).map(
+        (item,index) => {
+
+          return `
+            <div class="rank-item">
+
+              <div class="rank-number">
+                ${String(index+1).padStart(2,"0")}
+              </div>
+
+              <div class="rank-info">
+
+                <strong>
+                  ${escapeHTML(item.method)}
+                </strong>
+
+                <span>
+                  ${number(item.transactions)}
+                  transaction${item.transactions === 1 ? "" : "s"}
+                </span>
+
+              </div>
+
+              <div class="rank-value">
+
+                ${money(item.revenue)}
+
+                <small>Paid volume</small>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      ).join("");
+
+  }
+
+
+  /* =======================================================
+     TRANSACTION TABLE
+  ======================================================= */
+
+  function renderTransactions(){
+
+    const tbody =
+      $("transactionTable");
+
+
+    const list =
+      getFilteredTransactions()
+        .sort(
+          (a,b) =>
+            new Date(b.date) -
+            new Date(a.date)
+        )
+        .slice(0,10);
+
+
+    if(!list.length){
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6">
+            <div class="empty">
+
+              <div class="empty-icon">
+                ☷
+              </div>
+
+              No transactions found.
+
+            </div>
+          </td>
+        </tr>
+      `;
+
+      return;
+
+    }
+
+
+    tbody.innerHTML =
+      list.map(item => {
+
+        const status =
+          item.status;
+
+
+        const customerName =
+          getCustomerName(item);
+
+        const customerEmail =
+          getCustomerEmail(item);
+
+
+        const customerInitial =
+          customerName
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0,2)
+            .map(word =>
+              word.charAt(0)
+            )
+            .join("")
+            .toUpperCase();
+
+
+        return `
+          <tr>
+
+            <td>
+              <span class="order-id">
+                ${escapeHTML(item.id)}
+              </span>
+            </td>
+
+
+            <td>
+
+              <div class="customer">
+
+                <div class="customer-avatar">
+                  ${escapeHTML(customerInitial)}
+                </div>
+
+                <div>
+
+                  <div class="customer-name">
+                    ${escapeHTML(customerName)}
+                  </div>
+
+                  <div class="customer-email">
+                    ${escapeHTML(customerEmail)}
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+              <span class="method">
+                ${escapeHTML(
+                  getPaymentMethod(item)
+                )}
+              </span>
+            </td>
+
+
+            <td>
+              <span class="amount">
+                ${money(item.amount)}
+              </span>
+            </td>
+
+
+            <td>
+              <span class="badge ${status}">
+                ${capitalize(status)}
+              </span>
+            </td>
+
+
+            <td>
+              ${formatDate(item.date)}
+            </td>
+
+          </tr>
+        `;
+
+      }).join("");
+
+  }
+
+
+  function capitalize(value){
+
+    const text =
+      String(value || "");
+
+    return text.charAt(0).toUpperCase() +
+      text.slice(1);
+
+  }
+
+
+  /* =======================================================
+     REFRESH ALL
+  ======================================================= */
+
+  function refreshData(){
+
+    transactions =
+      loadTransactions();
+
+    websites =
+      loadWebsites();
+
+    categories =
+      loadCategories();
+
+
+    renderStats();
+
+    renderRevenueChart();
+
+    renderOrdersChart();
+
+    renderTopWebsites();
+
+    renderTopCategories();
+
+    renderPaymentBreakdown();
+
+    renderTransactions();
+
+
+    $("lastUpdated").textContent =
+      new Date().toLocaleTimeString(
+        "en-BD",
+        {
+          hour:"2-digit",
+          minute:"2-digit"
+        }
+      );
+
+  }
+
+
+  /* =======================================================
+     FILTER EVENTS
+  ======================================================= */
+
+  $("applyFilters")
+    .addEventListener(
+      "click",
+      function(){
+
+        activeDays =
+          $("dateRange").value;
+
+        refreshData();
+
+        showToast(
+          "Report updated successfully."
+        );
+
+      }
+    );
+
+
+  $("dateRange")
+    .addEventListener(
+      "change",
+      function(){
+
+        activeDays =
+          this.value;
+
+        $("summaryPeriod").textContent =
+          getRangeLabel(activeDays);
+
+      }
+    );
+
+
+  $("ordersChartRange")
+    .addEventListener(
+      "change",
+      function(){
+
+        renderOrdersChart();
+
+      }
+    );
+
+
+  $("reportType")
+    .addEventListener(
+      "change",
+      function(){
+
+        const value =
+          this.value;
+
+        if(value === "sales"){
+
+          showToast(
+            "Sales report selected."
+          );
+
+        }
+
+        if(value === "categories"){
+
+          showToast(
+            "Category report selected."
+          );
+
+        }
+
+        if(value === "payments"){
+
+          showToast(
+            "Payment report selected."
+          );
+
+        }
+
+      }
+    );
+
+
+  /* =======================================================
+     EXPORT CSV
+  ======================================================= */
+
+  function csvEscape(value){
+
+    const text =
+      String(value ?? "");
+
+    return `"${text.replace(/"/g,'""')}"`;
+
+  }
+
+
+  function exportCSV(){
+
+    const list =
+      getFilteredTransactions();
+
+
+    const rows = [
+
+      [
+        "Order ID",
+        "Customer",
+        "Email",
+        "Payment Method",
+        "Amount",
+        "Status",
+        "Date"
+      ],
+
+      ...list.map(item => [
+
+        item.id,
+
+        getCustomerName(item),
+
+        getCustomerEmail(item),
+
+        getPaymentMethod(item),
+
+        item.amount,
+
+        item.status,
+
+        formatDate(item.date)
+
+      ])
+
+    ];
+
+
+    const csv =
+      rows
+        .map(row =>
+          row
+            .map(csvEscape)
+            .join(",")
+        )
+        .join("\n");
+
+
+    const blob =
+      new Blob(
+        [csv],
+        {
+          type:"text/csv;charset=utf-8;"
+        }
+      );
+
+
+    const url =
+      URL.createObjectURL(blob);
+
+
+    const link =
+      document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+      `website-deals-report-${new Date().toISOString().slice(0,10)}.csv`;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+
+    showToast(
+      "CSV report exported."
+    );
+
+  }
+
+
+  $("exportBtn")
+    .addEventListener(
+      "click",
+      exportCSV
+    );
+
+
+  $("transactionExport")
+    .addEventListener(
+      "click",
+      exportCSV
+    );
+
+
+  /* =======================================================
+     PRINT
+  ======================================================= */
+
+  $("printBtn")
+    .addEventListener(
+      "click",
+      function(){
+
+        window.print();
+
+      }
+    );
+
+
+  /* =======================================================
+     REFRESH
+  ======================================================= */
+
+  $("refreshBtn")
+    .addEventListener(
+      "click",
+      function(){
+
+        refreshData();
+
+        showToast(
+          "Report data refreshed."
+        );
+
+      }
+    );
+
+
+  /* =======================================================
+     MARKETPLACE
+  ======================================================= */
+
+  $("marketplaceBtn")
+    .addEventListener(
+      "click",
+      function(){
+
+        window.location.href =
+          "../index.html";
+
+      }
+    );
+
+
+  /* =======================================================
+     LOGOUT
+  ======================================================= */
+
+  $("logoutBtn")
+    .addEventListener(
+      "click",
+      function(){
+
+        sessionStorage.removeItem(
+          AUTH_KEY
+        );
+
+        window.location.href =
+          "login/";
+
+      }
+    );
+
+
+  /* =======================================================
+     MOBILE SIDEBAR
+  ======================================================= */
+
+  const sidebar =
+    $("sidebar");
+
+  const overlay =
+    $("overlay");
+
+  const mobileMenu =
+    $("mobileMenu");
+
+
+  function openSidebar(){
+
+    sidebar.classList.add("open");
+
+    overlay.classList.add("show");
+
+  }
+
+
+  function closeSidebar(){
+
+    sidebar.classList.remove("open");
+
+    overlay.classList.remove("show");
+
+  }
+
+
+  mobileMenu
+    .addEventListener(
+      "click",
+      openSidebar
+    );
+
+
+  overlay
+    .addEventListener(
+      "click",
+      closeSidebar
+    );
+
+
+  document
+    .querySelectorAll(".nav-link")
+    .forEach(link => {
+
+      link.addEventListener(
+        "click",
+        function(){
+
+          if(
+            window.innerWidth <= 900
+          ){
+
+            closeSidebar();
+
+          }
+
+        }
+      );
+
+    });
+
+
+  /* =======================================================
+     ESCAPE
+  ======================================================= */
+
+  document
+    .addEventListener(
+      "keydown",
+      function(event){
+
+        if(event.key === "Escape"){
+
+          closeSidebar();
+
+        }
+
+      }
+    );
+
+
+  /* =======================================================
+     RESIZE CHART
+  ======================================================= */
+
+  window.addEventListener(
+    "resize",
+    function(){
+
+      clearTimeout(
+        window.__resizeTimer
+      );
+
+      window.__resizeTimer =
+        setTimeout(
+          () => {
+
+            renderRevenueChart();
+
+          },
+          120
+        );
+
+    }
+  );
+
+
+  /* =======================================================
+     INITIAL LOAD
+  ======================================================= */
+
+  refreshData();
+
+
+})();
+</script>
+
+</body>
+</html>

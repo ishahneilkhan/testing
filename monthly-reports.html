@@ -1,0 +1,4136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Monthly Reports | Website Deals Admin</title>
+  <meta
+    name="description"
+    content="Website Deals Admin monthly performance reports and analytics."
+  >
+
+  <link rel="icon" type="image/png" href="../logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root{
+      --green:#18a957;
+      --green-dark:#108344;
+      --green-soft:#eaf8f0;
+      --dark:#07110b;
+      --dark-2:#101713;
+      --dark-3:#18221c;
+      --text:#132019;
+      --muted:#718078;
+      --line:#e4ebe6;
+      --surface:#f6f8f7;
+      --white:#ffffff;
+      --red:#e24a4a;
+      --orange:#e99a35;
+      --blue:#3678df;
+      --shadow:0 18px 50px rgba(7,17,11,.07);
+      --radius:20px;
+      --sidebar:270px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"DM Sans",sans-serif;
+      background:var(--surface);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    button,
+    input,
+    select{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .app{
+      min-height:100vh;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+
+    .sidebar{
+      position:fixed;
+      inset:0 auto 0 0;
+      width:var(--sidebar);
+      background:var(--dark-2);
+      color:#fff;
+      z-index:1000;
+      display:flex;
+      flex-direction:column;
+      border-right:1px solid rgba(255,255,255,.06);
+    }
+
+    .brand{
+      height:82px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:0 22px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+
+    .brand-logo{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      object-fit:cover;
+      background:#fff;
+      padding:4px;
+    }
+
+    .brand-copy{
+      min-width:0;
+    }
+
+    .brand-name{
+      font-family:"Manrope",sans-serif;
+      font-weight:800;
+      font-size:15px;
+      letter-spacing:-.3px;
+      white-space:nowrap;
+    }
+
+    .brand-sub{
+      font-size:11px;
+      color:#829188;
+      margin-top:2px;
+    }
+
+    .nav{
+      flex:1;
+      overflow:auto;
+      padding:20px 14px;
+    }
+
+    .nav::-webkit-scrollbar{
+      width:4px;
+    }
+
+    .nav::-webkit-scrollbar-thumb{
+      background:#2c3831;
+      border-radius:20px;
+    }
+
+    .nav-title{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:1.4px;
+      color:#657269;
+      font-weight:700;
+      padding:0 11px 9px;
+      margin-top:8px;
+    }
+
+    .nav-title:not(:first-child){
+      margin-top:22px;
+    }
+
+    .nav-link{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      width:100%;
+      min-height:44px;
+      padding:10px 12px;
+      margin:3px 0;
+      color:#aeb9b2;
+      border-radius:12px;
+      transition:.2s ease;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .nav-link:hover{
+      background:#19231d;
+      color:#fff;
+    }
+
+    .nav-link.active{
+      background:rgba(24,169,87,.15);
+      color:#8df0b5;
+    }
+
+    .nav-icon{
+      width:20px;
+      height:20px;
+      display:grid;
+      place-items:center;
+      flex:0 0 20px;
+      font-size:16px;
+    }
+
+    .sidebar-bottom{
+      padding:15px;
+      border-top:1px solid rgba(255,255,255,.07);
+    }
+
+    .admin-mini{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:11px;
+      background:#151e18;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      margin-bottom:10px;
+    }
+
+    .avatar{
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:var(--green);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-size:13px;
+      font-weight:800;
+      flex:0 0 36px;
+    }
+
+    .admin-mini-copy{
+      min-width:0;
+      flex:1;
+    }
+
+    .admin-mini-name{
+      font-size:12px;
+      color:#fff;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .admin-mini-role{
+      font-size:10px;
+      color:#7e8b82;
+      margin-top:2px;
+      text-transform:capitalize;
+    }
+
+    .logout-btn{
+      width:100%;
+      border:1px solid rgba(255,255,255,.08);
+      background:transparent;
+      color:#aab5ae;
+      border-radius:11px;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      font-size:12px;
+      font-weight:700;
+      transition:.2s;
+    }
+
+    .logout-btn:hover{
+      background:#1d2821;
+      color:#fff;
+    }
+
+    /* =========================
+       MAIN
+    ========================== */
+
+    .main{
+      margin-left:var(--sidebar);
+      min-height:100vh;
+    }
+
+    .topbar{
+      height:72px;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 30px;
+      position:sticky;
+      top:0;
+      z-index:500;
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .mobile-menu{
+      display:none;
+      width:40px;
+      height:40px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:11px;
+      font-size:18px;
+    }
+
+    .breadcrumb{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .breadcrumb strong{
+      color:var(--text);
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .top-btn{
+      height:38px;
+      padding:0 13px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:#334138;
+      border-radius:10px;
+      font-size:12px;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      transition:.2s;
+    }
+
+    .top-btn:hover{
+      border-color:#cdd8d1;
+      transform:translateY(-1px);
+    }
+
+    .top-btn.primary{
+      color:#fff;
+      background:var(--green);
+      border-color:var(--green);
+    }
+
+    .top-btn.primary:hover{
+      background:var(--green-dark);
+    }
+
+    .page{
+      padding:30px;
+      max-width:1700px;
+      margin:auto;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero{
+      background:
+        radial-gradient(circle at 85% 15%, rgba(24,169,87,.18), transparent 30%),
+        linear-gradient(135deg,#07110b,#132119);
+      color:#fff;
+      border-radius:26px;
+      padding:30px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      width:260px;
+      height:260px;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:50%;
+      right:-80px;
+      bottom:-130px;
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:2;
+    }
+
+    .hero-eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      font-size:11px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:1.3px;
+      color:#84e7aa;
+      margin-bottom:11px;
+    }
+
+    .hero-eyebrow span{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:#51df86;
+      box-shadow:0 0 0 5px rgba(81,223,134,.12);
+    }
+
+    .hero h1{
+      font-family:"Manrope",sans-serif;
+      font-size:clamp(26px,3vw,40px);
+      line-height:1.1;
+      letter-spacing:-1.3px;
+      margin-bottom:9px;
+    }
+
+    .hero p{
+      max-width:650px;
+      color:#9aa89f;
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .hero-meta{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:9px;
+      margin-top:20px;
+    }
+
+    .hero-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.05);
+      border-radius:999px;
+      padding:8px 11px;
+      color:#b9c5bd;
+      font-size:11px;
+      font-weight:700;
+    }
+
+    /* =========================
+       FILTER PANEL
+    ========================== */
+
+    .filter-panel{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .filter-grid{
+      display:grid;
+      grid-template-columns:1.1fr 1fr 1fr auto auto auto;
+      gap:12px;
+      align-items:end;
+    }
+
+    .field label{
+      display:block;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      color:#78847d;
+      font-weight:800;
+      margin-bottom:7px;
+    }
+
+    .input,
+    .select{
+      width:100%;
+      height:42px;
+      border:1px solid var(--line);
+      border-radius:11px;
+      background:#fff;
+      padding:0 12px;
+      color:var(--text);
+      outline:none;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .input:focus,
+    .select:focus{
+      border-color:var(--green);
+      box-shadow:0 0 0 3px rgba(24,169,87,.08);
+    }
+
+    .filter-actions{
+      display:flex;
+      gap:8px;
+    }
+
+    /* =========================
+       SECTION
+    ========================== */
+
+    .section{
+      margin-bottom:22px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:15px;
+      margin-bottom:12px;
+    }
+
+    .section-title{
+      font-family:"Manrope",sans-serif;
+      font-size:17px;
+      font-weight:800;
+      letter-spacing:-.4px;
+    }
+
+    .section-sub{
+      color:var(--muted);
+      font-size:11px;
+      margin-top:3px;
+    }
+
+    /* =========================
+       KPI
+    ========================== */
+
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:14px;
+    }
+
+    .kpi{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 10px 30px rgba(7,17,11,.045);
+      min-width:0;
+    }
+
+    .kpi-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+
+    .kpi-label{
+      color:var(--muted);
+      font-size:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+    }
+
+    .kpi-icon{
+      width:32px;
+      height:32px;
+      border-radius:10px;
+      background:var(--green-soft);
+      color:var(--green);
+      display:grid;
+      place-items:center;
+      font-size:14px;
+      flex:0 0 32px;
+    }
+
+    .kpi-value{
+      font-family:"Manrope",sans-serif;
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.8px;
+      margin-top:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .kpi-foot{
+      display:flex;
+      align-items:center;
+      gap:5px;
+      color:#829087;
+      font-size:10px;
+      margin-top:6px;
+    }
+
+    .delta{
+      font-weight:800;
+    }
+
+    .delta.up{
+      color:var(--green);
+    }
+
+    .delta.down{
+      color:var(--red);
+    }
+
+    .delta.neutral{
+      color:#7d8882;
+    }
+
+    /* =========================
+       TWO COLUMN
+    ========================== */
+
+    .two-col{
+      display:grid;
+      grid-template-columns:1.45fr 1fr;
+      gap:18px;
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:0 10px 30px rgba(7,17,11,.045);
+      overflow:hidden;
+    }
+
+    .card-head{
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+
+    .card-title{
+      font-family:"Manrope",sans-serif;
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .card-sub{
+      color:var(--muted);
+      font-size:10px;
+      margin-top:3px;
+    }
+
+    .card-body{
+      padding:20px;
+    }
+
+    /* =========================
+       COMPARISON
+    ========================== */
+
+    .comparison{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .compare-box{
+      background:#f7f9f8;
+      border:1px solid var(--line);
+      border-radius:15px;
+      padding:16px;
+    }
+
+    .compare-label{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+      color:#7c8881;
+      font-weight:800;
+    }
+
+    .compare-value{
+      font-family:"Manrope",sans-serif;
+      font-size:22px;
+      font-weight:800;
+      margin-top:7px;
+    }
+
+    .compare-change{
+      margin-top:8px;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .compare-main{
+      background:var(--green-soft);
+      border-color:#ccebd8;
+    }
+
+    /* =========================
+       ANNUAL SNAPSHOT
+    ========================== */
+
+    .snapshot{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:9px;
+    }
+
+    .snapshot-item{
+      padding:13px;
+      border:1px solid var(--line);
+      border-radius:13px;
+      background:#fafcfb;
+    }
+
+    .snapshot-item span{
+      display:block;
+      color:#849087;
+      font-size:9px;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      font-weight:800;
+    }
+
+    .snapshot-item strong{
+      display:block;
+      font-family:"Manrope",sans-serif;
+      font-size:17px;
+      margin-top:5px;
+    }
+
+    /* =========================
+       CHARTS
+    ========================== */
+
+    .chart-wrap{
+      width:100%;
+      overflow:hidden;
+    }
+
+    .chart{
+      width:100%;
+      height:280px;
+      display:block;
+    }
+
+    .chart-label{
+      font-size:9px;
+      fill:#89958e;
+    }
+
+    .chart-value{
+      font-size:9px;
+      fill:#4e5d54;
+      font-weight:700;
+    }
+
+    .chart-grid{
+      stroke:#e9eeeb;
+      stroke-width:1;
+    }
+
+    .chart-axis{
+      stroke:#dbe4de;
+      stroke-width:1;
+    }
+
+    .chart-line{
+      fill:none;
+      stroke:var(--green);
+      stroke-width:3;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .chart-dot{
+      fill:#fff;
+      stroke:var(--green);
+      stroke-width:3;
+    }
+
+    .chart-area{
+      fill:rgba(24,169,87,.09);
+    }
+
+    .bar{
+      fill:var(--green);
+      opacity:.88;
+    }
+
+    .bar:hover{
+      opacity:1;
+    }
+
+    /* =========================
+       BREAKDOWN
+    ========================== */
+
+    .breakdown-list{
+      display:flex;
+      flex-direction:column;
+      gap:13px;
+    }
+
+    .break-row{
+      display:grid;
+      grid-template-columns:minmax(110px,1fr) 80px;
+      gap:10px;
+      align-items:center;
+    }
+
+    .break-main{
+      min-width:0;
+    }
+
+    .break-top{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:6px;
+    }
+
+    .break-name{
+      font-size:11px;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .break-amount{
+      font-size:10px;
+      color:#6e7a73;
+      font-weight:700;
+    }
+
+    .progress{
+      height:7px;
+      background:#edf1ee;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .progress span{
+      display:block;
+      height:100%;
+      border-radius:999px;
+      background:var(--green);
+    }
+
+    .break-percent{
+      text-align:right;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    /* =========================
+       TABLE
+    ========================== */
+
+    .table-wrap{
+      overflow:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:720px;
+    }
+
+    th{
+      text-align:left;
+      padding:12px 20px;
+      background:#fafcfb;
+      color:#7c8881;
+      font-size:9px;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      font-weight:800;
+      border-bottom:1px solid var(--line);
+      white-space:nowrap;
+    }
+
+    td{
+      padding:14px 20px;
+      border-bottom:1px solid #edf1ee;
+      font-size:11px;
+      color:#3d4a42;
+      vertical-align:middle;
+    }
+
+    tbody tr:hover{
+      background:#fbfdfc;
+    }
+
+    tbody tr:last-child td{
+      border-bottom:0;
+    }
+
+    .website-cell{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:200px;
+    }
+
+    .website-thumb{
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      background:#edf5ef;
+      color:var(--green);
+      display:grid;
+      place-items:center;
+      font-size:12px;
+      font-weight:800;
+      flex:0 0 34px;
+    }
+
+    .website-name{
+      font-weight:800;
+      color:#18241d;
+    }
+
+    .website-category{
+      color:#89958e;
+      font-size:9px;
+      margin-top:2px;
+    }
+
+    .money{
+      font-weight:800;
+      color:#17221b;
+      white-space:nowrap;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:5px 8px;
+      border-radius:999px;
+      font-size:9px;
+      font-weight:800;
+      text-transform:capitalize;
+    }
+
+    .status::before{
+      content:"";
+      width:5px;
+      height:5px;
+      border-radius:50%;
+      background:currentColor;
+    }
+
+    .status.paid{
+      background:#eaf8f0;
+      color:#13914a;
+    }
+
+    .status.pending{
+      background:#fff6e9;
+      color:#c47a17;
+    }
+
+    .status.cancelled{
+      background:#fff0f0;
+      color:#d34646;
+    }
+
+    .status.refunded{
+      background:#eef3ff;
+      color:#426fc5;
+    }
+
+    .status.unknown{
+      background:#f1f3f2;
+      color:#7c8781;
+    }
+
+    .empty{
+      text-align:center;
+      padding:38px 20px;
+      color:#87938c;
+      font-size:12px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+      padding:24px 2px 10px;
+      color:#8a958f;
+      font-size:10px;
+    }
+
+    /* =========================
+       TOAST
+    ========================== */
+
+    .toast{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      z-index:2000;
+      min-width:250px;
+      max-width:380px;
+      background:#111a15;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:13px;
+      padding:13px 15px;
+      box-shadow:0 20px 50px rgba(0,0,0,.2);
+      transform:translateY(25px);
+      opacity:0;
+      pointer-events:none;
+      transition:.25s ease;
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .toast.show{
+      transform:translateY(0);
+      opacity:1;
+    }
+
+    /* =========================
+       OVERLAY
+    ========================== */
+
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      z-index:900;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media(max-width:1250px){
+      .kpi-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .filter-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .filter-actions{
+        grid-column:span 3;
+      }
+    }
+
+    @media(max-width:1050px){
+      .two-col{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(max-width:900px){
+      :root{
+        --sidebar:270px;
+      }
+
+      .sidebar{
+        transform:translateX(-100%);
+        transition:.25s ease;
+        box-shadow:20px 0 50px rgba(0,0,0,.18);
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .overlay.show{
+        display:block;
+      }
+
+      .main{
+        margin-left:0;
+      }
+
+      .mobile-menu{
+        display:grid;
+        place-items:center;
+      }
+
+      .topbar{
+        padding:0 18px;
+      }
+
+      .top-actions .hide-mobile{
+        display:none;
+      }
+
+      .page{
+        padding:20px 16px;
+      }
+    }
+
+    @media(max-width:680px){
+      .hero{
+        padding:24px 20px;
+        border-radius:20px;
+      }
+
+      .hero h1{
+        font-size:28px;
+      }
+
+      .filter-grid{
+        grid-template-columns:1fr;
+      }
+
+      .filter-actions{
+        grid-column:auto;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+      }
+
+      .filter-actions .top-btn:last-child{
+        grid-column:span 2;
+      }
+
+      .kpi-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .kpi{
+        padding:15px;
+      }
+
+      .kpi-value{
+        font-size:20px;
+      }
+
+      .comparison{
+        grid-template-columns:1fr;
+      }
+
+      .snapshot{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .footer{
+        flex-direction:column;
+      }
+    }
+
+    @media(max-width:430px){
+      .kpi-grid{
+        grid-template-columns:1fr;
+      }
+
+      .topbar{
+        height:64px;
+      }
+
+      .breadcrumb{
+        display:none;
+      }
+
+      .hero-meta{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .top-btn{
+        padding:0 10px;
+      }
+    }
+
+    /* =========================
+       PRINT
+    ========================== */
+
+    @media print{
+      body{
+        background:#fff;
+      }
+
+      .sidebar,
+      .topbar,
+      .filter-panel,
+      .top-actions,
+      .mobile-menu,
+      .footer,
+      .toast,
+      .overlay{
+        display:none !important;
+      }
+
+      .main{
+        margin:0;
+      }
+
+      .page{
+        max-width:none;
+        padding:0;
+      }
+
+      .hero{
+        color:#000;
+        background:#fff;
+        border:1px solid #ddd;
+        box-shadow:none;
+      }
+
+      .hero p,
+      .hero-eyebrow,
+      .hero-pill{
+        color:#555;
+      }
+
+      .card,
+      .kpi{
+        box-shadow:none;
+        break-inside:avoid;
+      }
+
+      .section{
+        break-inside:avoid;
+      }
+    }
+  </style>
+<script src="../js/wd-sync.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <img
+        class="brand-logo"
+        src="../logo.png"
+        alt="Website Deals"
+        onerror="this.style.display='none'"
+      >
+
+      <div class="brand-copy">
+        <div class="brand-name">Website Deals</div>
+        <div class="brand-sub">Admin Control Center</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+
+      <div class="nav-title">Marketplace</div>
+
+      <a class="nav-link" href="dashboard.html">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a class="nav-link" href="websites.html">
+        <span class="nav-icon">▦</span>
+        <span>Websites</span>
+      </a>
+
+      <a class="nav-link" href="categories.html">
+        <span class="nav-icon">◈</span>
+        <span>Categories</span>
+      </a>
+
+      <a class="nav-link" href="orders.html">
+        <span class="nav-icon">☷</span>
+        <span>Orders</span>
+      </a>
+
+      <a class="nav-link" href="payments.html">
+        <span class="nav-icon">৳</span>
+        <span>Payments</span>
+      </a>
+
+      <a class="nav-link" href="customers.html">
+        <span class="nav-icon">♙</span>
+        <span>Customers</span>
+      </a>
+
+      <a class="nav-link" href="newsletter.html">
+        <span class="nav-icon">✉</span>
+        <span>Newsletter</span>
+      </a>
+
+      <div class="nav-title">Reports</div>
+
+      <a class="nav-link" href="reports.html">
+        <span class="nav-icon">◫</span>
+        <span>Reports</span>
+      </a>
+
+      <a class="nav-link active" href="monthly-report.html">
+        <span class="nav-icon">▥</span>
+        <span>Monthly Report</span>
+      </a>
+
+      <div class="nav-title">Restricted Controls</div>
+
+      <a class="nav-link" href="admins.html">
+        <span class="nav-icon">♟</span>
+        <span>Admin Management</span>
+      </a>
+
+      <a class="nav-link" href="settings.html">
+        <span class="nav-icon">⚙</span>
+        <span>System Settings</span>
+      </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+      <div class="admin-mini">
+        <div class="avatar" id="sidebarAvatar">SA</div>
+
+        <div class="admin-mini-copy">
+          <div class="admin-mini-name" id="sidebarAdminName">
+            Super Admin
+          </div>
+
+          <div class="admin-mini-role" id="sidebarAdminRole">
+            Super Admin
+          </div>
+        </div>
+      </div>
+
+      <button class="logout-btn" id="logoutBtn">
+        <span>↪</span>
+        <span>Sign Out</span>
+      </button>
+
+    </div>
+
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button
+          class="mobile-menu"
+          id="mobileMenu"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+
+        <div class="breadcrumb">
+          <span>Admin</span>
+          <span>/</span>
+          <strong>Monthly Report</strong>
+        </div>
+
+      </div>
+
+      <div class="top-actions">
+
+        <button class="top-btn hide-mobile" id="refreshBtn">
+          ↻ Refresh
+        </button>
+
+        <button class="top-btn hide-mobile" id="printBtn">
+          ⎙ Print
+        </button>
+
+        <button class="top-btn" id="marketplaceBtn">
+          ↗ Marketplace
+        </button>
+
+      </div>
+
+    </header>
+
+    <div class="page">
+
+      <!-- =========================
+           HERO
+      ========================== -->
+
+      <section class="hero">
+
+        <div class="hero-content">
+
+          <div class="hero-eyebrow">
+            <span></span>
+            Monthly Analytics
+          </div>
+
+          <h1>Monthly Reports</h1>
+
+          <p>
+            Review monthly revenue, orders, payment activity, website sales,
+            category performance and year-to-date marketplace movement.
+          </p>
+
+          <div class="hero-meta">
+
+            <div class="hero-pill">
+              📅
+              <span id="heroMonth">October 2026</span>
+            </div>
+
+            <div class="hero-pill">
+              ◉
+              <span id="heroStatus">Live Local Data</span>
+            </div>
+
+            <div class="hero-pill">
+              ♟
+              <span id="heroAdmin">Super Admin</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- =========================
+           FILTERS
+      ========================== -->
+
+      <section class="filter-panel">
+
+        <div class="filter-grid">
+
+          <div class="field">
+            <label for="monthSelect">Month</label>
+            <select class="select" id="monthSelect"></select>
+          </div>
+
+          <div class="field">
+            <label for="yearSelect">Year</label>
+            <select class="select" id="yearSelect"></select>
+          </div>
+
+          <div class="field">
+            <label for="compareSelect">Compare With</label>
+            <select class="select" id="compareSelect">
+              <option value="previous">Previous Month</option>
+              <option value="yearAgo">Same Month Last Year</option>
+            </select>
+          </div>
+
+          <div></div>
+
+          <div class="filter-actions">
+
+            <button class="top-btn primary" id="applyBtn">
+              ✓ Apply
+            </button>
+
+            <button class="top-btn" id="exportBtn">
+              ↓ Export CSV
+            </button>
+
+            <button class="top-btn" id="resetBtn">
+              ↺ Current Month
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- =========================
+           KPI
+      ========================== -->
+
+      <section class="section">
+
+        <div class="section-head">
+
+          <div>
+            <div class="section-title">Monthly Overview</div>
+            <div class="section-sub" id="overviewSub">
+              Performance for October 2026
+            </div>
+          </div>
+
+        </div>
+
+        <div class="kpi-grid">
+
+          <article class="kpi">
+            <div class="kpi-top">
+              <div class="kpi-label">Monthly Revenue</div>
+              <div class="kpi-icon">৳</div>
+            </div>
+
+            <div class="kpi-value" id="kpiRevenue">৳0</div>
+
+            <div class="kpi-foot">
+              <span id="revenueDelta" class="delta neutral">—</span>
+              <span>vs comparison</span>
+            </div>
+          </article>
+
+          <article class="kpi">
+            <div class="kpi-top">
+              <div class="kpi-label">Monthly Orders</div>
+              <div class="kpi-icon">☷</div>
+            </div>
+
+            <div class="kpi-value" id="kpiOrders">0</div>
+
+            <div class="kpi-foot">
+              <span id="ordersDelta" class="delta neutral">—</span>
+              <span>vs comparison</span>
+            </div>
+          </article>
+
+          <article class="kpi">
+            <div class="kpi-top">
+              <div class="kpi-label">Paid Orders</div>
+              <div class="kpi-icon">✓</div>
+            </div>
+
+            <div class="kpi-value" id="kpiPaid">0</div>
+
+            <div class="kpi-foot">
+              <span id="paidRate">0%</span>
+              <span>of monthly orders</span>
+            </div>
+          </article>
+
+          <article class="kpi">
+            <div class="kpi-top">
+              <div class="kpi-label">Pending</div>
+              <div class="kpi-icon">◷</div>
+            </div>
+
+            <div class="kpi-value" id="kpiPending">0</div>
+
+            <div class="kpi-foot">
+              <span>Awaiting completion</span>
+            </div>
+          </article>
+
+          <article class="kpi">
+            <div class="kpi-top">
+              <div class="kpi-label">Cancelled</div>
+              <div class="kpi-icon">×</div>
+            </div>
+
+            <div class="kpi-value" id="kpiCancelled">0</div>
+
+            <div class="kpi-foot">
+              <span>Cancelled transactions</span>
+            </div>
+          </article>
+
+          <article class="kpi">
+            <div class="kpi-top">
+              <div class="kpi-label">Avg Paid Order</div>
+              <div class="kpi-icon">↗</div>
+            </div>
+
+            <div class="kpi-value" id="kpiAverage">৳0</div>
+
+            <div class="kpi-foot">
+              <span>Paid revenue ÷ paid orders</span>
+            </div>
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- =========================
+           COMPARISON + SNAPSHOT
+      ========================== -->
+
+      <section class="section">
+
+        <div class="two-col">
+
+          <article class="card">
+
+            <div class="card-head">
+
+              <div>
+                <div class="card-title">Month Comparison</div>
+                <div class="card-sub" id="comparisonSub">
+                  Current month compared with previous month
+                </div>
+              </div>
+
+              <div class="hero-pill" style="color:#4f5d55;background:#f5f8f6;border-color:#e4ebe6;">
+                ↔ Comparison
+              </div>
+
+            </div>
+
+            <div class="card-body">
+
+              <div class="comparison">
+
+                <div class="compare-box compare-main">
+                  <div class="compare-label" id="compareCurrentLabel">
+                    Current Month
+                  </div>
+
+                  <div class="compare-value" id="compareCurrentRevenue">
+                    ৳0
+                  </div>
+
+                  <div class="compare-change" id="compareRevenueChange">
+                    —
+                  </div>
+                </div>
+
+                <div class="compare-box">
+                  <div class="compare-label" id="comparePreviousLabel">
+                    Previous Month
+                  </div>
+
+                  <div class="compare-value" id="comparePreviousRevenue">
+                    ৳0
+                  </div>
+
+                  <div class="compare-change" id="comparePreviousText">
+                    Reference period
+                  </div>
+                </div>
+
+              </div>
+
+              <div style="height:12px"></div>
+
+              <div class="comparison">
+
+                <div class="compare-box">
+                  <div class="compare-label">Current Orders</div>
+
+                  <div class="compare-value" id="compareCurrentOrders">
+                    0
+                  </div>
+
+                  <div class="compare-change" id="compareOrdersChange">
+                    —
+                  </div>
+                </div>
+
+                <div class="compare-box">
+                  <div class="compare-label">Reference Orders</div>
+
+                  <div class="compare-value" id="comparePreviousOrders">
+                    0
+                  </div>
+
+                  <div class="compare-change">
+                    Reference period
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </article>
+
+          <article class="card">
+
+            <div class="card-head">
+
+              <div>
+                <div class="card-title">Annual Snapshot</div>
+                <div class="card-sub" id="snapshotYear">
+                  2026 marketplace summary
+                </div>
+              </div>
+
+            </div>
+
+            <div class="card-body">
+
+              <div class="snapshot">
+
+                <div class="snapshot-item">
+                  <span>YTD Revenue</span>
+                  <strong id="ytdRevenue">৳0</strong>
+                </div>
+
+                <div class="snapshot-item">
+                  <span>YTD Orders</span>
+                  <strong id="ytdOrders">0</strong>
+                </div>
+
+                <div class="snapshot-item">
+                  <span>YTD Paid</span>
+                  <strong id="ytdPaid">0</strong>
+                </div>
+
+                <div class="snapshot-item">
+                  <span>Avg Order</span>
+                  <strong id="ytdAverage">৳0</strong>
+                </div>
+
+                <div class="snapshot-item">
+                  <span>Active Months</span>
+                  <strong id="activeMonths">0</strong>
+                </div>
+
+                <div class="snapshot-item">
+                  <span>Transactions</span>
+                  <strong id="ytdTransactions">0</strong>
+                </div>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- =========================
+           REVENUE TREND
+      ========================== -->
+
+      <section class="section">
+
+        <div class="section-head">
+
+          <div>
+            <div class="section-title">Revenue Trend</div>
+            <div class="section-sub">
+              Monthly revenue movement across the selected year
+            </div>
+          </div>
+
+        </div>
+
+        <article class="card">
+
+          <div class="card-body">
+
+            <div class="chart-wrap">
+              <svg
+                class="chart"
+                id="revenueChart"
+                viewBox="0 0 1000 280"
+                preserveAspectRatio="none"
+                aria-label="Revenue trend chart"
+              ></svg>
+            </div>
+
+          </div>
+
+        </article>
+
+      </section>
+
+      <!-- =========================
+           ORDERS TREND
+      ========================== -->
+
+      <section class="section">
+
+        <div class="section-head">
+
+          <div>
+            <div class="section-title">Orders Trend</div>
+            <div class="section-sub">
+              Monthly order volume across the selected year
+            </div>
+          </div>
+
+        </div>
+
+        <article class="card">
+
+          <div class="card-body">
+
+            <div class="chart-wrap">
+              <svg
+                class="chart"
+                id="ordersChart"
+                viewBox="0 0 1000 280"
+                preserveAspectRatio="none"
+                aria-label="Orders trend chart"
+              ></svg>
+            </div>
+
+          </div>
+
+        </article>
+
+      </section>
+
+      <!-- =========================
+           BREAKDOWNS
+      ========================== -->
+
+      <section class="section">
+
+        <div class="two-col">
+
+          <article class="card">
+
+            <div class="card-head">
+              <div>
+                <div class="card-title">Revenue by Category</div>
+                <div class="card-sub">
+                  Paid revenue grouped by category
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+
+              <div
+                class="breakdown-list"
+                id="categoryBreakdown"
+              ></div>
+
+            </div>
+
+          </article>
+
+          <article class="card">
+
+            <div class="card-head">
+              <div>
+                <div class="card-title">Payment Methods</div>
+                <div class="card-sub">
+                  Monthly paid revenue by payment method
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+
+              <div
+                class="breakdown-list"
+                id="paymentBreakdown"
+              ></div>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- =========================
+           WEBSITE PERFORMANCE
+      ========================== -->
+
+      <section class="section">
+
+        <div class="section-head">
+
+          <div>
+            <div class="section-title">Website Sales</div>
+            <div class="section-sub">
+              Website-level performance for the selected month
+            </div>
+          </div>
+
+        </div>
+
+        <article class="card">
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Website</th>
+                  <th>Category</th>
+                  <th>Orders</th>
+                  <th>Paid</th>
+                  <th>Revenue</th>
+                  <th>Average</th>
+                </tr>
+              </thead>
+
+              <tbody id="websiteTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </article>
+
+      </section>
+
+      <!-- =========================
+           TRANSACTIONS
+      ========================== -->
+
+      <section class="section">
+
+        <div class="section-head">
+
+          <div>
+            <div class="section-title">Monthly Transactions</div>
+            <div class="section-sub">
+              Transaction-level records for the selected month
+            </div>
+          </div>
+
+        </div>
+
+        <article class="card">
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Transaction</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Website</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+
+              <tbody id="transactionTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </article>
+
+      </section>
+
+      <!-- =========================
+           FOOTER
+      ========================== -->
+
+      <footer class="footer">
+        <div>
+          Website Deals Admin • Monthly Reports
+        </div>
+
+        <div>
+          Data source: LocalStorage • Generated
+          <span id="generatedAt"></span>
+        </div>
+      </footer>
+
+    </div>
+
+  </main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   WEBSITE DEALS — MONTHLY REPORT
+========================================================= */
+
+(function(){
+
+  "use strict";
+
+  /* =======================================================
+     AUTH
+  ======================================================= */
+
+  const AUTH_KEY = "websiteDealsAdminAuth";
+
+  function getAdminSession(){
+    try{
+      const raw = sessionStorage.getItem(AUTH_KEY);
+
+      if(!raw) return null;
+
+      const session = JSON.parse(raw);
+
+      if(!session || session.authenticated !== true){
+        return null;
+      }
+
+      return session;
+
+    }catch(error){
+      return null;
+    }
+  }
+
+  const adminSession = getAdminSession();
+
+  if(!adminSession){
+    window.location.replace("login/");
+    return;
+  }
+
+  /* =======================================================
+     DOM
+  ======================================================= */
+
+  const $ = (selector) => document.querySelector(selector);
+
+  /* =======================================================
+     ADMIN IDENTITY
+  ======================================================= */
+
+  const adminName =
+    adminSession.name ||
+    adminSession.email ||
+    "Super Admin";
+
+  const adminRole =
+    adminSession.role ||
+    "Admin";
+
+  const initials = adminName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0,2)
+    .map(word => word.charAt(0).toUpperCase())
+    .join("") || "SA";
+
+  $("#sidebarAdminName").textContent = adminName;
+  $("#sidebarAdminRole").textContent = adminRole;
+  $("#sidebarAvatar").textContent = initials;
+  $("#heroAdmin").textContent = adminName;
+
+  /* =======================================================
+     HELPERS
+  ======================================================= */
+
+  const MONTHS = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+
+  const SHORT_MONTHS = [
+    "Jan","Feb","Mar","Apr","May","Jun",
+    "Jul","Aug","Sep","Oct","Nov","Dec"
+  ];
+
+  function formatMoney(value){
+    const number = Number(value) || 0;
+
+    return "৳" + new Intl.NumberFormat("en-BD", {
+      maximumFractionDigits:0
+    }).format(number);
+  }
+
+  function formatNumber(value){
+    return new Intl.NumberFormat("en-BD", {
+      maximumFractionDigits:0
+    }).format(Number(value) || 0);
+  }
+
+  function escapeHTML(value){
+    return String(value ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function readStorage(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+
+      if(raw === null){
+        return fallback;
+      }
+
+      const parsed = JSON.parse(raw);
+
+      return parsed ?? fallback;
+
+    }catch(error){
+      return fallback;
+    }
+  }
+
+  function safeArray(value){
+    if(Array.isArray(value)) return value;
+
+    if(value && Array.isArray(value.items)){
+      return value.items;
+    }
+
+    if(value && Array.isArray(value.data)){
+      return value.data;
+    }
+
+    return [];
+  }
+
+  function parseDate(value){
+
+    if(value instanceof Date && !isNaN(value)){
+      return value;
+    }
+
+    if(typeof value === "number"){
+      const date = new Date(
+        value < 10000000000 ? value * 1000 : value
+      );
+
+      if(!isNaN(date)) return date;
+    }
+
+    if(typeof value === "string"){
+
+      const trimmed = value.trim();
+
+      if(!trimmed){
+        return null;
+      }
+
+      const direct = new Date(trimmed);
+
+      if(!isNaN(direct)){
+        return direct;
+      }
+
+      const numeric = Number(trimmed);
+
+      if(Number.isFinite(numeric)){
+        const date = new Date(
+          numeric < 10000000000
+            ? numeric * 1000
+            : numeric
+        );
+
+        if(!isNaN(date)) return date;
+      }
+    }
+
+    return null;
+  }
+
+  function normalizeStatus(value){
+
+    const status = String(value || "")
+      .toLowerCase()
+      .trim();
+
+    if([
+      "paid",
+      "completed",
+      "complete",
+      "success",
+      "successful",
+      "succeeded",
+      "approved"
+    ].includes(status)){
+      return "paid";
+    }
+
+    if([
+      "pending",
+      "processing",
+      "unpaid",
+      "awaiting",
+      "waiting"
+    ].includes(status)){
+      return "pending";
+    }
+
+    if([
+      "cancelled",
+      "canceled",
+      "cancel",
+      "failed",
+      "failure"
+    ].includes(status)){
+      return "cancelled";
+    }
+
+    if([
+      "refunded",
+      "refund"
+    ].includes(status)){
+      return "refunded";
+    }
+
+    return status || "unknown";
+  }
+
+  function normalizeTransaction(item, index){
+
+    const raw = item || {};
+
+    const amount =
+      raw.amount ??
+      raw.total ??
+      raw.price ??
+      raw.paidAmount ??
+      raw.paid_amount ??
+      raw.orderTotal ??
+      raw.value ??
+      0;
+
+    const dateValue =
+      raw.date ??
+      raw.createdAt ??
+      raw.created_at ??
+      raw.timestamp ??
+      raw.updatedAt ??
+      raw.updated_at ??
+      raw.time ??
+      raw.orderDate;
+
+    const date = parseDate(dateValue);
+
+    return {
+      id:
+        raw.id ??
+        raw.orderId ??
+        raw.orderID ??
+        raw.transactionId ??
+        raw.transactionID ??
+        raw.reference ??
+        ("TX-" + String(index + 1).padStart(4,"0")),
+
+      amount:Number(
+        String(amount).replace(/[^\d.-]/g,"")
+      ) || 0,
+
+      status:normalizeStatus(
+        raw.status ??
+        raw.paymentStatus ??
+        raw.orderStatus ??
+        raw.state
+      ),
+
+      date,
+
+      customer:
+        raw.customer ??
+        raw.customerName ??
+        raw.name ??
+        raw.fullName ??
+        raw.email ??
+        "Customer",
+
+      email:
+        raw.email ??
+        raw.customerEmail ??
+        "",
+
+      method:
+        raw.method ??
+        raw.paymentMethod ??
+        raw.gateway ??
+        raw.payment_gateway ??
+        raw.type ??
+        "Unknown",
+
+      website:
+        raw.website ??
+        raw.websiteName ??
+        raw.product ??
+        raw.productName ??
+        raw.template ??
+        raw.item ??
+        "Website",
+
+      category:
+        raw.category ??
+        raw.categoryName ??
+        raw.websiteCategory ??
+        raw.typeCategory ??
+        "Uncategorized"
+    };
+  }
+
+  /* =======================================================
+     DEMO DATA
+     Used only when NO local transaction data exists.
+  ======================================================= */
+
+  function makeDemoDate(month, day){
+    return new Date(2026, month, day, 12, 0, 0);
+  }
+
+  const DEMO_TRANSACTIONS = [];
+
+  /* =======================================================
+     LOAD TRANSACTIONS
+  ======================================================= */
+
+  function loadTransactions(){
+
+    const keys = [
+      "websiteDealsTransactions",
+      "websiteDealsPaymentTransactions",
+      "websiteDealsOrders"
+    ];
+
+    let foundAnyStorage = false;
+    let combined = [];
+
+    keys.forEach(key => {
+
+      const stored = localStorage.getItem(key);
+
+      if(stored !== null){
+        foundAnyStorage = true;
+      }
+
+      const parsed = readStorage(key, []);
+
+      safeArray(parsed).forEach(item => {
+        combined.push(item);
+      });
+
+    });
+
+    /*
+      Remove duplicate records using ID where possible.
+    */
+
+    const unique = [];
+    const seen = new Set();
+
+    combined.forEach((item, index) => {
+
+      const normalized = normalizeTransaction(item,index);
+
+      const key =
+        String(normalized.id || "").trim() ||
+        (
+          String(normalized.customer) +
+          "|" +
+          String(normalized.amount) +
+          "|" +
+          String(normalized.date)
+        );
+
+      if(!seen.has(key)){
+        seen.add(key);
+        unique.push(normalized);
+      }
+
+    });
+
+    if(!foundAnyStorage || unique.length === 0){
+
+      return {
+        transactions:DEMO_TRANSACTIONS,
+        demo:true
+      };
+
+    }
+
+    return {
+      transactions:unique,
+      demo:false
+    };
+  }
+
+  let DATA = loadTransactions();
+
+  /* =======================================================
+     OTHER LOCAL DATA
+  ======================================================= */
+
+  const websites = safeArray(
+    readStorage("websiteDealsAdminWebsites", [])
+  );
+
+  const categories = safeArray(
+    readStorage("websiteDealsCategories", [])
+  );
+
+  /* =======================================================
+     DATE STATE
+  ======================================================= */
+
+  const now = new Date();
+
+  let selectedMonth = now.getMonth();
+  let selectedYear = now.getFullYear();
+
+  /* =======================================================
+     POPULATE SELECTS
+  ======================================================= */
+
+  function populateYears(){
+
+    const yearSelect = $("#yearSelect");
+
+    const transactionYears = DATA.transactions
+      .filter(t => t.date)
+      .map(t => t.date.getFullYear());
+
+    const years = new Set([
+      now.getFullYear(),
+      now.getFullYear() - 1,
+      now.getFullYear() - 2,
+      ...transactionYears
+    ]);
+
+    yearSelect.innerHTML = [...years]
+      .sort((a,b) => b-a)
+      .map(year =>
+        `<option value="${year}">${year}</option>`
+      )
+      .join("");
+
+    yearSelect.value = String(selectedYear);
+  }
+
+  function populateMonths(){
+
+    const monthSelect = $("#monthSelect");
+
+    monthSelect.innerHTML = MONTHS
+      .map((month,index) =>
+        `<option value="${index}">${month}</option>`
+      )
+      .join("");
+
+    monthSelect.value = String(selectedMonth);
+  }
+
+  populateYears();
+  populateMonths();
+
+  /* =======================================================
+     PERIOD HELPERS
+  ======================================================= */
+
+  function getMonthTransactions(year, month){
+
+    return DATA.transactions.filter(transaction => {
+
+      if(!transaction.date){
+        return false;
+      }
+
+      return (
+        transaction.date.getFullYear() === Number(year) &&
+        transaction.date.getMonth() === Number(month)
+      );
+
+    });
+
+  }
+
+  function getYearTransactions(year){
+
+    return DATA.transactions.filter(transaction => {
+
+      if(!transaction.date){
+        return false;
+      }
+
+      return transaction.date.getFullYear() === Number(year);
+
+    });
+
+  }
+
+  function getPreviousPeriod(year, month){
+
+    if(month === 0){
+      return {
+        year:year - 1,
+        month:11
+      };
+    }
+
+    return {
+      year,
+      month:month - 1
+    };
+
+  }
+
+  function getYearAgoPeriod(year, month){
+
+    return {
+      year:year - 1,
+      month
+    };
+
+  }
+
+  /* =======================================================
+     STATS
+  ======================================================= */
+
+  function getStats(transactions){
+
+    const totalRevenue = transactions
+      .filter(t => t.status === "paid")
+      .reduce((sum,t) => sum + t.amount,0);
+
+    const paid = transactions
+      .filter(t => t.status === "paid");
+
+    const pending = transactions
+      .filter(t => t.status === "pending")
+      .length;
+
+    const cancelled = transactions
+      .filter(t => t.status === "cancelled")
+      .length;
+
+    const refunded = transactions
+      .filter(t => t.status === "refunded");
+
+    const average =
+      paid.length
+        ? totalRevenue / paid.length
+        : 0;
+
+    return {
+      transactions:transactions.length,
+      revenue:totalRevenue,
+      orders:transactions.length,
+      paid:paid.length,
+      pending,
+      cancelled,
+      refunded:refunded.length,
+      average
+    };
+
+  }
+
+  /* =======================================================
+     DELTA
+  ======================================================= */
+
+  function percentageChange(current, previous){
+
+    if(previous === 0){
+
+      if(current === 0){
+        return 0;
+      }
+
+      return null;
+    }
+
+    return ((current - previous) / previous) * 100;
+  }
+
+  function setDelta(elementId, current, previous){
+
+    const element = $("#" + elementId);
+
+    const delta = percentageChange(current,previous);
+
+    element.classList.remove(
+      "up",
+      "down",
+      "neutral"
+    );
+
+    if(delta === null){
+
+      element.textContent = "New";
+
+      element.classList.add("up");
+
+      return;
+
+    }
+
+    if(delta > 0){
+
+      element.textContent =
+        "+" + Math.abs(delta).toFixed(1) + "%";
+
+      element.classList.add("up");
+
+      return;
+    }
+
+    if(delta < 0){
+
+      element.textContent =
+        "-" + Math.abs(delta).toFixed(1) + "%";
+
+      element.classList.add("down");
+
+      return;
+    }
+
+    element.textContent = "0.0%";
+    element.classList.add("neutral");
+  }
+
+  /* =======================================================
+     RENDER HERO
+  ======================================================= */
+
+  function renderHero(){
+
+    const label =
+      MONTHS[selectedMonth] +
+      " " +
+      selectedYear;
+
+    $("#heroMonth").textContent = label;
+
+    $("#overviewSub").textContent =
+      "Performance for " + label;
+
+    $("#snapshotYear").textContent =
+      selectedYear + " marketplace summary";
+
+    $("#heroStatus").textContent =
+      DATA.demo
+        ? "Demo Data Preview"
+        : "Live Local Data";
+
+  }
+
+  /* =======================================================
+     RENDER KPI
+  ======================================================= */
+
+  function renderKPI(){
+
+    const currentTransactions =
+      getMonthTransactions(
+        selectedYear,
+        selectedMonth
+      );
+
+    const currentStats =
+      getStats(currentTransactions);
+
+    const compareMode =
+      $("#compareSelect").value;
+
+    const reference =
+      compareMode === "yearAgo"
+        ? getYearAgoPeriod(selectedYear,selectedMonth)
+        : getPreviousPeriod(selectedYear,selectedMonth);
+
+    const referenceTransactions =
+      getMonthTransactions(
+        reference.year,
+        reference.month
+      );
+
+    const referenceStats =
+      getStats(referenceTransactions);
+
+    $("#kpiRevenue").textContent =
+      formatMoney(currentStats.revenue);
+
+    $("#kpiOrders").textContent =
+      formatNumber(currentStats.orders);
+
+    $("#kpiPaid").textContent =
+      formatNumber(currentStats.paid);
+
+    $("#kpiPending").textContent =
+      formatNumber(currentStats.pending);
+
+    $("#kpiCancelled").textContent =
+      formatNumber(currentStats.cancelled);
+
+    $("#kpiAverage").textContent =
+      formatMoney(currentStats.average);
+
+    const paidRate =
+      currentStats.orders
+        ? (currentStats.paid / currentStats.orders) * 100
+        : 0;
+
+    $("#paidRate").textContent =
+      paidRate.toFixed(1) + "%";
+
+    setDelta(
+      "revenueDelta",
+      currentStats.revenue,
+      referenceStats.revenue
+    );
+
+    setDelta(
+      "ordersDelta",
+      currentStats.orders,
+      referenceStats.orders
+    );
+
+    const compareLabel =
+      compareMode === "yearAgo"
+        ? MONTHS[selectedMonth] +
+          " " +
+          (selectedYear - 1)
+        : (
+          getPreviousPeriod(
+            selectedYear,
+            selectedMonth
+          )
+        );
+
+    if(compareMode === "yearAgo"){
+
+      $("#comparisonSub").textContent =
+        "Current month compared with " +
+        MONTHS[selectedMonth] +
+        " " +
+        (selectedYear - 1);
+
+    }else{
+
+      const p = getPreviousPeriod(
+        selectedYear,
+        selectedMonth
+      );
+
+      $("#comparisonSub").textContent =
+        "Current month compared with " +
+        MONTHS[p.month] +
+        " " +
+        p.year;
+
+    }
+
+    $("#compareCurrentLabel").textContent =
+      MONTHS[selectedMonth] +
+      " " +
+      selectedYear;
+
+    $("#comparePreviousLabel").textContent =
+      compareMode === "yearAgo"
+        ? MONTHS[selectedMonth] +
+          " " +
+          (selectedYear - 1)
+        : (() => {
+
+          const p = getPreviousPeriod(
+            selectedYear,
+            selectedMonth
+          );
+
+          return MONTHS[p.month] +
+            " " +
+            p.year;
+
+        })();
+
+    $("#compareCurrentRevenue").textContent =
+      formatMoney(currentStats.revenue);
+
+    $("#comparePreviousRevenue").textContent =
+      formatMoney(referenceStats.revenue);
+
+    const revenueDelta =
+      percentageChange(
+        currentStats.revenue,
+        referenceStats.revenue
+      );
+
+    const revenueChange =
+      $("#compareRevenueChange");
+
+    revenueChange.classList.remove(
+      "up",
+      "down",
+      "neutral"
+    );
+
+    if(revenueDelta === null){
+
+      revenueChange.textContent =
+        "No reference revenue";
+
+      revenueChange.classList.add("neutral");
+
+    }else if(revenueDelta > 0){
+
+      revenueChange.textContent =
+        "+" +
+        revenueDelta.toFixed(1) +
+        "% change";
+
+      revenueChange.classList.add("up");
+
+    }else if(revenueDelta < 0){
+
+      revenueChange.textContent =
+        revenueDelta.toFixed(1) +
+        "% change";
+
+      revenueChange.classList.add("down");
+
+    }else{
+
+      revenueChange.textContent =
+        "No change";
+
+      revenueChange.classList.add("neutral");
+    }
+
+    $("#comparePreviousText").textContent =
+      referenceStats.orders +
+      " orders";
+
+    $("#compareCurrentOrders").textContent =
+      formatNumber(currentStats.orders);
+
+    $("#comparePreviousOrders").textContent =
+      formatNumber(referenceStats.orders);
+
+    const ordersDelta =
+      percentageChange(
+        currentStats.orders,
+        referenceStats.orders
+      );
+
+    const ordersChange =
+      $("#compareOrdersChange");
+
+    ordersChange.classList.remove(
+      "up",
+      "down",
+      "neutral"
+    );
+
+    if(ordersDelta === null){
+
+      ordersChange.textContent =
+        "New activity";
+
+      ordersChange.classList.add("up");
+
+    }else if(ordersDelta > 0){
+
+      ordersChange.textContent =
+        "+" +
+        ordersDelta.toFixed(1) +
+        "% change";
+
+      ordersChange.classList.add("up");
+
+    }else if(ordersDelta < 0){
+
+      ordersChange.textContent =
+        ordersDelta.toFixed(1) +
+        "% change";
+
+      ordersChange.classList.add("down");
+
+    }else{
+
+      ordersChange.textContent =
+        "No change";
+
+      ordersChange.classList.add("neutral");
+    }
+
+  }
+
+  /* =======================================================
+     ANNUAL SNAPSHOT
+  ======================================================= */
+
+  function renderSnapshot(){
+
+    const yearTransactions =
+      getYearTransactions(selectedYear);
+
+    const stats =
+      getStats(yearTransactions);
+
+    $("#ytdRevenue").textContent =
+      formatMoney(stats.revenue);
+
+    $("#ytdOrders").textContent =
+      formatNumber(stats.orders);
+
+    $("#ytdPaid").textContent =
+      formatNumber(stats.paid);
+
+    $("#ytdAverage").textContent =
+      formatMoney(stats.average);
+
+    const activeMonths =
+      new Set(
+        yearTransactions
+          .filter(t => t.date)
+          .map(t => t.date.getMonth())
+      ).size;
+
+    $("#activeMonths").textContent =
+      formatNumber(activeMonths);
+
+    $("#ytdTransactions").textContent =
+      formatNumber(stats.transactions);
+  }
+
+  /* =======================================================
+     SVG HELPERS
+  ======================================================= */
+
+  function clearSVG(svg){
+    svg.innerHTML = "";
+  }
+
+  function svgText(x,y,text,className,anchor){
+
+    const safe =
+      String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+
+    return `
+      <text
+        x="${x}"
+        y="${y}"
+        class="${className || ""}"
+        text-anchor="${anchor || "start"}"
+      >${safe}</text>
+    `;
+  }
+
+  /* =======================================================
+     REVENUE CHART
+  ======================================================= */
+
+  function renderRevenueChart(){
+
+    const svg = $("#revenueChart");
+
+    clearSVG(svg);
+
+    const width = 1000;
+    const height = 280;
+
+    const left = 55;
+    const right = 20;
+    const top = 22;
+    const bottom = 42;
+
+    const chartWidth =
+      width - left - right;
+
+    const chartHeight =
+      height - top - bottom;
+
+    const monthlyValues =
+      Array.from({length:12},(_,month) => {
+
+        const stats =
+          getStats(
+            getMonthTransactions(
+              selectedYear,
+              month
+            )
+          );
+
+        return stats.revenue;
+      });
+
+    const max =
+      Math.max(...monthlyValues,1);
+
+    let markup = "";
+
+    const gridCount = 4;
+
+    for(let i=0;i<=gridCount;i++){
+
+      const ratio = i / gridCount;
+
+      const y =
+        top +
+        chartHeight -
+        ratio * chartHeight;
+
+      const value =
+        max * ratio;
+
+      markup += `
+        <line
+          x1="${left}"
+          y1="${y}"
+          x2="${width-right}"
+          y2="${y}"
+          class="chart-grid"
+        />
+      `;
+
+      markup += svgText(
+        left - 9,
+        y + 3,
+        formatMoney(value),
+        "chart-label",
+        "end"
+      );
+    }
+
+    const points = [];
+
+    monthlyValues.forEach((value,month) => {
+
+      const x =
+        left +
+        (month / 11) *
+        chartWidth;
+
+      const y =
+        top +
+        chartHeight -
+        (value / max) *
+        chartHeight;
+
+      points.push({x,y,value,month});
+
+    });
+
+    if(points.length){
+
+      const areaPoints = [
+        `${points[0].x},${top+chartHeight}`,
+        ...points.map(p => `${p.x},${p.y}`),
+        `${points[points.length-1].x},${top+chartHeight}`
+      ].join(" ");
+
+      markup += `
+        <polygon
+          points="${areaPoints}"
+          class="chart-area"
+        />
+      `;
+
+      const linePoints =
+        points
+          .map(p => `${p.x},${p.y}`)
+          .join(" ");
+
+      markup += `
+        <polyline
+          points="${linePoints}"
+          class="chart-line"
+        />
+      `;
+
+      points.forEach((point,index) => {
+
+        markup += `
+          <circle
+            cx="${point.x}"
+            cy="${point.y}"
+            r="${index === selectedMonth ? 5 : 3.5}"
+            class="chart-dot"
+          />
+        `;
+
+      });
+    }
+
+    monthlyValues.forEach((value,month) => {
+
+      const x =
+        left +
+        (month / 11) *
+        chartWidth;
+
+      markup += svgText(
+        x,
+        height - 13,
+        SHORT_MONTHS[month],
+        "chart-label",
+        "middle"
+      );
+
+      if(value > 0){
+
+        const point =
+          points[month];
+
+        markup += svgText(
+          point.x,
+          Math.max(
+            top + 11,
+            point.y - 10
+          ),
+          formatMoney(value),
+          "chart-value",
+          "middle"
+        );
+
+      }
+
+    });
+
+    markup += `
+      <line
+        x1="${left}"
+        y1="${top+chartHeight}"
+        x2="${width-right}"
+        y2="${top+chartHeight}"
+        class="chart-axis"
+      />
+    `;
+
+    svg.innerHTML = markup;
+
+  }
+
+  /* =======================================================
+     ORDERS CHART
+  ======================================================= */
+
+  function renderOrdersChart(){
+
+    const svg = $("#ordersChart");
+
+    clearSVG(svg);
+
+    const width = 1000;
+    const height = 280;
+
+    const left = 50;
+    const right = 20;
+    const top = 22;
+    const bottom = 42;
+
+    const chartWidth =
+      width - left - right;
+
+    const chartHeight =
+      height - top - bottom;
+
+    const monthlyValues =
+      Array.from({length:12},(_,month) => {
+
+        return getMonthTransactions(
+          selectedYear,
+          month
+        ).length;
+
+      });
+
+    const max =
+      Math.max(...monthlyValues,1);
+
+    let markup = "";
+
+    const gridCount = 4;
+
+    for(let i=0;i<=gridCount;i++){
+
+      const ratio = i / gridCount;
+
+      const y =
+        top +
+        chartHeight -
+        ratio * chartHeight;
+
+      const value =
+        max * ratio;
+
+      markup += `
+        <line
+          x1="${left}"
+          y1="${y}"
+          x2="${width-right}"
+          y2="${y}"
+          class="chart-grid"
+        />
+      `;
+
+      markup += svgText(
+        left - 9,
+        y + 3,
+        Math.round(value),
+        "chart-label",
+        "end"
+      );
+    }
+
+    const slot =
+      chartWidth / 12;
+
+    monthlyValues.forEach((value,month) => {
+
+      const barWidth =
+        Math.min(46,slot * .58);
+
+      const x =
+        left +
+        month * slot +
+        (slot-barWidth)/2;
+
+      const barHeight =
+        (value / max) *
+        chartHeight;
+
+      const y =
+        top +
+        chartHeight -
+        barHeight;
+
+      markup += `
+        <rect
+          x="${x}"
+          y="${y}"
+          width="${barWidth}"
+          height="${Math.max(barHeight,0)}"
+          rx="7"
+          class="bar"
+        />
+      `;
+
+      markup += svgText(
+        x + barWidth/2,
+        height - 13,
+        SHORT_MONTHS[month],
+        "chart-label",
+        "middle"
+      );
+
+      if(value > 0){
+
+        markup += svgText(
+          x + barWidth/2,
+          Math.max(top + 11,y - 8),
+          value,
+          "chart-value",
+          "middle"
+        );
+      }
+
+    });
+
+    markup += `
+      <line
+        x1="${left}"
+        y1="${top+chartHeight}"
+        x2="${width-right}"
+        y2="${top+chartHeight}"
+        class="chart-axis"
+      />
+    `;
+
+    svg.innerHTML = markup;
+
+  }
+
+  /* =======================================================
+     CATEGORY BREAKDOWN
+  ======================================================= */
+
+  function renderCategoryBreakdown(){
+
+    const container =
+      $("#categoryBreakdown");
+
+    const transactions =
+      getMonthTransactions(
+        selectedYear,
+        selectedMonth
+      ).filter(t => t.status === "paid");
+
+    const map = {};
+
+    transactions.forEach(t => {
+
+      const category =
+        String(
+          t.category ||
+          "Uncategorized"
+        ).trim();
+
+      map[category] =
+        (map[category] || 0) +
+        t.amount;
+
+    });
+
+    const entries =
+      Object.entries(map)
+        .sort((a,b) => b[1] - a[1]);
+
+    if(!entries.length){
+
+      container.innerHTML =
+        `<div class="empty">No paid category data for this month.</div>`;
+
+      return;
+    }
+
+    const total =
+      entries.reduce(
+        (sum,item) => sum + item[1],
+        0
+      );
+
+    container.innerHTML =
+      entries
+        .slice(0,8)
+        .map(([name,amount]) => {
+
+          const percentage =
+            total
+              ? (amount / total) * 100
+              : 0;
+
+          return `
+            <div class="break-row">
+
+              <div class="break-main">
+
+                <div class="break-top">
+
+                  <span class="break-name">
+                    ${escapeHTML(name)}
+                  </span>
+
+                  <span class="break-amount">
+                    ${formatMoney(amount)}
+                  </span>
+
+                </div>
+
+                <div class="progress">
+                  <span
+                    style="width:${Math.min(100,percentage)}%"
+                  ></span>
+                </div>
+
+              </div>
+
+              <div class="break-percent">
+                ${percentage.toFixed(1)}%
+              </div>
+
+            </div>
+          `;
+
+        })
+        .join("");
+
+  }
+
+  /* =======================================================
+     PAYMENT BREAKDOWN
+  ======================================================= */
+
+  function renderPaymentBreakdown(){
+
+    const container =
+      $("#paymentBreakdown");
+
+    const transactions =
+      getMonthTransactions(
+        selectedYear,
+        selectedMonth
+      ).filter(t => t.status === "paid");
+
+    const map = {};
+
+    transactions.forEach(t => {
+
+      const method =
+        String(
+          t.method ||
+          "Unknown"
+        ).trim();
+
+      map[method] =
+        (map[method] || 0) +
+        t.amount;
+
+    });
+
+    const entries =
+      Object.entries(map)
+        .sort((a,b) => b[1] - a[1]);
+
+    if(!entries.length){
+
+      container.innerHTML =
+        `<div class="empty">No paid payment data for this month.</div>`;
+
+      return;
+    }
+
+    const total =
+      entries.reduce(
+        (sum,item) => sum + item[1],
+        0
+      );
+
+    container.innerHTML =
+      entries
+        .slice(0,8)
+        .map(([name,amount]) => {
+
+          const percentage =
+            total
+              ? (amount / total) * 100
+              : 0;
+
+          return `
+            <div class="break-row">
+
+              <div class="break-main">
+
+                <div class="break-top">
+
+                  <span class="break-name">
+                    ${escapeHTML(name)}
+                  </span>
+
+                  <span class="break-amount">
+                    ${formatMoney(amount)}
+                  </span>
+
+                </div>
+
+                <div class="progress">
+                  <span
+                    style="width:${Math.min(100,percentage)}%"
+                  ></span>
+                </div>
+
+              </div>
+
+              <div class="break-percent">
+                ${percentage.toFixed(1)}%
+              </div>
+
+            </div>
+          `;
+
+        })
+        .join("");
+
+  }
+
+  /* =======================================================
+     WEBSITE TABLE
+  ======================================================= */
+
+  function findWebsiteCategory(name){
+
+    const target =
+      String(name || "")
+        .trim()
+        .toLowerCase();
+
+    const match =
+      websites.find(site => {
+
+        const siteName =
+          String(
+            site.name ??
+            site.title ??
+            site.websiteName ??
+            ""
+          )
+          .trim()
+          .toLowerCase();
+
+        return siteName === target;
+
+      });
+
+    if(match){
+
+      return (
+        match.category ??
+        match.categoryName ??
+        "Uncategorized"
+      );
+
+    }
+
+    return null;
+  }
+
+  function renderWebsiteTable(){
+
+    const tbody =
+      $("#websiteTable");
+
+    const transactions =
+      getMonthTransactions(
+        selectedYear,
+        selectedMonth
+      );
+
+    const map = {};
+
+    transactions.forEach(t => {
+
+      const key =
+        String(t.website || "Website")
+          .trim();
+
+      if(!map[key]){
+
+        map[key] = {
+          website:key,
+          category:
+            t.category ||
+            findWebsiteCategory(key) ||
+            "Uncategorized",
+          orders:0,
+          paid:0,
+          revenue:0
+        };
+
+      }
+
+      map[key].orders++;
+
+      if(t.status === "paid"){
+
+        map[key].paid++;
+        map[key].revenue += t.amount;
+
+      }
+
+    });
+
+    const rows =
+      Object.values(map)
+        .sort((a,b) => b.revenue - a.revenue);
+
+    if(!rows.length){
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6">
+            <div class="empty">
+              No website sales recorded for this month.
+            </div>
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+    tbody.innerHTML =
+      rows
+        .map(row => {
+
+          const average =
+            row.paid
+              ? row.revenue / row.paid
+              : 0;
+
+          const initial =
+            String(row.website)
+              .trim()
+              .charAt(0)
+              .toUpperCase() || "W";
+
+          return `
+            <tr>
+
+              <td>
+
+                <div class="website-cell">
+
+                  <div class="website-thumb">
+                    ${escapeHTML(initial)}
+                  </div>
+
+                  <div>
+                    <div class="website-name">
+                      ${escapeHTML(row.website)}
+                    </div>
+
+                    <div class="website-category">
+                      ${escapeHTML(row.category)}
+                    </div>
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                ${escapeHTML(row.category)}
+              </td>
+
+              <td>
+                ${formatNumber(row.orders)}
+              </td>
+
+              <td>
+                ${formatNumber(row.paid)}
+              </td>
+
+              <td class="money">
+                ${formatMoney(row.revenue)}
+              </td>
+
+              <td class="money">
+                ${formatMoney(average)}
+              </td>
+
+            </tr>
+          `;
+
+        })
+        .join("");
+
+  }
+
+  /* =======================================================
+     TRANSACTION TABLE
+  ======================================================= */
+
+  function formatDate(date){
+
+    if(!date){
+      return "—";
+    }
+
+    return date.toLocaleDateString(
+      "en-BD",
+      {
+        day:"2-digit",
+        month:"short",
+        year:"numeric"
+      }
+    );
+
+  }
+
+  function renderTransactionTable(){
+
+    const tbody =
+      $("#transactionTable");
+
+    const transactions =
+      getMonthTransactions(
+        selectedYear,
+        selectedMonth
+      )
+      .sort((a,b) => {
+
+        const aTime =
+          a.date
+            ? a.date.getTime()
+            : 0;
+
+        const bTime =
+          b.date
+            ? b.date.getTime()
+            : 0;
+
+        return bTime - aTime;
+
+      });
+
+    if(!transactions.length){
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7">
+            <div class="empty">
+              No transactions recorded for this month.
+            </div>
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+    tbody.innerHTML =
+      transactions
+        .map(transaction => {
+
+          const status =
+            ["paid","pending","cancelled","refunded"]
+              .includes(transaction.status)
+              ? transaction.status
+              : "unknown";
+
+          return `
+            <tr>
+
+              <td>
+                <strong>
+                  ${escapeHTML(transaction.id)}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHTML(
+                  formatDate(transaction.date)
+                )}
+              </td>
+
+              <td>
+                <strong>
+                  ${escapeHTML(transaction.customer)}
+                </strong>
+
+                ${
+                  transaction.email
+                    ? `
+                      <div style="
+                        color:#8a958f;
+                        font-size:9px;
+                        margin-top:2px;
+                      ">
+                        ${escapeHTML(transaction.email)}
+                      </div>
+                    `
+                    : ""
+                }
+              </td>
+
+              <td>
+                ${escapeHTML(transaction.website)}
+              </td>
+
+              <td>
+                ${escapeHTML(transaction.method)}
+              </td>
+
+              <td>
+                <span class="status ${status}">
+                  ${escapeHTML(transaction.status)}
+                </span>
+              </td>
+
+              <td class="money">
+                ${formatMoney(transaction.amount)}
+              </td>
+
+            </tr>
+          `;
+
+        })
+        .join("");
+
+  }
+
+  /* =======================================================
+     MAIN RENDER
+  ======================================================= */
+
+  function render(){
+
+    DATA = loadTransactions();
+
+    renderHero();
+    renderKPI();
+    renderSnapshot();
+    renderRevenueChart();
+    renderOrdersChart();
+    renderCategoryBreakdown();
+    renderPaymentBreakdown();
+    renderWebsiteTable();
+    renderTransactionTable();
+
+    $("#generatedAt").textContent =
+      new Date().toLocaleString(
+        "en-BD",
+        {
+          day:"2-digit",
+          month:"short",
+          year:"numeric",
+          hour:"2-digit",
+          minute:"2-digit"
+        }
+      );
+
+  }
+
+  /* =======================================================
+     TOAST
+  ======================================================= */
+
+  let toastTimer;
+
+  function showToast(message){
+
+    const toast =
+      $("#toast");
+
+    toast.textContent =
+      message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+      setTimeout(() => {
+        toast.classList.remove("show");
+      },2600);
+
+  }
+
+  /* =======================================================
+     CSV EXPORT
+  ======================================================= */
+
+  function csvEscape(value){
+
+    const text =
+      String(value ?? "");
+
+    if(
+      text.includes(",") ||
+      text.includes('"') ||
+      text.includes("\n")
+    ){
+
+      return '"' +
+        text.replace(/"/g,'""') +
+        '"';
+
+    }
+
+    return text;
+  }
+
+  function exportCSV(){
+
+    const transactions =
+      getMonthTransactions(
+        selectedYear,
+        selectedMonth
+      );
+
+    if(!transactions.length){
+
+      showToast(
+        "No transactions available for this month."
+      );
+
+      return;
+    }
+
+    const headers = [
+      "Transaction ID",
+      "Date",
+      "Customer",
+      "Email",
+      "Website",
+      "Category",
+      "Payment Method",
+      "Status",
+      "Amount"
+    ];
+
+    const rows =
+      transactions.map(t => [
+
+        t.id,
+
+        t.date
+          ? t.date.toISOString()
+          : "",
+
+        t.customer,
+        t.email,
+        t.website,
+        t.category,
+        t.method,
+        t.status,
+        t.amount
+
+      ]);
+
+    const csv = [
+      headers,
+      ...rows
+    ]
+      .map(row =>
+        row.map(csvEscape).join(",")
+      )
+      .join("\n");
+
+    const blob =
+      new Blob(
+        [csv],
+        {
+          type:"text/csv;charset=utf-8;"
+        }
+      );
+
+    const url =
+      URL.createObjectURL(blob);
+
+    const link =
+      document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+      "website-deals-" +
+      MONTHS[selectedMonth]
+        .toLowerCase() +
+      "-" +
+      selectedYear +
+      "-report.csv";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast(
+      "Monthly CSV report exported."
+    );
+
+  }
+
+  /* =======================================================
+     EVENTS
+  ======================================================= */
+
+  $("#monthSelect").addEventListener(
+    "change",
+    function(){
+      selectedMonth =
+        Number(this.value);
+    }
+  );
+
+  $("#yearSelect").addEventListener(
+    "change",
+    function(){
+      selectedYear =
+        Number(this.value);
+    }
+  );
+
+  $("#applyBtn").addEventListener(
+    "click",
+    function(){
+
+      selectedMonth =
+        Number($("#monthSelect").value);
+
+      selectedYear =
+        Number($("#yearSelect").value);
+
+      render();
+
+      showToast(
+        "Monthly report updated."
+      );
+    }
+  );
+
+  $("#resetBtn").addEventListener(
+    "click",
+    function(){
+
+      const current =
+        new Date();
+
+      selectedMonth =
+        current.getMonth();
+
+      selectedYear =
+        current.getFullYear();
+
+      $("#monthSelect").value =
+        String(selectedMonth);
+
+      $("#yearSelect").value =
+        String(selectedYear);
+
+      render();
+
+      showToast(
+        "Report reset to current month."
+      );
+
+    }
+  );
+
+  $("#refreshBtn").addEventListener(
+    "click",
+    function(){
+
+      DATA = loadTransactions();
+
+      render();
+
+      showToast(
+        "Report data refreshed."
+      );
+
+    }
+  );
+
+  $("#exportBtn").addEventListener(
+    "click",
+    exportCSV
+  );
+
+  $("#printBtn").addEventListener(
+    "click",
+    function(){
+      window.print();
+    }
+  );
+
+  $("#marketplaceBtn").addEventListener(
+    "click",
+    function(){
+      window.open(
+        "../index.html",
+        "_blank"
+      );
+    }
+  );
+
+  $("#logoutBtn").addEventListener(
+    "click",
+    function(){
+
+      sessionStorage.removeItem(
+        AUTH_KEY
+      );
+
+      window.location.href =
+        "login/";
+
+    }
+  );
+
+  /* =======================================================
+     MOBILE SIDEBAR
+  ======================================================= */
+
+  const sidebar =
+    $("#sidebar");
+
+  const overlay =
+    $("#overlay");
+
+  const mobileMenu =
+    $("#mobileMenu");
+
+  function openSidebar(){
+
+    sidebar.classList.add("open");
+    overlay.classList.add("show");
+
+  }
+
+  function closeSidebar(){
+
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+
+  }
+
+  mobileMenu.addEventListener(
+    "click",
+    openSidebar
+  );
+
+  overlay.addEventListener(
+    "click",
+    closeSidebar
+  );
+
+  document
+    .querySelectorAll(".nav-link")
+    .forEach(link => {
+
+      link.addEventListener(
+        "click",
+        closeSidebar
+      );
+
+    });
+
+  /* =======================================================
+     INITIAL RENDER
+  ======================================================= */
+
+  render();
+
+})();
+</script>
+
+</body>
+</html>

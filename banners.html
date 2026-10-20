@@ -1,0 +1,4302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="icon" type="image/png" href="../logo.png">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07110b">
+
+  <meta
+    name="description"
+    content="Website Deals Admin — Banner Management"
+  >
+
+  <title>Banners | Website Deals Admin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root{
+      --green:#18a957;
+      --green-dark:#108243;
+      --green-soft:#eaf8f0;
+
+      --dark:#07110b;
+      --sidebar:#101713;
+
+      --bg:#f6f8f7;
+      --surface:#fff;
+      --surface-2:#f1f5f3;
+
+      --border:#e3eae6;
+
+      --text:#142019;
+      --muted:#738079;
+
+      --danger:#dc3545;
+      --danger-soft:#fff0f1;
+
+      --warning:#d88b00;
+      --warning-soft:#fff7df;
+
+      --blue:#3478f6;
+      --blue-soft:#edf4ff;
+
+      --shadow:0 18px 50px rgba(8,24,14,.07);
+      --shadow-soft:0 8px 24px rgba(8,24,14,.06);
+
+      --radius:20px;
+      --radius-sm:13px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"DM Sans",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    button,
+    input,
+    select,
+    textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
+
+    .app{
+      min-height:100vh;
+      display:flex;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar{
+      width:270px;
+      flex:0 0 270px;
+      background:var(--sidebar);
+      color:#fff;
+      min-height:100vh;
+      position:fixed;
+      left:0;
+      top:0;
+      bottom:0;
+      z-index:1000;
+      display:flex;
+      flex-direction:column;
+      padding:22px 16px 18px;
+      overflow-y:auto;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:4px 8px 24px;
+    }
+
+    .brand-logo{
+      width:44px;
+      height:44px;
+      border-radius:13px;
+      background:#fff;
+      padding:6px;
+      object-fit:contain;
+    }
+
+    .brand-name{
+      font-family:"Manrope",sans-serif;
+      font-size:17px;
+      font-weight:800;
+      letter-spacing:-.4px;
+    }
+
+    .brand-sub{
+      color:#9ca9a1;
+      font-size:11px;
+      margin-top:2px;
+    }
+
+    .nav-section{
+      margin-top:10px;
+    }
+
+    .nav-label{
+      color:#6e7d74;
+      text-transform:uppercase;
+      font-size:10px;
+      letter-spacing:1.5px;
+      font-weight:700;
+      padding:0 12px 9px;
+    }
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      min-height:45px;
+      padding:0 12px;
+      border-radius:12px;
+      color:#b9c3bd;
+      margin-bottom:4px;
+      font-size:13px;
+      font-weight:600;
+      transition:.2s ease;
+    }
+
+    .nav-item:hover{
+      background:rgba(255,255,255,.06);
+      color:#fff;
+    }
+
+    .nav-item.active{
+      background:rgba(24,169,87,.16);
+      color:#72e3a1;
+    }
+
+    .nav-icon{
+      width:19px;
+      height:19px;
+      display:grid;
+      place-items:center;
+      flex:none;
+      font-size:16px;
+    }
+
+    .sidebar-bottom{
+      margin-top:auto;
+      padding-top:18px;
+    }
+
+    .admin-mini{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .avatar-small{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:var(--green);
+      color:#fff;
+      font-weight:800;
+      flex:none;
+    }
+
+    .admin-mini-name{
+      color:#fff;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .admin-mini-role{
+      color:#819087;
+      font-size:10px;
+      margin-top:2px;
+    }
+
+    .logout-btn{
+      width:100%;
+      margin-top:10px;
+      border:1px solid rgba(255,255,255,.08);
+      background:transparent;
+      color:#b7c1bb;
+      min-height:42px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:12px;
+    }
+
+    .logout-btn:hover{
+      background:rgba(220,53,69,.1);
+      color:#ff8f99;
+      border-color:rgba(220,53,69,.2);
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main{
+      width:calc(100% - 270px);
+      margin-left:270px;
+      min-width:0;
+    }
+
+    .topbar{
+      height:76px;
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 30px;
+      position:sticky;
+      top:0;
+      z-index:500;
+      backdrop-filter:blur(16px);
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .page-kicker{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .page-title-mini{
+      font-family:"Manrope",sans-serif;
+      font-size:15px;
+      font-weight:800;
+      margin-top:2px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .icon-btn,
+    .outline-btn,
+    .primary-btn{
+      border-radius:11px;
+      min-height:40px;
+      padding:0 13px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      font-size:12px;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      transition:.2s;
+    }
+
+    .icon-btn{
+      width:40px;
+      padding:0;
+    }
+
+    .icon-btn:hover,
+    .outline-btn:hover{
+      border-color:#cbd7d0;
+      background:var(--surface-2);
+    }
+
+    .primary-btn{
+      border-color:var(--green);
+      background:var(--green);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(24,169,87,.18);
+    }
+
+    .primary-btn:hover{
+      background:var(--green-dark);
+      border-color:var(--green-dark);
+      transform:translateY(-1px);
+    }
+
+    .danger-btn{
+      border-color:#f0c7cb;
+      background:#fff;
+      color:var(--danger);
+    }
+
+    .danger-btn:hover{
+      background:var(--danger-soft);
+    }
+
+    .mobile-menu{
+      display:none;
+    }
+
+    .content{
+      padding:30px;
+      max-width:1700px;
+      margin:0 auto;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero{
+      background:
+        radial-gradient(circle at 88% 10%,rgba(24,169,87,.17),transparent 30%),
+        linear-gradient(135deg,#0b1710,#12251a);
+      color:#fff;
+      border-radius:26px;
+      padding:30px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:25px;
+      box-shadow:var(--shadow);
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      background:rgba(24,169,87,.14);
+      border:1px solid rgba(24,169,87,.25);
+      color:#7ce6a7;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .eyebrow-dot{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:#63df96;
+    }
+
+    .hero h1{
+      font-family:"Manrope",sans-serif;
+      font-size:clamp(27px,3vw,40px);
+      line-height:1.08;
+      letter-spacing:-1.5px;
+      margin-top:15px;
+    }
+
+    .hero p{
+      color:#aebdb4;
+      font-size:13px;
+      line-height:1.7;
+      max-width:650px;
+      margin-top:11px;
+    }
+
+    .hero-side{
+      min-width:235px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .hero-side-label{
+      color:#899990;
+      text-transform:uppercase;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:1px;
+    }
+
+    .hero-side-value{
+      font-family:"Manrope",sans-serif;
+      font-size:26px;
+      font-weight:800;
+      margin-top:4px;
+    }
+
+    .hero-side-sub{
+      color:#8f9e95;
+      font-size:10px;
+      margin-top:3px;
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:19px;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .stat-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+
+    .stat-label{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .stat-icon{
+      width:34px;
+      height:34px;
+      border-radius:11px;
+      display:grid;
+      place-items:center;
+      color:var(--green);
+      background:var(--green-soft);
+      font-size:15px;
+    }
+
+    .stat-value{
+      font-family:"Manrope",sans-serif;
+      font-size:25px;
+      font-weight:800;
+      margin-top:13px;
+      letter-spacing:-.8px;
+    }
+
+    .stat-note{
+      color:#8b958f;
+      font-size:10px;
+      margin-top:4px;
+    }
+
+    /* =========================
+       SECTION CARD
+    ========================= */
+
+    .section-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:20px;
+      box-shadow:var(--shadow-soft);
+      margin-top:18px;
+    }
+
+    .section-head{
+      padding:18px 20px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+    }
+
+    .section-title{
+      font-family:"Manrope",sans-serif;
+      font-size:15px;
+      font-weight:800;
+    }
+
+    .section-sub{
+      color:var(--muted);
+      font-size:10px;
+      margin-top:4px;
+    }
+
+    /* =========================
+       BANNER LIST
+    ========================= */
+
+    .banner-list{
+      padding:14px;
+    }
+
+    .banner-card{
+      border:1px solid var(--border);
+      border-radius:18px;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:270px 1fr auto;
+      gap:18px;
+      align-items:center;
+      padding:12px;
+      margin-bottom:10px;
+      transition:.2s;
+    }
+
+    .banner-card:last-child{
+      margin-bottom:0;
+    }
+
+    .banner-card:hover{
+      border-color:#ccd8d1;
+      box-shadow:0 8px 25px rgba(8,24,14,.05);
+      transform:translateY(-1px);
+    }
+
+    .banner-thumb{
+      height:125px;
+      border-radius:13px;
+      overflow:hidden;
+      background:
+        linear-gradient(
+          135deg,
+          #17251c,
+          #294232
+        );
+      position:relative;
+    }
+
+    .banner-thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .banner-thumb-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        90deg,
+        rgba(0,0,0,.48),
+        transparent
+      );
+      pointer-events:none;
+    }
+
+    .banner-thumb-text{
+      position:absolute;
+      left:15px;
+      bottom:13px;
+      right:12px;
+      color:#fff;
+    }
+
+    .banner-thumb-text strong{
+      font-size:12px;
+      display:block;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .banner-thumb-text span{
+      color:#d5dfd9;
+      font-size:9px;
+      display:block;
+      margin-top:3px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .banner-info{
+      min-width:0;
+    }
+
+    .banner-title-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .banner-title{
+      font-family:"Manrope",sans-serif;
+      font-size:15px;
+      font-weight:800;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:6px 9px;
+      border-radius:999px;
+      font-size:9px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .badge:before{
+      content:"";
+      width:5px;
+      height:5px;
+      border-radius:50%;
+      background:currentColor;
+    }
+
+    .badge.active{
+      color:var(--green-dark);
+      background:var(--green-soft);
+    }
+
+    .badge.inactive{
+      color:#69756e;
+      background:#eef1f0;
+    }
+
+    .badge.scheduled{
+      color:var(--blue);
+      background:var(--blue-soft);
+    }
+
+    .banner-subtitle{
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.55;
+      margin-top:7px;
+      max-width:680px;
+    }
+
+    .banner-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      margin-top:11px;
+    }
+
+    .meta-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      border:1px solid var(--border);
+      background:var(--surface-2);
+      border-radius:999px;
+      padding:5px 8px;
+      color:#657169;
+      font-size:9px;
+      font-weight:700;
+    }
+
+    .banner-actions{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:105px;
+    }
+
+    .small-btn{
+      min-height:34px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:10px;
+      color:#59655e;
+      font-size:10px;
+      font-weight:800;
+      padding:0 10px;
+    }
+
+    .small-btn:hover{
+      background:var(--surface-2);
+    }
+
+    .small-btn.delete:hover{
+      color:var(--danger);
+      background:var(--danger-soft);
+      border-color:#efc9cd;
+    }
+
+    .sort-buttons{
+      display:flex;
+      gap:5px;
+    }
+
+    .sort-btn{
+      width:34px;
+      height:34px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:9px;
+      color:#66726b;
+    }
+
+    .sort-btn:hover{
+      background:var(--surface-2);
+    }
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    .empty{
+      text-align:center;
+      padding:65px 20px;
+      color:var(--muted);
+    }
+
+    .empty-icon{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      background:var(--surface-2);
+      display:grid;
+      place-items:center;
+      margin:0 auto 13px;
+      font-size:22px;
+    }
+
+    .empty strong{
+      display:block;
+      color:var(--text);
+      font-size:14px;
+      margin-bottom:5px;
+    }
+
+    .empty span{
+      font-size:11px;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(4,10,7,.58);
+      backdrop-filter:blur(8px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:2000;
+    }
+
+    .modal-overlay.show{
+      display:flex;
+    }
+
+    .modal{
+      width:min(900px,100%);
+      max-height:92vh;
+      overflow:auto;
+      background:#fff;
+      border-radius:23px;
+      box-shadow:0 30px 100px rgba(0,0,0,.22);
+    }
+
+    .modal.small{
+      width:min(440px,100%);
+    }
+
+    .modal-header{
+      padding:20px 22px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:15px;
+      position:sticky;
+      top:0;
+      z-index:5;
+      background:#fff;
+    }
+
+    .modal-title{
+      font-family:"Manrope",sans-serif;
+      font-size:18px;
+      font-weight:800;
+    }
+
+    .modal-subtitle{
+      color:var(--muted);
+      font-size:11px;
+      margin-top:4px;
+    }
+
+    .modal-close{
+      width:35px;
+      height:35px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:#68746d;
+      border-radius:10px;
+      font-size:17px;
+    }
+
+    .modal-body{
+      padding:22px;
+    }
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+    }
+
+    .field.full{
+      grid-column:1/-1;
+    }
+
+    .field label{
+      color:#4d5952;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      height:42px;
+      border:1px solid var(--border);
+      border-radius:11px;
+      background:var(--surface-2);
+      outline:none;
+      padding:0 12px;
+      color:var(--text);
+      font-size:12px;
+    }
+
+    .field textarea{
+      height:88px;
+      min-height:88px;
+      resize:vertical;
+      padding:11px 12px;
+      line-height:1.55;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:rgba(24,169,87,.55);
+      box-shadow:0 0 0 3px rgba(24,169,87,.09);
+      background:#fff;
+    }
+
+    .hint{
+      color:#89938d;
+      font-size:9px;
+      line-height:1.5;
+    }
+
+    /* =========================
+       IMAGE UPLOAD
+    ========================= */
+
+    .upload-box{
+      border:1.5px dashed #cbd7d0;
+      background:#fbfcfb;
+      border-radius:15px;
+      min-height:145px;
+      padding:15px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .upload-empty{
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .upload-icon{
+      width:44px;
+      height:44px;
+      border-radius:13px;
+      background:var(--green-soft);
+      color:var(--green);
+      display:grid;
+      place-items:center;
+      margin:0 auto 8px;
+      font-size:18px;
+    }
+
+    .upload-empty strong{
+      display:block;
+      color:var(--text);
+      font-size:11px;
+    }
+
+    .upload-empty span{
+      display:block;
+      font-size:9px;
+      margin-top:4px;
+    }
+
+    .upload-preview{
+      width:100%;
+      height:180px;
+      border-radius:11px;
+      overflow:hidden;
+      display:none;
+      position:relative;
+    }
+
+    .upload-preview.show{
+      display:block;
+    }
+
+    .upload-preview img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .remove-image{
+      position:absolute;
+      top:8px;
+      right:8px;
+      width:30px;
+      height:30px;
+      border:none;
+      background:rgba(0,0,0,.65);
+      color:#fff;
+      border-radius:9px;
+      font-size:15px;
+    }
+
+    .file-input{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      cursor:pointer;
+    }
+
+    /* =========================
+       PREVIEW
+    ========================= */
+
+    .preview-section{
+      margin-top:20px;
+      padding-top:20px;
+      border-top:1px solid var(--border);
+    }
+
+    .preview-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .preview-title{
+      font-family:"Manrope",sans-serif;
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .preview-switch{
+      display:flex;
+      gap:4px;
+      padding:3px;
+      background:var(--surface-2);
+      border-radius:10px;
+    }
+
+    .preview-switch button{
+      height:30px;
+      border:0;
+      border-radius:8px;
+      padding:0 10px;
+      background:transparent;
+      color:#748079;
+      font-size:9px;
+      font-weight:800;
+    }
+
+    .preview-switch button.active{
+      background:#fff;
+      color:var(--text);
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .preview-stage{
+      background:
+        linear-gradient(
+          135deg,
+          #0b1710,
+          #1a2b21
+        );
+      border-radius:17px;
+      min-height:240px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .preview-stage.mobile{
+      width:330px;
+      max-width:100%;
+      margin:auto;
+      min-height:500px;
+    }
+
+    .preview-image{
+      position:absolute;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+    }
+
+    .preview-image:after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,0,0,.65),
+          rgba(0,0,0,.15)
+        );
+    }
+
+    .preview-copy{
+      position:absolute;
+      left:30px;
+      top:50%;
+      transform:translateY(-50%);
+      max-width:65%;
+      color:#fff;
+      z-index:2;
+    }
+
+    .preview-stage.mobile .preview-copy{
+      left:22px;
+      right:22px;
+      max-width:none;
+    }
+
+    .preview-copy small{
+      display:inline-block;
+      background:rgba(24,169,87,.9);
+      color:#fff;
+      border-radius:999px;
+      padding:6px 8px;
+      font-size:8px;
+      font-weight:800;
+    }
+
+    .preview-copy h3{
+      font-family:"Manrope",sans-serif;
+      font-size:27px;
+      line-height:1.08;
+      margin-top:10px;
+    }
+
+    .preview-stage.mobile .preview-copy h3{
+      font-size:23px;
+    }
+
+    .preview-copy p{
+      color:#d4ddd8;
+      font-size:10px;
+      line-height:1.5;
+      margin-top:7px;
+    }
+
+    .preview-copy a{
+      display:inline-flex;
+      margin-top:13px;
+      padding:9px 13px;
+      border-radius:9px;
+      background:#fff;
+      color:#101812;
+      font-size:9px;
+      font-weight:800;
+    }
+
+    /* =========================
+       TOGGLE
+    ========================= */
+
+    .toggle-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      border:1px solid var(--border);
+      background:var(--surface-2);
+      padding:12px 13px;
+      border-radius:13px;
+    }
+
+    .toggle-label{
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .toggle-sub{
+      color:var(--muted);
+      font-size:9px;
+      margin-top:3px;
+    }
+
+    .switch{
+      position:relative;
+      width:42px;
+      height:23px;
+      flex:none;
+    }
+
+    .switch input{
+      opacity:0;
+      width:0;
+      height:0;
+    }
+
+    .slider{
+      position:absolute;
+      inset:0;
+      background:#cfd8d2;
+      border-radius:999px;
+      transition:.2s;
+      cursor:pointer;
+    }
+
+    .slider:before{
+      content:"";
+      position:absolute;
+      width:17px;
+      height:17px;
+      left:3px;
+      top:3px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 2px 5px rgba(0,0,0,.12);
+      transition:.2s;
+    }
+
+    .switch input:checked + .slider{
+      background:var(--green);
+    }
+
+    .switch input:checked + .slider:before{
+      transform:translateX(19px);
+    }
+
+    /* =========================
+       SCHEDULE
+    ========================= */
+
+    .schedule-box{
+      border:1px solid var(--border);
+      border-radius:15px;
+      background:#fbfcfb;
+      padding:13px;
+    }
+
+    .schedule-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .schedule-grid input{
+      height:39px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:#fff;
+      padding:0 10px;
+      font-size:11px;
+      outline:none;
+    }
+
+    /* =========================
+       MODAL FOOTER
+    ========================= */
+
+    .modal-footer{
+      padding:16px 22px;
+      border-top:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      position:sticky;
+      bottom:0;
+      background:#fff;
+      z-index:5;
+    }
+
+    .modal-footer-left,
+    .modal-footer-right{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* =========================
+       CONFIRM
+    ========================= */
+
+    .confirm-icon{
+      width:55px;
+      height:55px;
+      border-radius:17px;
+      background:var(--danger-soft);
+      color:var(--danger);
+      display:grid;
+      place-items:center;
+      font-size:23px;
+      margin-bottom:14px;
+    }
+
+    .confirm-title{
+      font-family:"Manrope",sans-serif;
+      font-size:18px;
+      font-weight:800;
+    }
+
+    .confirm-text{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.65;
+      margin-top:7px;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast-wrap{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      z-index:5000;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      pointer-events:none;
+    }
+
+    .toast{
+      min-width:270px;
+      max-width:380px;
+      background:#102017;
+      color:#fff;
+      border-radius:13px;
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:11px;
+      font-weight:600;
+      box-shadow:0 20px 50px rgba(0,0,0,.2);
+      animation:toastIn .25s ease;
+    }
+
+    .toast-mark{
+      color:#6fe29b;
+      font-size:16px;
+      font-weight:800;
+    }
+
+    .toast.error .toast-mark{
+      color:#ff8790;
+    }
+
+    @keyframes toastIn{
+      from{
+        opacity:0;
+        transform:translateY(10px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    .mobile-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.42);
+      z-index:900;
+      display:none;
+    }
+
+    .mobile-overlay.show{
+      display:block;
+    }
+
+    @media(max-width:1200px){
+      .stats-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .banner-card{
+        grid-template-columns:220px 1fr auto;
+      }
+    }
+
+    @media(max-width:900px){
+
+      .sidebar{
+        transform:translateX(-100%);
+        transition:.25s ease;
+        box-shadow:20px 0 60px rgba(0,0,0,.18);
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .main{
+        width:100%;
+        margin-left:0;
+      }
+
+      .mobile-menu{
+        display:grid;
+      }
+
+      .topbar{
+        padding:0 17px;
+      }
+
+      .content{
+        padding:18px;
+      }
+
+      .hero{
+        padding:23px;
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .hero-side{
+        min-width:0;
+      }
+
+      .banner-card{
+        grid-template-columns:1fr;
+      }
+
+      .banner-thumb{
+        height:190px;
+      }
+
+      .banner-actions{
+        flex-direction:row;
+        min-width:0;
+        flex-wrap:wrap;
+      }
+
+      .banner-actions .small-btn{
+        flex:1;
+      }
+
+      .sort-buttons{
+        margin-left:auto;
+      }
+    }
+
+    @media(max-width:700px){
+
+      .top-actions .marketplace{
+        display:none;
+      }
+
+      .stats-grid{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+      }
+
+      .stat-card{
+        padding:15px;
+      }
+
+      .stat-value{
+        font-size:21px;
+      }
+
+      .section-card{
+        border-radius:17px;
+      }
+
+      .section-head{
+        padding:15px;
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .banner-list{
+        padding:10px;
+      }
+
+      .banner-card{
+        padding:10px;
+      }
+
+      .banner-thumb{
+        height:155px;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .field.full{
+        grid-column:auto;
+      }
+
+      .modal-overlay{
+        padding:10px;
+      }
+
+      .modal{
+        max-height:95vh;
+        border-radius:19px;
+      }
+
+      .modal-body{
+        padding:17px;
+      }
+
+      .modal-header{
+        padding:17px;
+      }
+
+      .modal-footer{
+        padding:13px 17px;
+      }
+
+      .modal-footer-left,
+      .modal-footer-right{
+        width:100%;
+      }
+
+      .modal-footer-right button{
+        flex:1;
+      }
+
+      .preview-copy{
+        left:20px;
+      }
+
+      .preview-copy h3{
+        font-size:22px;
+      }
+    }
+
+    @media(max-width:450px){
+
+      .stats-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .hero h1{
+        font-size:27px;
+      }
+
+      .banner-actions{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+      }
+
+      .schedule-grid{
+        grid-template-columns:1fr;
+      }
+
+      .modal-footer{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .modal-footer-left,
+      .modal-footer-right{
+        display:flex;
+      }
+
+      .modal-footer-left button,
+      .modal-footer-right button{
+        flex:1;
+      }
+
+      .toast-wrap{
+        left:12px;
+        right:12px;
+        bottom:12px;
+      }
+
+      .toast{
+        width:100%;
+        min-width:0;
+      }
+    }
+
+    /* =========================
+       PRINT
+    ========================= */
+
+    @media print{
+
+      @page{
+        size:A4 landscape;
+        margin:10mm;
+      }
+
+      body{
+        background:#fff;
+      }
+
+      .sidebar,
+      .topbar,
+      .hero-side,
+      .banner-actions,
+      .section-head button,
+      .modal-overlay,
+      .toast-wrap,
+      .footer-note{
+        display:none!important;
+      }
+
+      .main{
+        width:100%;
+        margin:0;
+      }
+
+      .content{
+        padding:0;
+        max-width:none;
+      }
+
+      .hero{
+        background:#fff;
+        color:#111;
+        box-shadow:none;
+        border:1px solid #ddd;
+      }
+
+      .hero p{
+        color:#555;
+      }
+
+      .section-card{
+        box-shadow:none;
+      }
+
+      .banner-card{
+        grid-template-columns:230px 1fr;
+      }
+    }
+  </style>
+<script src="../js/wd-sync.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+
+      <img
+        src="../logo.png"
+        alt="Website Deals"
+        class="brand-logo"
+        onerror="this.style.display='none'"
+      >
+
+      <div>
+        <div class="brand-name">Website Deals</div>
+        <div class="brand-sub">Admin Control Center</div>
+      </div>
+
+    </div>
+
+    <div class="nav-section">
+
+      <div class="nav-label">Marketplace</div>
+
+      <a class="nav-item" href="dashboard.html">
+        <span class="nav-icon">⌂</span>
+        Dashboard
+      </a>
+
+      <a class="nav-item" href="websites.html">
+        <span class="nav-icon">▣</span>
+        Websites
+      </a>
+
+      <a class="nav-item" href="categories.html">
+        <span class="nav-icon">◈</span>
+        Categories
+      </a>
+
+      <a class="nav-item" href="orders.html">
+        <span class="nav-icon">▤</span>
+        Orders
+      </a>
+
+      <a class="nav-item" href="payments.html">
+        <span class="nav-icon">৳</span>
+        Payments
+      </a>
+
+      <a class="nav-item" href="customers.html">
+        <span class="nav-icon">♙</span>
+        Customers
+      </a>
+
+      <a class="nav-item" href="newsletter.html">
+        <span class="nav-icon">✉</span>
+        Newsletter
+      </a>
+
+      <a class="nav-item active" href="banners.html">
+        <span class="nav-icon">▰</span>
+        Banners
+      </a>
+
+      <a class="nav-item" href="browse-ui.html">
+        <span class="nav-icon">◫</span>
+        Browse UI
+      </a>
+
+      <a class="nav-item" href="homepage.html">
+        <span class="nav-icon">⌂</span>
+        Homepage
+      </a>
+
+    </div>
+
+    <div class="nav-section">
+
+      <div class="nav-label">Reports</div>
+
+      <a class="nav-item" href="reports.html">
+        <span class="nav-icon">◫</span>
+        Reports
+      </a>
+
+      <a class="nav-item" href="monthly-report.html">
+        <span class="nav-icon">◷</span>
+        Monthly Report
+      </a>
+
+    </div>
+
+    <div class="nav-section">
+
+      <div class="nav-label">Administration</div>
+
+      <a class="nav-item" href="admins.html">
+        <span class="nav-icon">♟</span>
+        Admin Management
+      </a>
+
+      <a class="nav-item" href="settings.html">
+        <span class="nav-icon">⚙</span>
+        System Settings
+      </a>
+
+    </div>
+
+    <div class="sidebar-bottom">
+
+      <div class="admin-mini">
+
+        <div
+          class="avatar-small"
+          id="adminAvatar"
+        >
+          SA
+        </div>
+
+        <div style="min-width:0;">
+
+          <div
+            class="admin-mini-name"
+            id="adminName"
+          >
+            Super Admin
+          </div>
+
+          <div
+            class="admin-mini-role"
+            id="adminRole"
+          >
+            Administrator
+          </div>
+
+        </div>
+
+      </div>
+
+      <button
+        class="logout-btn"
+        type="button"
+        onclick="logout()"
+      >
+        ↪ &nbsp; Sign Out
+      </button>
+
+    </div>
+
+  </aside>
+
+  <div
+    class="mobile-overlay"
+    id="mobileOverlay"
+    onclick="closeSidebar()"
+  ></div>
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button
+          class="icon-btn mobile-menu"
+          type="button"
+          onclick="openSidebar()"
+        >
+          ☰
+        </button>
+
+        <div>
+
+          <div class="page-kicker">
+            Admin / Homepage
+          </div>
+
+          <div class="page-title-mini">
+            Banner Management
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="top-actions">
+
+        <button
+          class="outline-btn"
+          type="button"
+          onclick="refreshBanners()"
+        >
+          ↻ <span>Refresh</span>
+        </button>
+
+        <button
+          class="outline-btn"
+          type="button"
+          onclick="window.print()"
+        >
+          ⎙ <span>Print</span>
+        </button>
+
+        <a
+          class="outline-btn marketplace"
+          href="../index.html"
+        >
+          ↗ <span>Marketplace</span>
+        </a>
+
+      </div>
+
+    </header>
+
+    <div class="content">
+
+      <!-- HERO -->
+
+      <section class="hero">
+
+        <div>
+
+          <span class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Homepage Promotions
+          </span>
+
+          <h1>Control every banner.</h1>
+
+          <p>
+            Create high-impact marketplace banners, manage campaign
+            messaging, schedule promotions and control what customers
+            see across desktop and mobile.
+          </p>
+
+        </div>
+
+        <div class="hero-side">
+
+          <div class="hero-side-label">
+            Active Banner
+          </div>
+
+          <div
+            class="hero-side-value"
+            id="heroActive"
+          >
+            0
+          </div>
+
+          <div class="hero-side-sub">
+            Currently visible banners
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- STATS -->
+
+      <section class="stats-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Total Banners
+            </span>
+
+            <span class="stat-icon">
+              ▰
+            </span>
+
+          </div>
+
+          <div
+            class="stat-value"
+            id="statTotal"
+          >
+            0
+          </div>
+
+          <div class="stat-note">
+            All promotional banners
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Active
+            </span>
+
+            <span class="stat-icon">
+              ✓
+            </span>
+
+          </div>
+
+          <div
+            class="stat-value"
+            id="statActive"
+          >
+            0
+          </div>
+
+          <div class="stat-note">
+            Currently enabled
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Scheduled
+            </span>
+
+            <span class="stat-icon">
+              ◷
+            </span>
+
+          </div>
+
+          <div
+            class="stat-value"
+            id="statScheduled"
+          >
+            0
+          </div>
+
+          <div class="stat-note">
+            Campaigns with schedule
+          </div>
+
+        </div>
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Inactive
+            </span>
+
+            <span class="stat-icon">
+              ○
+            </span>
+
+          </div>
+
+          <div
+            class="stat-value"
+            id="statInactive"
+          >
+            0
+          </div>
+
+          <div class="stat-note">
+            Hidden banners
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- BANNER LIST -->
+
+      <section class="section-card">
+
+        <div class="section-head">
+
+          <div>
+
+            <div class="section-title">
+              Homepage Banners
+            </div>
+
+            <div class="section-sub">
+              Drag-free ordering with simple Up / Down controls.
+            </div>
+
+          </div>
+
+          <button
+            class="primary-btn"
+            type="button"
+            onclick="openAddBanner()"
+          >
+            + Add Banner
+          </button>
+
+        </div>
+
+        <div
+          class="banner-list"
+          id="bannerList"
+        ></div>
+
+      </section>
+
+      <div
+        class="footer-note"
+        style="
+          margin-top:18px;
+          display:flex;
+          justify-content:space-between;
+          color:#89948e;
+          font-size:10px;
+          padding:0 4px 25px;
+        "
+      >
+
+        <span>
+          Banner settings are currently stored in this browser.
+        </span>
+
+        <span
+          style="
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            background:#eef2ef;
+            border:1px solid var(--border);
+            border-radius:999px;
+            padding:6px 9px;
+            font-weight:700;
+          "
+        >
+          ● Prototype / LocalStorage
+        </span>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<!-- =========================
+     EDIT MODAL
+========================= -->
+
+<div
+  class="modal-overlay"
+  id="bannerModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <div
+          class="modal-title"
+          id="modalTitle"
+        >
+          Add Banner
+        </div>
+
+        <div class="modal-subtitle">
+          Build a promotional banner for the marketplace homepage.
+        </div>
+
+      </div>
+
+      <button
+        class="modal-close"
+        type="button"
+        onclick="closeModal('bannerModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <form
+        id="bannerForm"
+        onsubmit="saveBanner(event)"
+      >
+
+        <input
+          type="hidden"
+          id="bannerId"
+        >
+
+        <div class="form-grid">
+
+          <div class="field">
+
+            <label for="bannerTitle">
+              Banner Title
+            </label>
+
+            <input
+              id="bannerTitle"
+              type="text"
+              required
+              placeholder="Premium Websites. Ready to Launch."
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label for="bannerEyebrow">
+              Eyebrow / Label
+            </label>
+
+            <input
+              id="bannerEyebrow"
+              type="text"
+              placeholder="LIMITED OFFER"
+            >
+
+          </div>
+
+          <div class="field full">
+
+            <label for="bannerSubtitle">
+              Subtitle / Description
+            </label>
+
+            <textarea
+              id="bannerSubtitle"
+              placeholder="Launch your next website with a premium ready-to-use design."
+            ></textarea>
+
+          </div>
+
+          <div class="field">
+
+            <label for="bannerCta">
+              CTA Text
+            </label>
+
+            <input
+              id="bannerCta"
+              type="text"
+              placeholder="Explore Websites"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label for="bannerUrl">
+              CTA Link
+            </label>
+
+            <input
+              id="bannerUrl"
+              type="text"
+              placeholder="index.html"
+            >
+
+          </div>
+
+          <div class="field full">
+
+            <label>
+              Banner Image
+            </label>
+
+            <div class="upload-box">
+
+              <div
+                class="upload-empty"
+                id="uploadEmpty"
+              >
+
+                <div class="upload-icon">
+                  ↑
+                </div>
+
+                <strong>
+                  Upload banner image
+                </strong>
+
+                <span>
+                  Recommended: 1600 × 700px
+                </span>
+
+              </div>
+
+              <div
+                class="upload-preview"
+                id="uploadPreview"
+              >
+
+                <img
+                  id="previewUploadedImage"
+                  src=""
+                  alt="Banner preview"
+                >
+
+                <button
+                  class="remove-image"
+                  type="button"
+                  onclick="removeBannerImage(event)"
+                >
+                  ×
+                </button>
+
+              </div>
+
+              <input
+                class="file-input"
+                id="bannerImageFile"
+                type="file"
+                accept="image/*"
+                onchange="handleImageUpload(event)"
+              >
+
+            </div>
+
+            <div
+              class="hint"
+              style="margin-top:7px;"
+            >
+              You can also paste an external image URL below.
+            </div>
+
+          </div>
+
+          <div class="field full">
+
+            <label for="bannerImageUrl">
+              Image URL
+            </label>
+
+            <input
+              id="bannerImageUrl"
+              type="url"
+              placeholder="https://example.com/banner.jpg"
+              oninput="handleImageUrlInput()"
+            >
+
+          </div>
+
+          <div class="field full">
+
+            <div class="toggle-row">
+
+              <div>
+
+                <div class="toggle-label">
+                  Banner Status
+                </div>
+
+                <div class="toggle-sub">
+                  Enable this banner on the marketplace.
+                </div>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  id="bannerActive"
+                  type="checkbox"
+                  checked
+                >
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+          </div>
+
+          <div class="field full">
+
+            <div class="schedule-box">
+
+              <div class="toggle-row">
+
+                <div>
+
+                  <div class="toggle-label">
+                    Schedule Campaign
+                  </div>
+
+                  <div class="toggle-sub">
+                    Optionally define when the banner should run.
+                  </div>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    id="scheduleEnabled"
+                    type="checkbox"
+                    onchange="toggleSchedule()"
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+              <div
+                class="schedule-grid"
+                id="scheduleFields"
+                style="display:none;"
+              >
+
+                <input
+                  id="scheduleStart"
+                  type="datetime-local"
+                >
+
+                <input
+                  id="scheduleEnd"
+                  type="datetime-local"
+                >
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- LIVE PREVIEW -->
+
+        <div class="preview-section">
+
+          <div class="preview-head">
+
+            <div class="preview-title">
+              Live Preview
+            </div>
+
+            <div class="preview-switch">
+
+              <button
+                id="desktopPreviewBtn"
+                class="active"
+                type="button"
+                onclick="setPreviewMode('desktop')"
+              >
+                Desktop
+              </button>
+
+              <button
+                id="mobilePreviewBtn"
+                type="button"
+                onclick="setPreviewMode('mobile')"
+              >
+                Mobile
+              </button>
+
+            </div>
+
+          </div>
+
+          <div
+            class="preview-stage"
+            id="previewStage"
+          >
+
+            <div
+              class="preview-image"
+              id="livePreviewImage"
+            ></div>
+
+            <div class="preview-copy">
+
+              <small id="livePreviewEyebrow">
+                LIMITED OFFER
+              </small>
+
+              <h3 id="livePreviewTitle">
+                Premium Websites. Ready to Launch.
+              </h3>
+
+              <p id="livePreviewSubtitle">
+                Launch your next website with a premium ready-to-use design.
+              </p>
+
+              <a
+                id="livePreviewCta"
+                href="javascript:void(0)"
+                onclick="return false"
+              >
+                Explore Websites
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <div class="modal-footer-left">
+
+        <button
+          class="outline-btn danger-btn"
+          id="deleteBannerBtn"
+          type="button"
+          onclick="deleteCurrentBanner()"
+          style="display:none;"
+        >
+          Delete
+        </button>
+
+      </div>
+
+      <div class="modal-footer-right">
+
+        <button
+          class="outline-btn"
+          type="button"
+          onclick="closeModal('bannerModal')"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="primary-btn"
+          type="button"
+          onclick="document.getElementById('bannerForm').requestSubmit()"
+        >
+          Save Banner
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     DELETE CONFIRM
+========================= -->
+
+<div
+  class="modal-overlay"
+  id="confirmModal"
+>
+
+  <div class="modal small">
+
+    <div class="modal-body">
+
+      <div class="confirm-icon">
+        !
+      </div>
+
+      <div class="confirm-title">
+        Delete banner?
+      </div>
+
+      <div
+        class="confirm-text"
+        id="confirmText"
+      >
+        This action cannot be undone.
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <div></div>
+
+      <div class="modal-footer-right">
+
+        <button
+          class="outline-btn"
+          type="button"
+          onclick="closeModal('confirmModal')"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="primary-btn"
+          style="
+            background:var(--danger);
+            border-color:var(--danger);
+          "
+          type="button"
+          id="confirmDeleteBtn"
+        >
+          Delete Banner
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- TOAST -->
+
+<div
+  class="toast-wrap"
+  id="toastWrap"
+></div>
+
+
+<script>
+"use strict";
+
+/* =========================================================
+   WEBSITE DEALS — BANNER MANAGEMENT
+========================================================= */
+
+const AUTH_KEY = "websiteDealsAdminAuth";
+const STORAGE_KEY = "websiteDealsBanners";
+
+let banners = [];
+let editingBannerId = null;
+let pendingDeleteId = null;
+let currentPreviewMode = "desktop";
+
+/* =========================
+   AUTH
+========================= */
+
+function getAdminSession(){
+
+  try{
+
+    const raw =
+      sessionStorage.getItem(AUTH_KEY);
+
+    if(!raw){
+      return null;
+    }
+
+    const session =
+      JSON.parse(raw);
+
+    if(
+      !session ||
+      session.authenticated !== true
+    ){
+      return null;
+    }
+
+    return session;
+
+  }catch(error){
+
+    return null;
+
+  }
+
+}
+
+const adminSession =
+  getAdminSession();
+
+if(!adminSession){
+  window.location.replace("login/");
+}
+
+/* =========================
+   DEMO DATA
+========================= */
+
+const DEMO_BANNERS = [
+
+  {
+    id:"BNR-1001",
+    eyebrow:"FEATURED COLLECTION",
+    title:"Premium Websites. Ready to Launch.",
+    subtitle:"Discover polished website templates designed to help your business launch faster.",
+    ctaText:"Explore Websites",
+    ctaUrl:"../index.html",
+    image:"",
+    active:true,
+    scheduleEnabled:false,
+    scheduleStart:"",
+    scheduleEnd:"",
+    order:1
+  },
+
+  {
+    id:"BNR-1002",
+    eyebrow:"LIMITED OFFER",
+    title:"Launch Your Website From ৳325",
+    subtitle:"Choose a ready-made website and start your digital journey with a simple monthly plan.",
+    ctaText:"View Monthly Plans",
+    ctaUrl:"../index.html",
+    image:"",
+    active:true,
+    scheduleEnabled:false,
+    scheduleStart:"",
+    scheduleEnd:"",
+    order:2
+  },
+
+  {
+    id:"BNR-1003",
+    eyebrow:"NEW ARRIVALS",
+    title:"Fresh Designs. New Possibilities.",
+    subtitle:"Explore newly added business, restaurant, agency and portfolio websites.",
+    ctaText:"Browse New",
+    ctaUrl:"../index.html",
+    image:"",
+    active:false,
+    scheduleEnabled:false,
+    scheduleStart:"",
+    scheduleEnd:"",
+    order:3
+  }
+
+];
+
+/* =========================
+   STORAGE
+========================= */
+
+function readBanners(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(STORAGE_KEY);
+
+    if(!raw){
+      return [];
+    }
+
+    const parsed =
+      JSON.parse(raw);
+
+    return Array.isArray(parsed)
+      ? parsed
+      : [];
+
+  }catch(error){
+
+    return [];
+
+  }
+
+}
+
+function saveBanners(){
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(banners)
+  );
+
+}
+
+/* =========================
+   NORMALIZE
+========================= */
+
+function normalizeBanner(raw,index){
+
+  raw = raw || {};
+
+  return {
+
+    id:
+      raw.id ||
+      raw.bannerId ||
+      `BNR-${1001 + index}`,
+
+    eyebrow:
+      raw.eyebrow ||
+      raw.label ||
+      raw.badge ||
+      "FEATURED",
+
+    title:
+      raw.title ||
+      raw.heading ||
+      "Untitled Banner",
+
+    subtitle:
+      raw.subtitle ||
+      raw.description ||
+      raw.text ||
+      "",
+
+    ctaText:
+      raw.ctaText ||
+      raw.buttonText ||
+      raw.cta ||
+      "Explore",
+
+    ctaUrl:
+      raw.ctaUrl ||
+      raw.buttonUrl ||
+      raw.url ||
+      "../index.html",
+
+    image:
+      raw.image ||
+      raw.imageUrl ||
+      raw.bannerImage ||
+      "",
+
+    active:
+      raw.active !== false &&
+      raw.enabled !== false &&
+      raw.status !== "inactive",
+
+    scheduleEnabled:
+      raw.scheduleEnabled === true,
+
+    scheduleStart:
+      raw.scheduleStart ||
+      "",
+
+    scheduleEnd:
+      raw.scheduleEnd ||
+      "",
+
+    order:
+      Number(
+        raw.order ||
+        raw.sortOrder ||
+        index + 1
+      ) || index + 1
+
+  };
+
+}
+
+/* =========================
+   INIT
+========================= */
+
+function loadBanners(){
+
+  const stored =
+    readBanners();
+
+  if(stored.length){
+
+    banners =
+      stored.map(
+        normalizeBanner
+      );
+
+  }else{
+
+    banners =
+      DEMO_BANNERS.map(
+        normalizeBanner
+      );
+
+  }
+
+  sortBanners();
+
+}
+
+/* =========================
+   SORT
+========================= */
+
+function sortBanners(){
+
+  banners.sort(
+    (a,b) =>
+      Number(a.order || 0) -
+      Number(b.order || 0)
+  );
+
+}
+
+/* =========================
+   RENDER
+========================= */
+
+function renderBanners(){
+
+  sortBanners();
+
+  const list =
+    document.getElementById(
+      "bannerList"
+    );
+
+  if(!banners.length){
+
+    list.innerHTML = `
+      <div class="empty">
+
+        <div class="empty-icon">
+          ▰
+        </div>
+
+        <strong>
+          No banners yet
+        </strong>
+
+        <span>
+          Add your first homepage promotional banner.
+        </span>
+
+      </div>
+    `;
+
+    updateStats();
+
+    return;
+
+  }
+
+  let html = "";
+
+  banners.forEach(
+    (banner,index) => {
+
+      const schedule =
+        getScheduleState(banner);
+
+      let statusClass =
+        banner.active
+          ? "active"
+          : "inactive";
+
+      let statusText =
+        banner.active
+          ? "Active"
+          : "Inactive";
+
+      if(
+        banner.scheduleEnabled &&
+        schedule === "scheduled"
+      ){
+
+        statusClass = "scheduled";
+        statusText = "Scheduled";
+
+      }
+
+      html += `
+        <article
+          class="banner-card"
+          data-id="${escapeHTML(banner.id)}"
+        >
+
+          <div class="banner-thumb">
+
+            ${
+              banner.image
+                ? `
+                  <img
+                    src="${escapeHTML(banner.image)}"
+                    alt="${escapeHTML(banner.title)}"
+                    onerror="this.style.display='none'"
+                  >
+                `
+                : ""
+            }
+
+            <div class="banner-thumb-overlay"></div>
+
+            <div class="banner-thumb-text">
+
+              <strong>
+                ${escapeHTML(banner.title)}
+              </strong>
+
+              <span>
+                ${escapeHTML(
+                  banner.subtitle ||
+                  "Homepage promotional banner"
+                )}
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="banner-info">
+
+            <div class="banner-title-row">
+
+              <div class="banner-title">
+                ${escapeHTML(banner.title)}
+              </div>
+
+              <span class="badge ${statusClass}">
+                ${statusText}
+              </span>
+
+            </div>
+
+            <div class="banner-subtitle">
+              ${escapeHTML(
+                banner.subtitle ||
+                "No subtitle added."
+              )}
+            </div>
+
+            <div class="banner-meta">
+
+              <span class="meta-pill">
+                #${escapeHTML(banner.id)}
+              </span>
+
+              <span class="meta-pill">
+                CTA: ${escapeHTML(
+                  banner.ctaText || "—"
+                )}
+              </span>
+
+              ${
+                banner.scheduleEnabled
+                  ? `
+                    <span class="meta-pill">
+                      ◷ Scheduled
+                    </span>
+                  `
+                  : ""
+              }
+
+              <span class="meta-pill">
+                Order ${index + 1}
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="banner-actions">
+
+            <button
+              class="small-btn"
+              type="button"
+              onclick="toggleBanner('${escapeJS(banner.id)}')"
+            >
+              ${banner.active ? "Disable" : "Enable"}
+            </button>
+
+            <button
+              class="small-btn"
+              type="button"
+              onclick="editBanner('${escapeJS(banner.id)}')"
+            >
+              Edit
+            </button>
+
+            <div class="sort-buttons">
+
+              <button
+                class="sort-btn"
+                title="Move up"
+                ${index === 0 ? "disabled" : ""}
+                onclick="moveBanner('${escapeJS(banner.id)}',-1)"
+              >
+                ↑
+              </button>
+
+              <button
+                class="sort-btn"
+                title="Move down"
+                ${index === banners.length - 1 ? "disabled" : ""}
+                onclick="moveBanner('${escapeJS(banner.id)}',1)"
+              >
+                ↓
+              </button>
+
+            </div>
+
+            <button
+              class="small-btn delete"
+              type="button"
+              onclick="confirmDelete('${escapeJS(banner.id)}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </article>
+      `;
+
+    }
+  );
+
+  list.innerHTML = html;
+
+  updateStats();
+
+}
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats(){
+
+  const total =
+    banners.length;
+
+  const active =
+    banners.filter(
+      banner => banner.active
+    ).length;
+
+  const scheduled =
+    banners.filter(
+      banner =>
+        banner.scheduleEnabled
+    ).length;
+
+  const inactive =
+    banners.filter(
+      banner => !banner.active
+    ).length;
+
+  document.getElementById(
+    "statTotal"
+  ).textContent =
+    total;
+
+  document.getElementById(
+    "statActive"
+  ).textContent =
+    active;
+
+  document.getElementById(
+    "statScheduled"
+  ).textContent =
+    scheduled;
+
+  document.getElementById(
+    "statInactive"
+  ).textContent =
+    inactive;
+
+  document.getElementById(
+    "heroActive"
+  ).textContent =
+    active;
+
+}
+
+/* =========================
+   ADD
+========================= */
+
+function openAddBanner(){
+
+  editingBannerId = null;
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    "Add Banner";
+
+  document.getElementById(
+    "bannerForm"
+  ).reset();
+
+  document.getElementById(
+    "bannerActive"
+  ).checked = true;
+
+  document.getElementById(
+    "scheduleFields"
+  ).style.display = "none";
+
+  document.getElementById(
+    "uploadEmpty"
+  ).style.display = "block";
+
+  document.getElementById(
+    "uploadPreview"
+  ).classList.remove("show");
+
+  document.getElementById(
+    "previewUploadedImage"
+  ).src = "";
+
+  document.getElementById(
+    "deleteBannerBtn"
+  ).style.display = "none";
+
+  setPreviewMode("desktop");
+
+  updateLivePreview();
+
+  document.getElementById(
+    "bannerModal"
+  ).classList.add("show");
+
+  setTimeout(
+    () =>
+      document.getElementById(
+        "bannerTitle"
+      ).focus(),
+    80
+  );
+
+}
+
+/* =========================
+   EDIT
+========================= */
+
+function editBanner(id){
+
+  const banner =
+    banners.find(
+      item => item.id === id
+    );
+
+  if(!banner){
+    return;
+  }
+
+  editingBannerId = id;
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    "Edit Banner";
+
+  document.getElementById(
+    "bannerId"
+  ).value =
+    banner.id;
+
+  document.getElementById(
+    "bannerTitle"
+  ).value =
+    banner.title || "";
+
+  document.getElementById(
+    "bannerEyebrow"
+  ).value =
+    banner.eyebrow || "";
+
+  document.getElementById(
+    "bannerSubtitle"
+  ).value =
+    banner.subtitle || "";
+
+  document.getElementById(
+    "bannerCta"
+  ).value =
+    banner.ctaText || "";
+
+  document.getElementById(
+    "bannerUrl"
+  ).value =
+    banner.ctaUrl || "";
+
+  document.getElementById(
+    "bannerImageUrl"
+  ).value =
+    banner.image || "";
+
+  document.getElementById(
+    "bannerActive"
+  ).checked =
+    banner.active !== false;
+
+  document.getElementById(
+    "scheduleEnabled"
+  ).checked =
+    banner.scheduleEnabled === true;
+
+  document.getElementById(
+    "scheduleStart"
+  ).value =
+    banner.scheduleStart || "";
+
+  document.getElementById(
+    "scheduleEnd"
+  ).value =
+    banner.scheduleEnd || "";
+
+  document.getElementById(
+    "scheduleFields"
+  ).style.display =
+    banner.scheduleEnabled
+      ? "grid"
+      : "none";
+
+  if(banner.image){
+
+    document.getElementById(
+      "uploadEmpty"
+    ).style.display =
+      "none";
+
+    document.getElementById(
+      "uploadPreview"
+    ).classList.add("show");
+
+    document.getElementById(
+      "previewUploadedImage"
+    ).src =
+      banner.image;
+
+  }else{
+
+    document.getElementById(
+      "uploadEmpty"
+    ).style.display =
+      "block";
+
+    document.getElementById(
+      "uploadPreview"
+    ).classList.remove("show");
+
+  }
+
+  document.getElementById(
+    "deleteBannerBtn"
+  ).style.display =
+    "inline-flex";
+
+  setPreviewMode(
+    currentPreviewMode
+  );
+
+  updateLivePreview();
+
+  document.getElementById(
+    "bannerModal"
+  ).classList.add("show");
+
+}
+
+/* =========================
+   SAVE
+========================= */
+
+function saveBanner(event){
+
+  event.preventDefault();
+
+  const title =
+    document.getElementById(
+      "bannerTitle"
+    ).value.trim();
+
+  if(!title){
+
+    showToast(
+      "Banner title is required.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const idInput =
+    document.getElementById(
+      "bannerId"
+    ).value.trim();
+
+  const bannerId =
+    idInput ||
+    createBannerId();
+
+  const banner = {
+
+    id:bannerId,
+
+    eyebrow:
+      document.getElementById(
+        "bannerEyebrow"
+      ).value.trim(),
+
+    title:title,
+
+    subtitle:
+      document.getElementById(
+        "bannerSubtitle"
+      ).value.trim(),
+
+    ctaText:
+      document.getElementById(
+        "bannerCta"
+      ).value.trim(),
+
+    ctaUrl:
+      document.getElementById(
+        "bannerUrl"
+      ).value.trim() ||
+      "../index.html",
+
+    image:
+      document.getElementById(
+        "bannerImageUrl"
+      ).value.trim() ||
+      document.getElementById(
+        "previewUploadedImage"
+      ).src ||
+      "",
+
+    active:
+      document.getElementById(
+        "bannerActive"
+      ).checked,
+
+    scheduleEnabled:
+      document.getElementById(
+        "scheduleEnabled"
+      ).checked,
+
+    scheduleStart:
+      document.getElementById(
+        "scheduleStart"
+      ).value,
+
+    scheduleEnd:
+      document.getElementById(
+        "scheduleEnd"
+      ).value,
+
+    order:
+      0
+
+  };
+
+  if(editingBannerId){
+
+    const index =
+      banners.findIndex(
+        item =>
+          item.id === editingBannerId
+      );
+
+    if(index === -1){
+
+      showToast(
+        "Banner could not be found.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    banner.order =
+      banners[index].order ||
+      index + 1;
+
+    banners[index] =
+      banner;
+
+    showToast(
+      "Banner updated successfully.",
+      "success"
+    );
+
+  }else{
+
+    banner.order =
+      banners.length + 1;
+
+    banners.push(
+      banner
+    );
+
+    showToast(
+      "Banner created successfully.",
+      "success"
+    );
+
+  }
+
+  saveBanners();
+
+  sortBanners();
+
+  renderBanners();
+
+  closeModal(
+    "bannerModal"
+  );
+
+}
+
+/* =========================
+   CREATE ID
+========================= */
+
+function createBannerId(){
+
+  let number = 1001;
+
+  while(
+    banners.some(
+      banner =>
+        banner.id ===
+        `BNR-${number}`
+    )
+  ){
+
+    number++;
+
+  }
+
+  return `BNR-${number}`;
+
+}
+
+/* =========================
+   TOGGLE
+========================= */
+
+function toggleBanner(id){
+
+  const banner =
+    banners.find(
+      item => item.id === id
+    );
+
+  if(!banner){
+    return;
+  }
+
+  banner.active =
+    !banner.active;
+
+  saveBanners();
+
+  renderBanners();
+
+  showToast(
+    banner.active
+      ? "Banner enabled."
+      : "Banner disabled.",
+    "success"
+  );
+
+}
+
+/* =========================
+   MOVE
+========================= */
+
+function moveBanner(id,direction){
+
+  sortBanners();
+
+  const index =
+    banners.findIndex(
+      item => item.id === id
+    );
+
+  if(index === -1){
+    return;
+  }
+
+  const newIndex =
+    index + direction;
+
+  if(
+    newIndex < 0 ||
+    newIndex >= banners.length
+  ){
+    return;
+  }
+
+  const temp =
+    banners[index];
+
+  banners[index] =
+    banners[newIndex];
+
+  banners[newIndex] =
+    temp;
+
+  banners.forEach(
+    (banner,index) => {
+      banner.order =
+        index + 1;
+    }
+  );
+
+  saveBanners();
+
+  renderBanners();
+
+  showToast(
+    "Banner order updated.",
+    "success"
+  );
+
+}
+
+/* =========================
+   DELETE
+========================= */
+
+function confirmDelete(id){
+
+  const banner =
+    banners.find(
+      item => item.id === id
+    );
+
+  if(!banner){
+    return;
+  }
+
+  pendingDeleteId = id;
+
+  document.getElementById(
+    "confirmText"
+  ).textContent =
+    `Delete "${banner.title}"? This promotional banner will be permanently removed.`;
+
+  document.getElementById(
+    "confirmDeleteBtn"
+  ).onclick =
+    executeDelete;
+
+  document.getElementById(
+    "confirmModal"
+  ).classList.add("show");
+
+}
+
+function executeDelete(){
+
+  if(!pendingDeleteId){
+    return;
+  }
+
+  banners =
+    banners.filter(
+      banner =>
+        banner.id !==
+        pendingDeleteId
+    );
+
+  banners.forEach(
+    (banner,index) => {
+      banner.order =
+        index + 1;
+    }
+  );
+
+  saveBanners();
+
+  pendingDeleteId = null;
+
+  closeModal(
+    "confirmModal"
+  );
+
+  closeModal(
+    "bannerModal"
+  );
+
+  renderBanners();
+
+  showToast(
+    "Banner deleted.",
+    "success"
+  );
+
+}
+
+function deleteCurrentBanner(){
+
+  if(!editingBannerId){
+    return;
+  }
+
+  confirmDelete(
+    editingBannerId
+  );
+
+}
+
+/* =========================
+   IMAGE UPLOAD
+========================= */
+
+function handleImageUpload(event){
+
+  const file =
+    event.target.files &&
+    event.target.files[0];
+
+  if(!file){
+    return;
+  }
+
+  if(
+    !file.type.startsWith("image/")
+  ){
+
+    showToast(
+      "Please choose an image file.",
+      "error"
+    );
+
+    event.target.value = "";
+
+    return;
+
+  }
+
+  /*
+    Prototype:
+    store image as Data URL.
+  */
+
+  const reader =
+    new FileReader();
+
+  reader.onload =
+    function(e){
+
+      const result =
+        e.target.result;
+
+      document.getElementById(
+        "previewUploadedImage"
+      ).src =
+        result;
+
+      document.getElementById(
+        "uploadEmpty"
+      ).style.display =
+        "none";
+
+      document.getElementById(
+        "uploadPreview"
+      ).classList.add("show");
+
+      document.getElementById(
+        "bannerImageUrl"
+      ).value =
+        result;
+
+      updateLivePreview();
+
+    };
+
+  reader.readAsDataURL(file);
+
+}
+
+function removeBannerImage(event){
+
+  event.stopPropagation();
+
+  document.getElementById(
+    "bannerImageFile"
+  ).value = "";
+
+  document.getElementById(
+    "bannerImageUrl"
+  ).value = "";
+
+  document.getElementById(
+    "previewUploadedImage"
+  ).src = "";
+
+  document.getElementById(
+    "uploadPreview"
+  ).classList.remove("show");
+
+  document.getElementById(
+    "uploadEmpty"
+  ).style.display =
+    "block";
+
+  updateLivePreview();
+
+}
+
+function handleImageUrlInput(){
+
+  const url =
+    document.getElementById(
+      "bannerImageUrl"
+    ).value.trim();
+
+  if(url){
+
+    document.getElementById(
+      "previewUploadedImage"
+    ).src =
+      url;
+
+    document.getElementById(
+      "uploadEmpty"
+    ).style.display =
+      "none";
+
+    document.getElementById(
+      "uploadPreview"
+    ).classList.add("show");
+
+  }
+
+  updateLivePreview();
+
+}
+
+/* =========================
+   PREVIEW
+========================= */
+
+function setPreviewMode(mode){
+
+  currentPreviewMode =
+    mode;
+
+  const stage =
+    document.getElementById(
+      "previewStage"
+    );
+
+  const desktopBtn =
+    document.getElementById(
+      "desktopPreviewBtn"
+    );
+
+  const mobileBtn =
+    document.getElementById(
+      "mobilePreviewBtn"
+    );
+
+  if(mode === "mobile"){
+
+    stage.classList.add(
+      "mobile"
+    );
+
+    desktopBtn.classList.remove(
+      "active"
+    );
+
+    mobileBtn.classList.add(
+      "active"
+    );
+
+  }else{
+
+    stage.classList.remove(
+      "mobile"
+    );
+
+    desktopBtn.classList.add(
+      "active"
+    );
+
+    mobileBtn.classList.remove(
+      "active"
+    );
+
+  }
+
+  updateLivePreview();
+
+}
+
+function updateLivePreview(){
+
+  const eyebrow =
+    document.getElementById(
+      "bannerEyebrow"
+    ).value.trim() ||
+    "FEATURED";
+
+  const title =
+    document.getElementById(
+      "bannerTitle"
+    ).value.trim() ||
+    "Premium Websites. Ready to Launch.";
+
+  const subtitle =
+    document.getElementById(
+      "bannerSubtitle"
+    ).value.trim() ||
+    "Launch your next website with a premium ready-to-use design.";
+
+  const cta =
+    document.getElementById(
+      "bannerCta"
+    ).value.trim() ||
+    "Explore Websites";
+
+  const image =
+    document.getElementById(
+      "bannerImageUrl"
+    ).value.trim();
+
+  document.getElementById(
+    "livePreviewEyebrow"
+  ).textContent =
+    eyebrow;
+
+  document.getElementById(
+    "livePreviewTitle"
+  ).textContent =
+    title;
+
+  document.getElementById(
+    "livePreviewSubtitle"
+  ).textContent =
+    subtitle;
+
+  document.getElementById(
+    "livePreviewCta"
+  ).textContent =
+    cta;
+
+  const preview =
+    document.getElementById(
+      "livePreviewImage"
+    );
+
+  if(image){
+
+    preview.style.backgroundImage =
+      `url("${escapeCSSUrl(image)}")`;
+
+  }else{
+
+    preview.style.backgroundImage =
+      "linear-gradient(135deg,#16261b,#2c4936)";
+
+  }
+
+}
+
+/* =========================
+   SCHEDULE
+========================= */
+
+function toggleSchedule(){
+
+  const enabled =
+    document.getElementById(
+      "scheduleEnabled"
+    ).checked;
+
+  document.getElementById(
+    "scheduleFields"
+  ).style.display =
+    enabled
+      ? "grid"
+      : "none";
+
+}
+
+/* =========================
+   SCHEDULE STATUS
+========================= */
+
+function getScheduleState(banner){
+
+  if(!banner.scheduleEnabled){
+    return "none";
+  }
+
+  const now =
+    new Date();
+
+  const start =
+    banner.scheduleStart
+      ? new Date(
+          banner.scheduleStart
+        )
+      : null;
+
+  const end =
+    banner.scheduleEnd
+      ? new Date(
+          banner.scheduleEnd
+        )
+      : null;
+
+  if(
+    start &&
+    !Number.isNaN(start.getTime()) &&
+    now < start
+  ){
+    return "scheduled";
+  }
+
+  if(
+    end &&
+    !Number.isNaN(end.getTime()) &&
+    now > end
+  ){
+    return "expired";
+  }
+
+  return "running";
+
+}
+
+/* =========================
+   REFRESH
+========================= */
+
+function refreshBanners(){
+
+  loadBanners();
+
+  renderBanners();
+
+  showToast(
+    "Banner data refreshed.",
+    "success"
+  );
+
+}
+
+/* =========================
+   MODAL
+========================= */
+
+function closeModal(id){
+
+  const modal =
+    document.getElementById(id);
+
+  if(modal){
+    modal.classList.remove(
+      "show"
+    );
+  }
+
+}
+
+document
+  .querySelectorAll(
+    ".modal-overlay"
+  )
+  .forEach(
+    overlay => {
+
+      overlay.addEventListener(
+        "click",
+        event => {
+
+          if(
+            event.target === overlay
+          ){
+
+            overlay.classList.remove(
+              "show"
+            );
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+/* =========================
+   LIVE INPUT EVENTS
+========================= */
+
+[
+  "bannerEyebrow",
+  "bannerTitle",
+  "bannerSubtitle",
+  "bannerCta",
+  "bannerUrl",
+  "bannerImageUrl"
+].forEach(
+  id => {
+
+    document
+      .getElementById(id)
+      .addEventListener(
+        "input",
+        updateLivePreview
+      );
+
+  }
+);
+
+/* =========================
+   ESCAPE
+========================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape"
+    ){
+
+      document
+        .querySelectorAll(
+          ".modal-overlay.show"
+        )
+        .forEach(
+          modal =>
+            modal.classList.remove(
+              "show"
+            )
+        );
+
+    }
+
+  }
+);
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(
+  message,
+  type="success"
+){
+
+  const wrap =
+    document.getElementById(
+      "toastWrap"
+    );
+
+  const toast =
+    document.createElement(
+      "div"
+    );
+
+  toast.className =
+    `toast ${type}`;
+
+  toast.innerHTML = `
+    <span class="toast-mark">
+      ${type === "success" ? "✓" : "!"}
+    </span>
+
+    <span>
+      ${escapeHTML(message)}
+    </span>
+  `;
+
+  wrap.appendChild(
+    toast
+  );
+
+  setTimeout(
+    () => {
+
+      toast.style.opacity =
+        "0";
+
+      toast.style.transform =
+        "translateY(8px)";
+
+      setTimeout(
+        () => toast.remove(),
+        220
+      );
+
+    },
+    3000
+  );
+
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+function openSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.add("open");
+
+  document
+    .getElementById("mobileOverlay")
+    .classList.add("show");
+
+}
+
+function closeSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+  document
+    .getElementById("mobileOverlay")
+    .classList.remove("show");
+
+}
+
+/* =========================
+   ADMIN IDENTITY
+========================= */
+
+function setupAdminIdentity(){
+
+  if(!adminSession){
+    return;
+  }
+
+  const name =
+    adminSession.name ||
+    adminSession.email ||
+    "Super Admin";
+
+  const role =
+    adminSession.role ||
+    "Administrator";
+
+  document.getElementById(
+    "adminName"
+  ).textContent =
+    name;
+
+  document.getElementById(
+    "adminRole"
+  ).textContent =
+    capitalize(
+      String(role)
+        .replace(/[-_]/g," ")
+    );
+
+  document.getElementById(
+    "adminAvatar"
+  ).textContent =
+    initials(name);
+
+}
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+  sessionStorage.removeItem(
+    AUTH_KEY
+  );
+
+  window.location.href =
+    "login/";
+
+}
+
+/* =========================
+   HELPERS
+========================= */
+
+function initials(name){
+
+  const parts =
+    String(name || "Admin")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(parts.length === 1){
+
+    return parts[0]
+      .slice(0,2)
+      .toUpperCase();
+
+  }
+
+  return (
+    parts[0][0] +
+    parts[parts.length - 1][0]
+  ).toUpperCase();
+
+}
+
+function capitalize(value){
+
+  const text =
+    String(value || "");
+
+  return (
+    text.charAt(0).toUpperCase() +
+    text.slice(1)
+  );
+
+}
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+function escapeJS(value){
+
+  return String(value ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/"/g,'\\"')
+    .replace(/\r/g,"\\r")
+    .replace(/\n/g,"\\n");
+
+}
+
+function escapeCSSUrl(value){
+
+  return String(value || "")
+    .replace(/\\/g,"\\\\")
+    .replace(/"/g,'\\"')
+    .replace(/\)/g,"\\)");
+
+}
+
+/* =========================
+   START
+========================= */
+
+setupAdminIdentity();
+
+loadBanners();
+
+renderBanners();
+
+</script>
+
+</body>
+</html>

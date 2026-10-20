@@ -1,0 +1,3877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Websites | Website Deals Admin</title>
+  <meta name="description" content="Manage website inventory, pricing, visibility and featured listings.">
+  <meta name="theme-color" content="#07110b">
+
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="icon" type="image/png" href="../logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --green:#18a957;
+      --green-dark:#108344;
+      --green-soft:#eaf8f0;
+      --dark:#07110b;
+      --sidebar:#101713;
+      --surface:#ffffff;
+      --surface-2:#f6f8f7;
+      --border:#e3eae6;
+      --text:#142019;
+      --muted:#738079;
+      --danger:#dc3545;
+      --danger-soft:#fff0f1;
+      --warning:#d88a00;
+      --warning-soft:#fff7e6;
+      --blue:#3478f6;
+      --blue-soft:#edf4ff;
+      --shadow:0 16px 40px rgba(16,35,24,.07);
+      --radius:20px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"DM Sans",sans-serif;
+      background:var(--surface-2);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    button,
+    input,
+    select,
+    textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .app{
+      min-height:100vh;
+      display:flex;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar{
+      width:270px;
+      background:var(--sidebar);
+      color:#fff;
+      position:fixed;
+      inset:0 auto 0 0;
+      z-index:1000;
+      display:flex;
+      flex-direction:column;
+      transition:transform .25s ease;
+    }
+
+    .brand{
+      padding:24px 22px 20px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+
+    .brand img{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      object-fit:cover;
+      background:#fff;
+      padding:3px;
+    }
+
+    .brand-text{
+      min-width:0;
+    }
+
+    .brand-title{
+      font-family:"Manrope",sans-serif;
+      font-size:17px;
+      font-weight:800;
+      letter-spacing:-.4px;
+    }
+
+    .brand-sub{
+      color:#91a198;
+      font-size:11px;
+      margin-top:2px;
+    }
+
+    .nav{
+      padding:18px 13px;
+      overflow-y:auto;
+      flex:1;
+    }
+
+    .nav-label{
+      color:#64736a;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      padding:10px 11px 8px;
+    }
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:12px;
+      color:#aab5af;
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:4px;
+      transition:.2s ease;
+    }
+
+    .nav-item:hover{
+      background:rgba(255,255,255,.055);
+      color:#fff;
+    }
+
+    .nav-item.active{
+      background:var(--green);
+      color:#fff;
+      box-shadow:0 8px 20px rgba(24,169,87,.22);
+    }
+
+    .nav-icon{
+      width:20px;
+      text-align:center;
+      font-size:16px;
+      flex:none;
+    }
+
+    .sidebar-bottom{
+      padding:14px;
+      border-top:1px solid rgba(255,255,255,.07);
+    }
+
+    .admin-mini{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px;
+      border-radius:14px;
+      background:rgba(255,255,255,.045);
+    }
+
+    .admin-avatar{
+      width:36px;
+      height:36px;
+      border-radius:11px;
+      display:grid;
+      place-items:center;
+      background:var(--green);
+      color:#fff;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .admin-info{
+      min-width:0;
+      flex:1;
+    }
+
+    .admin-name{
+      font-size:12px;
+      font-weight:700;
+      color:#fff;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .admin-role{
+      font-size:10px;
+      color:#7f8e85;
+      margin-top:2px;
+    }
+
+    .logout-btn{
+      border:0;
+      background:transparent;
+      color:#87948d;
+      font-size:16px;
+      padding:5px;
+    }
+
+    .logout-btn:hover{
+      color:#fff;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main{
+      margin-left:270px;
+      width:calc(100% - 270px);
+      min-width:0;
+    }
+
+    .topbar{
+      height:72px;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 30px;
+      position:sticky;
+      top:0;
+      z-index:500;
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .page-title{
+      font-family:"Manrope",sans-serif;
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:-.5px;
+    }
+
+    .page-context{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .mobile-menu{
+      width:40px;
+      height:40px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:11px;
+      display:none;
+      place-items:center;
+      font-size:19px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .top-btn{
+      height:38px;
+      padding:0 13px;
+      border:1px solid var(--border);
+      border-radius:11px;
+      background:#fff;
+      color:var(--text);
+      font-size:12px;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+    }
+
+    .top-btn:hover{
+      border-color:#cbd7d0;
+      background:var(--surface-2);
+    }
+
+    .content{
+      padding:30px;
+      max-width:1800px;
+      margin:auto;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero{
+      background:
+        radial-gradient(circle at 92% 10%,rgba(24,169,87,.16),transparent 32%),
+        linear-gradient(135deg,#fff 0%,#f5faf7 100%);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:24px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      color:var(--green-dark);
+      background:var(--green-soft);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.7px;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .eyebrow-dot{
+      width:6px;
+      height:6px;
+      background:var(--green);
+      border-radius:50%;
+    }
+
+    .hero h1{
+      font-family:"Manrope",sans-serif;
+      font-size:30px;
+      line-height:1.15;
+      letter-spacing:-1.1px;
+      margin-bottom:8px;
+    }
+
+    .hero p{
+      color:var(--muted);
+      max-width:650px;
+      font-size:13px;
+      line-height:1.65;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:9px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border:0;
+      border-radius:12px;
+      padding:11px 15px;
+      font-size:12px;
+      font-weight:800;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.2s ease;
+    }
+
+    .btn-primary{
+      background:var(--green);
+      color:#fff;
+      box-shadow:0 8px 18px rgba(24,169,87,.2);
+    }
+
+    .btn-primary:hover{
+      background:var(--green-dark);
+      transform:translateY(-1px);
+    }
+
+    .btn-light{
+      background:#fff;
+      border:1px solid var(--border);
+      color:var(--text);
+    }
+
+    .btn-light:hover{
+      background:var(--surface-2);
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(6,minmax(0,1fr));
+      gap:14px;
+      margin-bottom:22px;
+    }
+
+    .stat{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      min-width:0;
+      box-shadow:0 8px 25px rgba(16,35,24,.035);
+    }
+
+    .stat-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      margin-bottom:13px;
+    }
+
+    .stat-label{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .stat-icon{
+      width:30px;
+      height:30px;
+      border-radius:9px;
+      display:grid;
+      place-items:center;
+      background:var(--green-soft);
+      color:var(--green-dark);
+      font-size:14px;
+    }
+
+    .stat-value{
+      font-family:"Manrope",sans-serif;
+      font-size:23px;
+      font-weight:800;
+      letter-spacing:-.7px;
+    }
+
+    .stat-note{
+      color:var(--muted);
+      font-size:10px;
+      margin-top:3px;
+    }
+
+    /* =========================
+       TOOLBAR
+    ========================= */
+
+    .panel{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:20px;
+      box-shadow:0 8px 25px rgba(16,35,24,.035);
+      overflow:hidden;
+    }
+
+    .toolbar{
+      padding:18px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .toolbar-row{
+      display:grid;
+      grid-template-columns:minmax(230px,1.7fr) repeat(4,minmax(130px,1fr)) auto;
+      gap:9px;
+      align-items:center;
+    }
+
+    .search-box{
+      position:relative;
+    }
+
+    .search-box span{
+      position:absolute;
+      left:13px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#8a9690;
+      font-size:14px;
+      pointer-events:none;
+    }
+
+    .input,
+    .select{
+      width:100%;
+      height:42px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:11px;
+      outline:none;
+      color:var(--text);
+      font-size:12px;
+      font-weight:600;
+      transition:.2s ease;
+    }
+
+    .input{
+      padding:0 13px 0 36px;
+    }
+
+    .select{
+      padding:0 12px;
+    }
+
+    .input:focus,
+    .select:focus{
+      border-color:var(--green);
+      box-shadow:0 0 0 3px rgba(24,169,87,.09);
+    }
+
+    .reset-btn{
+      height:42px;
+      border:1px solid var(--border);
+      background:var(--surface-2);
+      color:var(--text);
+      border-radius:11px;
+      padding:0 13px;
+      font-size:11px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .reset-btn:hover{
+      background:#eef2ef;
+    }
+
+    .toolbar-bottom{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .result-count{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .result-count strong{
+      color:var(--text);
+    }
+
+    .toolbar-tools{
+      display:flex;
+      gap:8px;
+    }
+
+    .small-btn{
+      height:34px;
+      padding:0 11px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:9px;
+      font-size:10px;
+      font-weight:800;
+      color:var(--text);
+    }
+
+    .small-btn:hover{
+      background:var(--surface-2);
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-wrap{
+      width:100%;
+      overflow-x:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:1050px;
+    }
+
+    th{
+      background:#fafbfa;
+      color:#7a867f;
+      font-size:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+      padding:13px 14px;
+      text-align:left;
+      border-bottom:1px solid var(--border);
+      white-space:nowrap;
+    }
+
+    td{
+      padding:14px;
+      border-bottom:1px solid #edf1ee;
+      vertical-align:middle;
+      font-size:12px;
+    }
+
+    tr:last-child td{
+      border-bottom:0;
+    }
+
+    tr:hover td{
+      background:#fcfdfc;
+    }
+
+    .check{
+      width:16px;
+      height:16px;
+      accent-color:var(--green);
+      cursor:pointer;
+    }
+
+    .website-cell{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      min-width:240px;
+    }
+
+    .website-thumb{
+      width:54px;
+      height:42px;
+      border-radius:10px;
+      background:linear-gradient(135deg,#eaf8f0,#dceee4);
+      border:1px solid var(--border);
+      overflow:hidden;
+      flex:none;
+      display:grid;
+      place-items:center;
+      color:var(--green-dark);
+      font-size:16px;
+      font-weight:800;
+    }
+
+    .website-thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .website-info{
+      min-width:0;
+    }
+
+    .website-name{
+      font-size:12px;
+      font-weight:800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:230px;
+    }
+
+    .website-slug{
+      color:var(--muted);
+      font-size:10px;
+      margin-top:3px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:230px;
+    }
+
+    .category-pill{
+      display:inline-flex;
+      padding:5px 8px;
+      border-radius:8px;
+      background:#f1f4f2;
+      color:#56635c;
+      font-size:10px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .price-main{
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .price-old{
+      color:#9ba59f;
+      font-size:9px;
+      text-decoration:line-through;
+      margin-top:2px;
+    }
+
+    .tech{
+      color:#5f6d65;
+      font-size:11px;
+      white-space:nowrap;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:5px 8px;
+      border-radius:8px;
+      font-size:9px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.3px;
+      white-space:nowrap;
+    }
+
+    .status-dot{
+      width:5px;
+      height:5px;
+      border-radius:50%;
+      background:currentColor;
+    }
+
+    .status-active{
+      color:#138247;
+      background:#eaf8f0;
+    }
+
+    .status-draft{
+      color:#a46a00;
+      background:#fff6df;
+    }
+
+    .status-sold{
+      color:#56616b;
+      background:#edf0f2;
+    }
+
+    .visibility{
+      display:flex;
+      gap:4px;
+      flex-wrap:wrap;
+      max-width:130px;
+    }
+
+    .visibility span{
+      padding:4px 6px;
+      border-radius:6px;
+      background:#f2f5f3;
+      color:#849089;
+      font-size:8px;
+      font-weight:800;
+    }
+
+    .visibility span.on{
+      color:var(--green-dark);
+      background:var(--green-soft);
+    }
+
+    .featured-btn{
+      border:0;
+      background:transparent;
+      font-size:18px;
+      color:#bdc6c0;
+      line-height:1;
+      padding:4px;
+    }
+
+    .featured-btn.active{
+      color:#f1aa00;
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:5px;
+    }
+
+    .action-btn{
+      width:31px;
+      height:31px;
+      display:grid;
+      place-items:center;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:#fff;
+      color:#66736c;
+      font-size:12px;
+    }
+
+    .action-btn:hover{
+      background:var(--surface-2);
+      color:var(--text);
+    }
+
+    .action-btn.danger:hover{
+      background:var(--danger-soft);
+      border-color:#ffd1d5;
+      color:var(--danger);
+    }
+
+    /* =========================
+       MOBILE CARDS
+    ========================= */
+
+    .mobile-list{
+      display:none;
+      padding:12px;
+    }
+
+    .website-card{
+      border:1px solid var(--border);
+      border-radius:15px;
+      padding:14px;
+      margin-bottom:10px;
+      background:#fff;
+    }
+
+    .website-card:last-child{
+      margin-bottom:0;
+    }
+
+    .card-top{
+      display:flex;
+      gap:11px;
+      align-items:flex-start;
+    }
+
+    .card-check{
+      margin-top:2px;
+    }
+
+    .card-thumb{
+      width:68px;
+      height:52px;
+      border-radius:11px;
+      overflow:hidden;
+      background:var(--green-soft);
+      border:1px solid var(--border);
+      display:grid;
+      place-items:center;
+      color:var(--green-dark);
+      font-weight:800;
+      flex:none;
+    }
+
+    .card-thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .card-main{
+      min-width:0;
+      flex:1;
+    }
+
+    .card-name{
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .card-slug{
+      color:var(--muted);
+      font-size:10px;
+      margin-top:3px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .card-status{
+      margin-top:7px;
+    }
+
+    .card-meta{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:8px;
+      margin-top:13px;
+    }
+
+    .meta-box{
+      background:var(--surface-2);
+      border-radius:10px;
+      padding:9px;
+    }
+
+    .meta-label{
+      font-size:8px;
+      color:var(--muted);
+      text-transform:uppercase;
+      font-weight:800;
+      letter-spacing:.5px;
+    }
+
+    .meta-value{
+      font-size:11px;
+      font-weight:800;
+      margin-top:3px;
+    }
+
+    .card-bottom{
+      border-top:1px solid var(--border);
+      margin-top:12px;
+      padding-top:11px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* =========================
+       PAGINATION
+    ========================= */
+
+    .pagination{
+      padding:14px 18px;
+      border-top:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .page-info{
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    .page-buttons{
+      display:flex;
+      gap:5px;
+    }
+
+    .page-btn{
+      min-width:32px;
+      height:32px;
+      padding:0 8px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:8px;
+      font-size:10px;
+      font-weight:800;
+      color:var(--text);
+    }
+
+    .page-btn.active{
+      color:#fff;
+      background:var(--green);
+      border-color:var(--green);
+    }
+
+    .page-btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+    /* =========================
+       EMPTY STATE
+    ========================= */
+
+    .empty{
+      text-align:center;
+      padding:55px 20px;
+      color:var(--muted);
+    }
+
+    .empty-icon{
+      width:58px;
+      height:58px;
+      margin:0 auto 13px;
+      border-radius:18px;
+      background:var(--green-soft);
+      color:var(--green-dark);
+      display:grid;
+      place-items:center;
+      font-size:24px;
+    }
+
+    .empty h3{
+      color:var(--text);
+      font-family:"Manrope",sans-serif;
+      font-size:16px;
+      margin-bottom:5px;
+    }
+
+    .empty p{
+      font-size:11px;
+      max-width:420px;
+      margin:auto;
+      line-height:1.6;
+    }
+
+    /* =========================
+       MODALS
+    ========================= */
+
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(7,17,11,.54);
+      backdrop-filter:blur(5px);
+      z-index:2000;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .modal-backdrop.show{
+      display:flex;
+    }
+
+    .modal{
+      width:min(680px,100%);
+      max-height:90vh;
+      overflow:auto;
+      background:#fff;
+      border-radius:22px;
+      box-shadow:0 30px 80px rgba(0,0,0,.2);
+      animation:modalIn .18s ease;
+    }
+
+    @keyframes modalIn{
+      from{
+        opacity:0;
+        transform:translateY(8px) scale(.985);
+      }
+      to{
+        opacity:1;
+        transform:none;
+      }
+    }
+
+    .modal.small{
+      width:min(460px,100%);
+    }
+
+    .modal-head{
+      padding:19px 20px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      position:sticky;
+      top:0;
+      background:#fff;
+      z-index:2;
+    }
+
+    .modal-title{
+      font-family:"Manrope",sans-serif;
+      font-size:16px;
+      font-weight:800;
+    }
+
+    .modal-close{
+      width:32px;
+      height:32px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:9px;
+      color:#66736c;
+      font-size:17px;
+    }
+
+    .modal-body{
+      padding:20px;
+    }
+
+    .modal-foot{
+      padding:15px 20px;
+      border-top:1px solid var(--border);
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      position:sticky;
+      bottom:0;
+      background:#fff;
+    }
+
+    .preview-cover{
+      width:100%;
+      aspect-ratio:16/8;
+      background:linear-gradient(135deg,#eaf8f0,#dceee4);
+      border-radius:15px;
+      overflow:hidden;
+      margin-bottom:17px;
+      display:grid;
+      place-items:center;
+      color:var(--green-dark);
+      font-size:28px;
+      font-weight:800;
+    }
+
+    .preview-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .preview-title{
+      font-family:"Manrope",sans-serif;
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:-.6px;
+    }
+
+    .preview-slug{
+      color:var(--muted);
+      font-size:11px;
+      margin-top:4px;
+    }
+
+    .preview-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:9px;
+      margin-top:16px;
+    }
+
+    .preview-box{
+      background:var(--surface-2);
+      border-radius:11px;
+      padding:11px;
+    }
+
+    .preview-box label{
+      color:var(--muted);
+      font-size:8px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+    }
+
+    .preview-box div{
+      font-size:11px;
+      font-weight:800;
+      margin-top:4px;
+    }
+
+    .preview-description{
+      margin-top:16px;
+      padding:14px;
+      background:#fafbfa;
+      border:1px solid var(--border);
+      border-radius:12px;
+      color:#5e6a64;
+      font-size:11px;
+      line-height:1.65;
+    }
+
+    .delete-message{
+      font-size:12px;
+      color:#657169;
+      line-height:1.65;
+    }
+
+    .delete-name{
+      color:var(--text);
+      font-weight:800;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast-wrap{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      z-index:4000;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      pointer-events:none;
+    }
+
+    .toast{
+      min-width:260px;
+      max-width:380px;
+      background:#111b15;
+      color:#fff;
+      border-radius:12px;
+      padding:12px 14px;
+      box-shadow:0 15px 35px rgba(0,0,0,.18);
+      font-size:11px;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      animation:toastIn .2s ease;
+    }
+
+    .toast.success::before{
+      content:"✓";
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:var(--green);
+      display:grid;
+      place-items:center;
+      flex:none;
+    }
+
+    .toast.error::before{
+      content:"!";
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:var(--danger);
+      display:grid;
+      place-items:center;
+      flex:none;
+    }
+
+    @keyframes toastIn{
+      from{
+        opacity:0;
+        transform:translateY(8px);
+      }
+      to{
+        opacity:1;
+        transform:none;
+      }
+    }
+
+    /* =========================
+       OVERLAY
+    ========================= */
+
+    .sidebar-overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.4);
+      z-index:900;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer{
+      text-align:center;
+      padding:25px 20px 35px;
+      color:#89948e;
+      font-size:10px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width:1250px){
+      .stats{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .toolbar-row{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .search-box{
+        grid-column:span 3;
+      }
+    }
+
+    @media(max-width:900px){
+      .sidebar{
+        transform:translateX(-100%);
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .sidebar-overlay.show{
+        display:block;
+      }
+
+      .main{
+        margin-left:0;
+        width:100%;
+      }
+
+      .mobile-menu{
+        display:grid;
+      }
+
+      .topbar{
+        padding:0 16px;
+      }
+
+      .top-actions .top-btn:not(.keep){
+        display:none;
+      }
+
+      .content{
+        padding:18px 15px;
+      }
+
+      .hero{
+        padding:21px;
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .hero h1{
+        font-size:25px;
+      }
+
+      .hero-actions{
+        justify-content:flex-start;
+      }
+    }
+
+    @media(max-width:700px){
+      .stats{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .toolbar-row{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .search-box{
+        grid-column:span 2;
+      }
+
+      .toolbar-bottom{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .toolbar-tools{
+        width:100%;
+      }
+
+      .toolbar-tools .small-btn{
+        flex:1;
+      }
+
+      .table-wrap{
+        display:none;
+      }
+
+      .mobile-list{
+        display:block;
+      }
+
+      .pagination{
+        padding:13px;
+      }
+
+      .page-info{
+        display:none;
+      }
+
+      .page-buttons{
+        width:100%;
+        justify-content:center;
+      }
+
+      .preview-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media(max-width:480px){
+      .topbar{
+        height:64px;
+      }
+
+      .page-title{
+        font-size:15px;
+      }
+
+      .page-context{
+        display:none;
+      }
+
+      .content{
+        padding:13px 11px;
+      }
+
+      .hero{
+        border-radius:18px;
+        padding:18px;
+      }
+
+      .hero h1{
+        font-size:22px;
+      }
+
+      .hero-actions{
+        width:100%;
+      }
+
+      .hero-actions .btn{
+        flex:1;
+      }
+
+      .stats{
+        gap:9px;
+      }
+
+      .stat{
+        padding:13px;
+        border-radius:14px;
+      }
+
+      .stat-value{
+        font-size:19px;
+      }
+
+      .toolbar{
+        padding:12px;
+      }
+
+      .toolbar-row{
+        grid-template-columns:1fr;
+      }
+
+      .search-box{
+        grid-column:auto;
+      }
+
+      .preview-grid{
+        grid-template-columns:1fr;
+      }
+
+      .modal-backdrop{
+        padding:10px;
+      }
+
+      .modal{
+        border-radius:17px;
+      }
+
+      .toast-wrap{
+        left:11px;
+        right:11px;
+        bottom:11px;
+      }
+
+      .toast{
+        min-width:0;
+        width:100%;
+      }
+    }
+
+    @media print{
+      .sidebar,
+      .topbar,
+      .hero-actions,
+      .toolbar,
+      .pagination,
+      .actions,
+      .featured-btn,
+      .sidebar-overlay,
+      .footer{
+        display:none!important;
+      }
+
+      .main{
+        margin:0;
+        width:100%;
+      }
+
+      .content{
+        padding:0;
+      }
+
+      .hero{
+        box-shadow:none;
+        margin-bottom:15px;
+      }
+
+      .panel{
+        box-shadow:none;
+      }
+
+      .table-wrap{
+        display:block!important;
+      }
+
+      table{
+        min-width:0;
+      }
+
+      .mobile-list{
+        display:none!important;
+      }
+
+      body{
+        background:#fff;
+      }
+    }
+  </style>
+<script src="../js/wd-sync.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <img src="../logo.png" alt="Website Deals">
+      <div class="brand-text">
+        <div class="brand-title">Website Deals</div>
+        <div class="brand-sub">Admin Control Center</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+
+      <div class="nav-label">Overview</div>
+
+      <a class="nav-item" href="dashboard.html">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="nav-label">Marketplace</div>
+
+      <a class="nav-item active" href="websites.html">
+        <span class="nav-icon">▣</span>
+        <span>Websites</span>
+      </a>
+
+      <a class="nav-item" href="website-editor.html">
+        <span class="nav-icon">✎</span>
+        <span>Website Editor</span>
+      </a>
+
+      <a class="nav-item" href="categories.html">
+        <span class="nav-icon">◫</span>
+        <span>Categories</span>
+      </a>
+
+      <a class="nav-item" href="browse-ui.html">
+        <span class="nav-icon">◉</span>
+        <span>Browse UI</span>
+      </a>
+
+      <a class="nav-item" href="homepage.html">
+        <span class="nav-icon">⌂</span>
+        <span>Homepage</span>
+      </a>
+
+      <a class="nav-item" href="banners.html">
+        <span class="nav-icon">▤</span>
+        <span>Banners</span>
+      </a>
+
+      <div class="nav-label">Orders & Customers</div>
+
+      <a class="nav-item" href="orders.html">
+        <span class="nav-icon">▱</span>
+        <span>Orders</span>
+      </a>
+
+      <a class="nav-item" href="customers.html">
+        <span class="nav-icon">♙</span>
+        <span>Customers</span>
+      </a>
+
+      <a class="nav-item" href="payments.html">
+        <span class="nav-icon">৳</span>
+        <span>Payments</span>
+      </a>
+
+      <a class="nav-item" href="newsletter.html">
+        <span class="nav-icon">✉</span>
+        <span>Newsletter</span>
+      </a>
+
+      <div class="nav-label">Analytics</div>
+
+      <a class="nav-item" href="reports.html">
+        <span class="nav-icon">▥</span>
+        <span>Reports</span>
+      </a>
+
+      <a class="nav-item" href="monthly-report.html">
+        <span class="nav-icon">◴</span>
+        <span>Monthly Report</span>
+      </a>
+
+      <div class="nav-label">System</div>
+
+      <a class="nav-item" href="admins.html">
+        <span class="nav-icon">♟</span>
+        <span>Admins</span>
+      </a>
+
+      <a class="nav-item" href="settings.html">
+        <span class="nav-icon">⚙</span>
+        <span>Settings</span>
+      </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="admin-mini">
+        <div class="admin-avatar" id="sidebarAvatar">SA</div>
+
+        <div class="admin-info">
+          <div class="admin-name" id="sidebarName">Super Admin</div>
+          <div class="admin-role" id="sidebarRole">Super Administrator</div>
+        </div>
+
+        <button class="logout-btn" id="logoutBtn" title="Logout">↪</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+        <button class="mobile-menu" id="mobileMenu">☰</button>
+
+        <div>
+          <div class="page-title">Website Inventory</div>
+          <div class="page-context">Manage marketplace websites, pricing and visibility</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="top-btn" id="refreshBtn">↻ <span>Refresh</span></button>
+        <button class="top-btn keep" onclick="location.href='website-editor.html'">＋ Add Website</button>
+      </div>
+
+    </header>
+
+    <section class="content">
+
+      <!-- HERO -->
+      <div class="hero">
+
+        <div>
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Marketplace Inventory
+          </div>
+
+          <h1>Manage your website collection.</h1>
+
+          <p>
+            Control website listings, pricing, categories, publishing status,
+            featured placement and marketplace visibility from one premium workspace.
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn btn-light" id="exportBtn">↓ Export CSV</button>
+          <button class="btn btn-light" id="printBtn">⎙ Print</button>
+          <button class="btn btn-primary" onclick="location.href='website-editor.html'">
+            ＋ Add Website
+          </button>
+        </div>
+
+      </div>
+
+      <!-- STATS -->
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-top">
+            <span class="stat-label">Total Websites</span>
+            <span class="stat-icon">▣</span>
+          </div>
+          <div class="stat-value" id="statTotal">0</div>
+          <div class="stat-note">Marketplace inventory</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-top">
+            <span class="stat-label">Active</span>
+            <span class="stat-icon">✓</span>
+          </div>
+          <div class="stat-value" id="statActive">0</div>
+          <div class="stat-note">Published listings</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-top">
+            <span class="stat-label">Draft</span>
+            <span class="stat-icon">✎</span>
+          </div>
+          <div class="stat-value" id="statDraft">0</div>
+          <div class="stat-note">Not published</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-top">
+            <span class="stat-label">Sold</span>
+            <span class="stat-icon">◉</span>
+          </div>
+          <div class="stat-value" id="statSold">0</div>
+          <div class="stat-note">Completed inventory</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-top">
+            <span class="stat-label">Featured</span>
+            <span class="stat-icon">★</span>
+          </div>
+          <div class="stat-value" id="statFeatured">0</div>
+          <div class="stat-note">Featured listings</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-top">
+            <span class="stat-label">Avg. Price</span>
+            <span class="stat-icon">৳</span>
+          </div>
+          <div class="stat-value" id="statAverage">৳0</div>
+          <div class="stat-note">Current offer price</div>
+        </div>
+
+      </div>
+
+      <!-- INVENTORY PANEL -->
+      <div class="panel">
+
+        <div class="toolbar">
+
+          <div class="toolbar-row">
+
+            <div class="search-box">
+              <span>⌕</span>
+              <input
+                class="input"
+                id="searchInput"
+                type="search"
+                placeholder="Search name, slug, category, tech or ID..."
+                autocomplete="off"
+              >
+            </div>
+
+            <select class="select" id="categoryFilter">
+              <option value="all">All Categories</option>
+            </select>
+
+            <select class="select" id="statusFilter">
+              <option value="all">All Status</option>
+              <option value="active">Active</option>
+              <option value="draft">Draft</option>
+              <option value="sold">Sold</option>
+            </select>
+
+            <select class="select" id="visibilityFilter">
+              <option value="all">All Visibility</option>
+              <option value="featured">Featured</option>
+              <option value="homepage">Homepage Visible</option>
+              <option value="browse">Browse Visible</option>
+            </select>
+
+            <select class="select" id="sortFilter">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="price-high">Price: High → Low</option>
+              <option value="price-low">Price: Low → High</option>
+              <option value="name-az">Name: A → Z</option>
+              <option value="name-za">Name: Z → A</option>
+            </select>
+
+            <button class="reset-btn" id="resetFilters">Reset</button>
+
+          </div>
+
+          <div class="toolbar-bottom">
+
+            <div class="result-count" id="resultCount">
+              Showing <strong>0</strong> websites
+            </div>
+
+            <div class="toolbar-tools">
+              <button class="small-btn" id="bulkFeaturedBtn">★ Feature Selected</button>
+              <button class="small-btn" id="bulkDeleteBtn">Delete Selected</button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- DESKTOP TABLE -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:35px;">
+                  <input type="checkbox" class="check" id="selectAll">
+                </th>
+                <th>Website</th>
+                <th>Category</th>
+                <th>Technology</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Visibility</th>
+                <th>Featured</th>
+                <th>Updated</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="websiteTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- MOBILE -->
+        <div class="mobile-list" id="mobileList"></div>
+
+        <!-- PAGINATION -->
+        <div class="pagination">
+
+          <div class="page-info" id="pageInfo">
+            Showing 0–0 of 0
+          </div>
+
+          <div class="page-buttons" id="pageButtons"></div>
+
+        </div>
+
+      </div>
+
+      <div class="footer">
+        Website Deals Admin · Prototype / LocalStorage Environment
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<!-- =========================
+     PREVIEW MODAL
+========================== -->
+<div class="modal-backdrop" id="previewModal">
+
+  <div class="modal">
+
+    <div class="modal-head">
+      <div class="modal-title">Website Preview</div>
+      <button class="modal-close" onclick="closeModal('previewModal')">×</button>
+    </div>
+
+    <div class="modal-body" id="previewContent"></div>
+
+    <div class="modal-foot">
+      <button class="btn btn-light" onclick="closeModal('previewModal')">Close</button>
+      <button class="btn btn-primary" id="previewEditBtn">Edit Website</button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     DELETE MODAL
+========================== -->
+<div class="modal-backdrop" id="deleteModal">
+
+  <div class="modal small">
+
+    <div class="modal-head">
+      <div class="modal-title">Delete Website</div>
+      <button class="modal-close" onclick="closeModal('deleteModal')">×</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="delete-message">
+        Are you sure you want to delete
+        <span class="delete-name" id="deleteWebsiteName"></span>?
+        <br><br>
+        This removes the website from the current LocalStorage inventory.
+        This action cannot be undone.
+      </div>
+
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn btn-light" onclick="closeModal('deleteModal')">Cancel</button>
+      <button class="btn" style="background:var(--danger);color:#fff;" id="confirmDeleteBtn">
+        Delete Website
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     BULK DELETE MODAL
+========================== -->
+<div class="modal-backdrop" id="bulkDeleteModal">
+
+  <div class="modal small">
+
+    <div class="modal-head">
+      <div class="modal-title">Delete Selected Websites</div>
+      <button class="modal-close" onclick="closeModal('bulkDeleteModal')">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="delete-message">
+        You are about to delete
+        <span class="delete-name" id="bulkDeleteCount">0 websites</span>.
+        <br><br>
+        This action cannot be undone.
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn btn-light" onclick="closeModal('bulkDeleteModal')">Cancel</button>
+      <button class="btn" style="background:var(--danger);color:#fff;" id="confirmBulkDeleteBtn">
+        Delete Selected
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* =========================================================
+   WEBSITE DEALS — WEBSITE INVENTORY
+   LocalStorage:
+   websiteDealsAdminAuth
+   websiteDealsAdminWebsites
+   websiteDealsCategories
+========================================================= */
+
+(function(){
+
+  "use strict";
+
+  /* =========================
+     AUTH
+  ========================== */
+
+  const AUTH_KEY = "websiteDealsAdminAuth";
+
+  function getAdminSession(){
+    try{
+      const raw = sessionStorage.getItem(AUTH_KEY);
+
+      if(!raw) return null;
+
+      const session = JSON.parse(raw);
+
+      if(!session || session.authenticated !== true){
+        return null;
+      }
+
+      return session;
+
+    }catch(error){
+      return null;
+    }
+  }
+
+  const adminSession = getAdminSession();
+
+  if(!adminSession){
+    window.location.replace("login/");
+    return;
+  }
+
+  /* =========================
+     CONSTANTS
+  ========================== */
+
+  const STORAGE_KEY = "websiteDealsAdminWebsites";
+  const CATEGORY_KEY = "websiteDealsCategories";
+
+  const PAGE_SIZE = 8;
+
+  let websites = [];
+  let categories = [];
+  let filteredWebsites = [];
+  let currentPage = 1;
+  let pendingDeleteId = null;
+
+  /* =========================
+     DOM
+  ========================== */
+
+  const $ = id => document.getElementById(id);
+
+  const sidebar = $("sidebar");
+  const sidebarOverlay = $("sidebarOverlay");
+  const mobileMenu = $("mobileMenu");
+
+  const searchInput = $("searchInput");
+  const categoryFilter = $("categoryFilter");
+  const statusFilter = $("statusFilter");
+  const visibilityFilter = $("visibilityFilter");
+  const sortFilter = $("sortFilter");
+
+  const websiteTableBody = $("websiteTableBody");
+  const mobileList = $("mobileList");
+
+  const selectAll = $("selectAll");
+
+  /* =========================
+     HELPERS
+  ========================== */
+
+  function escapeHTML(value){
+    return String(value ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function escapeCSV(value){
+    const text = String(value ?? "");
+
+    if(/[",\n]/.test(text)){
+      return '"' + text.replace(/"/g,'""') + '"';
+    }
+
+    return text;
+  }
+
+  function safeJSONParse(value,fallback){
+    try{
+      return JSON.parse(value);
+    }catch(error){
+      return fallback;
+    }
+  }
+
+  function saveWebsites(){
+    try{
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(websites));
+    }catch(error){
+      showToast("Could not save website data.","error");
+    }
+  }
+
+  function normalizeArray(value){
+    return Array.isArray(value) ? value : [];
+  }
+
+  function normalizeStatus(value){
+    const status = String(value || "active").trim().toLowerCase();
+
+    if(["active","published","live","enabled"].includes(status)){
+      return "active";
+    }
+
+    if(["draft","pending","unpublished"].includes(status)){
+      return "draft";
+    }
+
+    if(["sold","sold-out","soldout"].includes(status)){
+      return "sold";
+    }
+
+    return "active";
+  }
+
+  function normalizeBoolean(value){
+    if(value === true) return true;
+    if(value === false) return false;
+
+    const v = String(value ?? "").trim().toLowerCase();
+
+    return ["true","1","yes","on","enabled"].includes(v);
+  }
+
+  function normalizeWebsite(item,index){
+
+    const source = item && typeof item === "object" ? item : {};
+
+    const name =
+      source.name ||
+      source.title ||
+      source.websiteName ||
+      `Website ${index + 1}`;
+
+    const slug =
+      source.slug ||
+      slugify(name);
+
+    const regularPrice = Number(
+      source.regularPrice ??
+      source.price ??
+      source.originalPrice ??
+      0
+    ) || 0;
+
+    const offerPrice = Number(
+      source.offerPrice ??
+      source.salePrice ??
+      source.currentPrice ??
+      source.price ??
+      regularPrice
+    ) || 0;
+
+    return {
+      ...source,
+
+      id:
+        source.id ||
+        source.websiteId ||
+        `WEB-${1000 + index + 1}`,
+
+      name:String(name),
+
+      slug:String(slug),
+
+      category:
+        source.category ||
+        source.categoryName ||
+        "Uncategorized",
+
+      technology:
+        source.technology ||
+        source.tech ||
+        source.stack ||
+        "HTML / CSS / JS",
+
+      shortDescription:
+        source.shortDescription ||
+        source.description ||
+        "",
+
+      description:
+        source.description ||
+        source.fullDescription ||
+        source.shortDescription ||
+        "",
+
+      regularPrice,
+
+      offerPrice,
+
+      currency:
+        source.currency ||
+        "BDT",
+
+      status:normalizeStatus(source.status),
+
+      featured:
+        normalizeBoolean(
+          source.featured ??
+          source.isFeatured
+        ),
+
+      homepageVisible:
+        normalizeBoolean(
+          source.homepageVisible ??
+          source.showOnHomepage ??
+          source.homepage
+        ),
+
+      browseVisible:
+        normalizeBoolean(
+          source.browseVisible ??
+          source.showOnBrowse ??
+          source.browse
+        ),
+
+      coverImage:
+        source.coverImage ||
+        source.image ||
+        source.thumbnail ||
+        source.imageUrl ||
+        "",
+
+      demoUrl:
+        source.demoUrl ||
+        source.previewUrl ||
+        source.liveUrl ||
+        "",
+
+      createdAt:
+        source.createdAt ||
+        source.created ||
+        source.date ||
+        new Date().toISOString(),
+
+      updatedAt:
+        source.updatedAt ||
+        source.updated ||
+        source.createdAt ||
+        new Date().toISOString(),
+
+      features:
+        Array.isArray(source.features)
+          ? source.features
+          : [],
+
+      tags:
+        Array.isArray(source.tags)
+          ? source.tags
+          : []
+    };
+  }
+
+  function slugify(text){
+    return String(text || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g,"-")
+      .replace(/^-+|-+$/g,"")
+      .slice(0,80);
+  }
+
+  function formatMoney(value,currency="BDT"){
+
+    const amount = Number(value) || 0;
+
+    const symbols = {
+      BDT:"৳",
+      USD:"$",
+      EUR:"€",
+      GBP:"£"
+    };
+
+    const symbol = symbols[String(currency).toUpperCase()] || currency;
+
+    return symbol + amount.toLocaleString("en-US",{
+      maximumFractionDigits:0
+    });
+  }
+
+  function formatDate(value){
+
+    if(!value) return "—";
+
+    const date = new Date(value);
+
+    if(Number.isNaN(date.getTime())){
+      return "—";
+    }
+
+    return date.toLocaleDateString("en-GB",{
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    });
+  }
+
+  function initials(name){
+
+    return String(name || "Website")
+      .trim()
+      .split(/\s+/)
+      .slice(0,2)
+      .map(word => word.charAt(0).toUpperCase())
+      .join("") || "WD";
+  }
+
+  function imageHTML(item,className){
+
+    if(item.coverImage){
+
+      return `
+        <img
+          class="${className}"
+          src="${escapeHTML(item.coverImage)}"
+          alt="${escapeHTML(item.name)}"
+          onerror="this.style.display='none';this.parentElement.innerHTML='<span>${escapeHTML(initials(item.name))}</span>';"
+        >
+      `;
+    }
+
+    return `<span>${escapeHTML(initials(item.name))}</span>`;
+  }
+
+  function getCurrentOfferPrice(item){
+
+    return Number(
+      item.offerPrice ??
+      item.salePrice ??
+      item.price ??
+      item.regularPrice ??
+      0
+    ) || 0;
+  }
+
+  /* =========================
+     DEMO DATA
+     Only used in memory when
+     there is NO stored data.
+  ========================== */
+
+  function demoWebsites(){
+
+    return [
+      {
+        id:"WEB-1001",
+        name:"Cafforia Coffee",
+        slug:"cafforia-coffee",
+        category:"Restaurant",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Premium coffee shop website.",
+        description:"Modern coffee shop website with menu, locations and conversion-focused sections.",
+        regularPrice:12000,
+        offerPrice:6500,
+        currency:"BDT",
+        status:"active",
+        featured:true,
+        homepageVisible:true,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-08-08T10:00:00",
+        updatedAt:"2026-09-27T10:00:00"
+      },
+
+      {
+        id:"WEB-1002",
+        name:"Kookio Restaurant",
+        slug:"kookio-restaurant",
+        category:"Restaurant",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Elegant restaurant landing page.",
+        description:"Premium restaurant website with menu, reservation CTA and gallery.",
+        regularPrice:15000,
+        offerPrice:7500,
+        currency:"BDT",
+        status:"active",
+        featured:true,
+        homepageVisible:true,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-08-12T10:00:00",
+        updatedAt:"2026-09-26T10:00:00"
+      },
+
+      {
+        id:"WEB-1003",
+        name:"FreshMart",
+        slug:"freshmart",
+        category:"E-commerce",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Fresh grocery marketplace UI.",
+        description:"Responsive grocery marketplace concept.",
+        regularPrice:18000,
+        offerPrice:9000,
+        currency:"BDT",
+        status:"active",
+        featured:false,
+        homepageVisible:true,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-08-19T10:00:00",
+        updatedAt:"2026-09-25T10:00:00"
+      },
+
+      {
+        id:"WEB-1004",
+        name:"Creative Agency Pro",
+        slug:"creative-agency-pro",
+        category:"Agency",
+        technology:"HTML / CSS / JS",
+        shortDescription:"High-end digital agency website.",
+        description:"Bold agency presentation website.",
+        regularPrice:22000,
+        offerPrice:11000,
+        currency:"BDT",
+        status:"active",
+        featured:true,
+        homepageVisible:true,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-08-25T10:00:00",
+        updatedAt:"2026-09-24T10:00:00"
+      },
+
+      {
+        id:"WEB-1005",
+        name:"Portfolio X",
+        slug:"portfolio-x",
+        category:"Portfolio",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Premium personal portfolio.",
+        description:"Minimal personal portfolio for designers and developers.",
+        regularPrice:10000,
+        offerPrice:5000,
+        currency:"BDT",
+        status:"draft",
+        featured:false,
+        homepageVisible:false,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-09-01T10:00:00",
+        updatedAt:"2026-09-20T10:00:00"
+      },
+
+      {
+        id:"WEB-1006",
+        name:"Law Firm Elite",
+        slug:"law-firm-elite",
+        category:"Business",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Professional legal services website.",
+        description:"Corporate law firm website with attorney profiles and contact CTA.",
+        regularPrice:16000,
+        offerPrice:8000,
+        currency:"BDT",
+        status:"active",
+        featured:false,
+        homepageVisible:false,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-09-05T10:00:00",
+        updatedAt:"2026-09-19T10:00:00"
+      },
+
+      {
+        id:"WEB-1007",
+        name:"Dental Care Plus",
+        slug:"dental-care-plus",
+        category:"Healthcare",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Modern dental clinic website.",
+        description:"Clean healthcare website with services and appointment sections.",
+        regularPrice:14000,
+        offerPrice:7000,
+        currency:"BDT",
+        status:"sold",
+        featured:false,
+        homepageVisible:false,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-09-08T10:00:00",
+        updatedAt:"2026-09-18T10:00:00"
+      },
+
+      {
+        id:"WEB-1008",
+        name:"Real Estate Prime",
+        slug:"real-estate-prime",
+        category:"Real Estate",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Property listing website.",
+        description:"Real estate presentation and property listing experience.",
+        regularPrice:20000,
+        offerPrice:10000,
+        currency:"BDT",
+        status:"active",
+        featured:true,
+        homepageVisible:true,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-09-10T10:00:00",
+        updatedAt:"2026-09-17T10:00:00"
+      },
+
+      {
+        id:"WEB-1009",
+        name:"Education Hub",
+        slug:"education-hub",
+        category:"Education",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Modern education website.",
+        description:"Course, instructor and admission-focused education website.",
+        regularPrice:13500,
+        offerPrice:6750,
+        currency:"BDT",
+        status:"active",
+        featured:false,
+        homepageVisible:false,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-09-12T10:00:00",
+        updatedAt:"2026-09-16T10:00:00"
+      },
+
+      {
+        id:"WEB-1010",
+        name:"Fitness Studio",
+        slug:"fitness-studio",
+        category:"Fitness",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Premium gym and fitness website.",
+        description:"Fitness studio website with plans, trainers and CTA sections.",
+        regularPrice:15000,
+        offerPrice:7500,
+        currency:"BDT",
+        status:"draft",
+        featured:false,
+        homepageVisible:false,
+        browseVisible:false,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-09-14T10:00:00",
+        updatedAt:"2026-09-15T10:00:00"
+      },
+
+      {
+        id:"WEB-1011",
+        name:"Travel Escape",
+        slug:"travel-escape",
+        category:"Travel",
+        technology:"HTML / CSS / JS",
+        shortDescription:"Travel agency website.",
+        description:"Travel destination website with packages and inquiry CTA.",
+        regularPrice:17000,
+        offerPrice:8500,
+        currency:"BDT",
+        status:"active",
+        featured:true,
+        homepageVisible:true,
+        browseVisible:true,
+        coverImage:"",
+        demoUrl:"#",
+        createdAt:"2026-09-16T10:00:00",
+        updatedAt:"2026-09-14T10:00:00"
+      }
+    ];
+  }
+
+  /* =========================
+     LOAD DATA
+  ========================== */
+
+  function loadData(){
+
+    let stored = null;
+
+    try{
+      stored = safeJSONParse(
+        localStorage.getItem(STORAGE_KEY),
+        null
+      );
+    }catch(error){
+      stored = null;
+    }
+
+    if(Array.isArray(stored)){
+
+      websites = stored.map(normalizeWebsite);
+
+    }else{
+
+      websites = demoWebsites().map(normalizeWebsite);
+
+    }
+
+    try{
+
+      const storedCategories = safeJSONParse(
+        localStorage.getItem(CATEGORY_KEY),
+        []
+      );
+
+      categories = normalizeArray(storedCategories);
+
+    }catch(error){
+
+      categories = [];
+
+    }
+
+    renderCategoryFilter();
+    updateStats();
+    applyFilters();
+  }
+
+  /* =========================
+     CATEGORY FILTER
+  ========================== */
+
+  function renderCategoryFilter(){
+
+    const categorySet = new Set();
+
+    websites.forEach(item => {
+
+      if(item.category){
+        categorySet.add(item.category);
+      }
+
+    });
+
+    categories.forEach(item => {
+
+      if(typeof item === "string"){
+        categorySet.add(item);
+      }else if(item && item.name){
+        categorySet.add(item.name);
+      }
+
+    });
+
+    const sorted = Array.from(categorySet)
+      .filter(Boolean)
+      .sort((a,b) =>
+        String(a).localeCompare(String(b))
+      );
+
+    categoryFilter.innerHTML =
+      `<option value="all">All Categories</option>` +
+      sorted.map(category =>
+        `<option value="${escapeHTML(category)}">${escapeHTML(category)}</option>`
+      ).join("");
+  }
+
+  /* =========================
+     STATS
+  ========================== */
+
+  function updateStats(){
+
+    const total = websites.length;
+
+    const active = websites.filter(
+      item => item.status === "active"
+    ).length;
+
+    const draft = websites.filter(
+      item => item.status === "draft"
+    ).length;
+
+    const sold = websites.filter(
+      item => item.status === "sold"
+    ).length;
+
+    const featured = websites.filter(
+      item => item.featured
+    ).length;
+
+    const prices = websites
+      .map(getCurrentOfferPrice)
+      .filter(price => price > 0);
+
+    const average = prices.length
+      ? prices.reduce((sum,value) => sum + value,0) / prices.length
+      : 0;
+
+    $("statTotal").textContent = total.toLocaleString();
+    $("statActive").textContent = active.toLocaleString();
+    $("statDraft").textContent = draft.toLocaleString();
+    $("statSold").textContent = sold.toLocaleString();
+    $("statFeatured").textContent = featured.toLocaleString();
+    $("statAverage").textContent = formatMoney(average);
+  }
+
+  /* =========================
+     FILTER
+  ========================== */
+
+  function applyFilters(){
+
+    const query = searchInput.value.trim().toLowerCase();
+
+    const category = categoryFilter.value;
+    const status = statusFilter.value;
+    const visibility = visibilityFilter.value;
+    const sort = sortFilter.value;
+
+    filteredWebsites = websites.filter(item => {
+
+      const searchable = [
+        item.id,
+        item.name,
+        item.slug,
+        item.category,
+        item.technology,
+        item.shortDescription
+      ]
+      .join(" ")
+      .toLowerCase();
+
+      if(query && !searchable.includes(query)){
+        return false;
+      }
+
+      if(
+        category !== "all" &&
+        String(item.category).toLowerCase() !==
+        String(category).toLowerCase()
+      ){
+        return false;
+      }
+
+      if(
+        status !== "all" &&
+        item.status !== status
+      ){
+        return false;
+      }
+
+      if(visibility === "featured" && !item.featured){
+        return false;
+      }
+
+      if(visibility === "homepage" && !item.homepageVisible){
+        return false;
+      }
+
+      if(visibility === "browse" && !item.browseVisible){
+        return false;
+      }
+
+      return true;
+
+    });
+
+    filteredWebsites.sort((a,b) => {
+
+      switch(sort){
+
+        case "oldest":
+          return new Date(a.createdAt) - new Date(b.createdAt);
+
+        case "price-high":
+          return getCurrentOfferPrice(b) - getCurrentOfferPrice(a);
+
+        case "price-low":
+          return getCurrentOfferPrice(a) - getCurrentOfferPrice(b);
+
+        case "name-az":
+          return a.name.localeCompare(b.name);
+
+        case "name-za":
+          return b.name.localeCompare(a.name);
+
+        case "newest":
+        default:
+          return new Date(b.createdAt) - new Date(a.createdAt);
+
+      }
+
+    });
+
+    currentPage = 1;
+
+    render();
+  }
+
+  /* =========================
+     PAGINATION
+  ========================== */
+
+  function getPageItems(){
+
+    const total = filteredWebsites.length;
+
+    const totalPages = Math.max(
+      1,
+      Math.ceil(total / PAGE_SIZE)
+    );
+
+    if(currentPage > totalPages){
+      currentPage = totalPages;
+    }
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+
+    return {
+      items:filteredWebsites.slice(
+        start,
+        start + PAGE_SIZE
+      ),
+      totalPages,
+      start,
+      end:Math.min(
+        start + PAGE_SIZE,
+        total
+      )
+    };
+  }
+
+  /* =========================
+     RENDER
+  ========================== */
+
+  function render(){
+
+    const page = getPageItems();
+
+    $("resultCount").innerHTML =
+      `Showing <strong>${filteredWebsites.length}</strong> websites`;
+
+    renderTable(page.items);
+    renderMobile(page.items);
+    renderPagination(page);
+
+    updateSelectAllState();
+  }
+
+  /* =========================
+     TABLE
+  ========================== */
+
+  function renderTable(items){
+
+    if(!items.length){
+
+      websiteTableBody.innerHTML = `
+        <tr>
+          <td colspan="10">
+            <div class="empty">
+              <div class="empty-icon">⌕</div>
+              <h3>No websites found</h3>
+              <p>
+                Try changing your search or filters,
+                or add a new website to the marketplace.
+              </p>
+            </div>
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+    websiteTableBody.innerHTML = items.map(item => {
+
+      const statusClass =
+        item.status === "active"
+          ? "status-active"
+          : item.status === "draft"
+            ? "status-draft"
+            : "status-sold";
+
+      const statusLabel =
+        item.status.charAt(0).toUpperCase() +
+        item.status.slice(1);
+
+      return `
+        <tr>
+
+          <td>
+            <input
+              type="checkbox"
+              class="check row-check"
+              data-id="${escapeHTML(item.id)}"
+            >
+          </td>
+
+          <td>
+
+            <div class="website-cell">
+
+              <div class="website-thumb">
+                ${imageHTML(item,"")}
+              </div>
+
+              <div class="website-info">
+
+                <div class="website-name">
+                  ${escapeHTML(item.name)}
+                </div>
+
+                <div class="website-slug">
+                  ${escapeHTML(item.id)} · /${escapeHTML(item.slug)}
+                </div>
+
+              </div>
+
+            </div>
+
+          </td>
+
+          <td>
+            <span class="category-pill">
+              ${escapeHTML(item.category)}
+            </span>
+          </td>
+
+          <td>
+            <span class="tech">
+              ${escapeHTML(item.technology)}
+            </span>
+          </td>
+
+          <td>
+
+            <div class="price-main">
+              ${formatMoney(getCurrentOfferPrice(item),item.currency)}
+            </div>
+
+            ${
+              Number(item.regularPrice) > Number(item.offerPrice)
+                ? `
+                  <div class="price-old">
+                    ${formatMoney(item.regularPrice,item.currency)}
+                  </div>
+                `
+                : ""
+            }
+
+          </td>
+
+          <td>
+            <span class="status ${statusClass}">
+              <span class="status-dot"></span>
+              ${statusLabel}
+            </span>
+          </td>
+
+          <td>
+
+            <div class="visibility">
+
+              <span class="${item.homepageVisible ? "on" : ""}">
+                HOME
+              </span>
+
+              <span class="${item.browseVisible ? "on" : ""}">
+                BROWSE
+              </span>
+
+            </div>
+
+          </td>
+
+          <td>
+
+            <button
+              class="featured-btn ${item.featured ? "active" : ""}"
+              title="${item.featured ? "Remove from Featured" : "Add to Featured"}"
+              onclick="toggleFeatured('${escapeJS(item.id)}')"
+            >
+              ${item.featured ? "★" : "☆"}
+            </button>
+
+          </td>
+
+          <td>
+            <span class="tech">
+              ${formatDate(item.updatedAt)}
+            </span>
+          </td>
+
+          <td>
+
+            <div class="actions">
+
+              <button
+                class="action-btn"
+                title="Preview"
+                onclick="openPreview('${escapeJS(item.id)}')"
+              >
+                ◉
+              </button>
+
+              <button
+                class="action-btn"
+                title="Edit"
+                onclick="editWebsite('${escapeJS(item.id)}')"
+              >
+                ✎
+              </button>
+
+              <button
+                class="action-btn danger"
+                title="Delete"
+                onclick="askDelete('${escapeJS(item.id)}')"
+              >
+                ×
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+      `;
+
+    }).join("");
+  }
+
+  /* =========================
+     MOBILE
+  ========================== */
+
+  function renderMobile(items){
+
+    if(!items.length){
+
+      mobileList.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">⌕</div>
+          <h3>No websites found</h3>
+          <p>
+            Try changing your filters or add a new website.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+    mobileList.innerHTML = items.map(item => {
+
+      const statusClass =
+        item.status === "active"
+          ? "status-active"
+          : item.status === "draft"
+            ? "status-draft"
+            : "status-sold";
+
+      const statusLabel =
+        item.status.charAt(0).toUpperCase() +
+        item.status.slice(1);
+
+      return `
+        <div class="website-card">
+
+          <div class="card-top">
+
+            <input
+              type="checkbox"
+              class="check row-check card-check"
+              data-id="${escapeHTML(item.id)}"
+            >
+
+            <div class="card-thumb">
+              ${imageHTML(item,"")}
+            </div>
+
+            <div class="card-main">
+
+              <div class="card-name">
+                ${escapeHTML(item.name)}
+              </div>
+
+              <div class="card-slug">
+                ${escapeHTML(item.id)} · /${escapeHTML(item.slug)}
+              </div>
+
+              <div class="card-status">
+
+                <span class="status ${statusClass}">
+                  <span class="status-dot"></span>
+                  ${statusLabel}
+                </span>
+
+              </div>
+
+            </div>
+
+            <button
+              class="featured-btn ${item.featured ? "active" : ""}"
+              onclick="toggleFeatured('${escapeJS(item.id)}')"
+              title="Toggle Featured"
+            >
+              ${item.featured ? "★" : "☆"}
+            </button>
+
+          </div>
+
+          <div class="card-meta">
+
+            <div class="meta-box">
+              <div class="meta-label">Category</div>
+              <div class="meta-value">
+                ${escapeHTML(item.category)}
+              </div>
+            </div>
+
+            <div class="meta-box">
+              <div class="meta-label">Technology</div>
+              <div class="meta-value">
+                ${escapeHTML(item.technology)}
+              </div>
+            </div>
+
+            <div class="meta-box">
+              <div class="meta-label">Price</div>
+              <div class="meta-value">
+                ${formatMoney(getCurrentOfferPrice(item),item.currency)}
+              </div>
+            </div>
+
+            <div class="meta-box">
+              <div class="meta-label">Updated</div>
+              <div class="meta-value">
+                ${formatDate(item.updatedAt)}
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card-bottom">
+
+            <div class="visibility">
+
+              <span class="${item.homepageVisible ? "on" : ""}">
+                HOME
+              </span>
+
+              <span class="${item.browseVisible ? "on" : ""}">
+                BROWSE
+              </span>
+
+            </div>
+
+            <div class="actions">
+
+              <button
+                class="action-btn"
+                onclick="openPreview('${escapeJS(item.id)}')"
+                title="Preview"
+              >
+                ◉
+              </button>
+
+              <button
+                class="action-btn"
+                onclick="editWebsite('${escapeJS(item.id)}')"
+                title="Edit"
+              >
+                ✎
+              </button>
+
+              <button
+                class="action-btn danger"
+                onclick="askDelete('${escapeJS(item.id)}')"
+                title="Delete"
+              >
+                ×
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+  /* =========================
+     ESCAPE JS
+  ========================== */
+
+  function escapeJS(value){
+
+    return String(value ?? "")
+      .replace(/\\/g,"\\\\")
+      .replace(/'/g,"\\'")
+      .replace(/"/g,'\\"')
+      .replace(/\n/g,"\\n")
+      .replace(/\r/g,"\\r");
+  }
+
+  /* =========================
+     PAGINATION UI
+  ========================== */
+
+  function renderPagination(page){
+
+    $("pageInfo").textContent =
+      filteredWebsites.length
+        ? `Showing ${page.start + 1}–${page.end} of ${filteredWebsites.length}`
+        : "Showing 0–0 of 0";
+
+    const buttons = [];
+
+    buttons.push(`
+      <button
+        class="page-btn"
+        ${currentPage === 1 ? "disabled" : ""}
+        onclick="changePage(${currentPage - 1})"
+      >
+        ‹
+      </button>
+    `);
+
+    const maxButtons = 5;
+
+    let start = Math.max(
+      1,
+      currentPage - 2
+    );
+
+    let end = Math.min(
+      page.totalPages,
+      start + maxButtons - 1
+    );
+
+    if(end - start < maxButtons - 1){
+      start = Math.max(
+        1,
+        end - maxButtons + 1
+      );
+    }
+
+    for(let i=start;i<=end;i++){
+
+      buttons.push(`
+        <button
+          class="page-btn ${i === currentPage ? "active" : ""}"
+          onclick="changePage(${i})"
+        >
+          ${i}
+        </button>
+      `);
+
+    }
+
+    buttons.push(`
+      <button
+        class="page-btn"
+        ${currentPage === page.totalPages ? "disabled" : ""}
+        onclick="changePage(${currentPage + 1})"
+      >
+        ›
+      </button>
+    `);
+
+    $("pageButtons").innerHTML = buttons.join("");
+  }
+
+  window.changePage = function(page){
+
+    const totalPages = Math.max(
+      1,
+      Math.ceil(filteredWebsites.length / PAGE_SIZE)
+    );
+
+    if(page < 1 || page > totalPages){
+      return;
+    }
+
+    currentPage = page;
+    render();
+
+    window.scrollTo({
+      top:document.querySelector(".panel").offsetTop - 90,
+      behavior:"smooth"
+    });
+  };
+
+  /* =========================
+     SELECT ALL
+  ========================== */
+
+  function updateSelectAllState(){
+
+    const visibleChecks =
+      Array.from(
+        document.querySelectorAll(".row-check")
+      );
+
+    if(!visibleChecks.length){
+
+      selectAll.checked = false;
+      selectAll.indeterminate = false;
+      return;
+    }
+
+    const checkedCount =
+      visibleChecks.filter(
+        checkbox => checkbox.checked
+      ).length;
+
+    selectAll.checked =
+      checkedCount === visibleChecks.length;
+
+    selectAll.indeterminate =
+      checkedCount > 0 &&
+      checkedCount < visibleChecks.length;
+  }
+
+  selectAll.addEventListener("change",function(){
+
+    document
+      .querySelectorAll(".row-check")
+      .forEach(checkbox => {
+        checkbox.checked = selectAll.checked;
+      });
+
+  });
+
+  document.addEventListener("change",function(event){
+
+    if(event.target.classList.contains("row-check")){
+      updateSelectAllState();
+    }
+
+  });
+
+  /* =========================
+     FEATURED
+  ========================== */
+
+  window.toggleFeatured = function(id){
+
+    const item = websites.find(
+      website => website.id === id
+    );
+
+    if(!item){
+      showToast("Website not found.","error");
+      return;
+    }
+
+    item.featured = !item.featured;
+    item.updatedAt = new Date().toISOString();
+
+    saveWebsites();
+    updateStats();
+    applyFilters();
+
+    showToast(
+      item.featured
+        ? `${item.name} added to Featured.`
+        : `${item.name} removed from Featured.`
+    );
+  };
+
+  /* =========================
+     EDIT
+  ========================== */
+
+  window.editWebsite = function(id){
+
+    window.location.href =
+      `website-editor.html?id=${encodeURIComponent(id)}`;
+  };
+
+  /* =========================
+     PREVIEW
+  ========================== */
+
+  window.openPreview = function(id){
+
+    const item = websites.find(
+      website => website.id === id
+    );
+
+    if(!item){
+      showToast("Website not found.","error");
+      return;
+    }
+
+    $("previewContent").innerHTML = `
+
+      <div class="preview-cover">
+
+        ${
+          item.coverImage
+            ? `
+              <img
+                src="${escapeHTML(item.coverImage)}"
+                alt="${escapeHTML(item.name)}"
+                onerror="this.style.display='none';"
+              >
+            `
+            : `
+              <span>${escapeHTML(initials(item.name))}</span>
+            `
+        }
+
+      </div>
+
+      <div class="preview-title">
+        ${escapeHTML(item.name)}
+      </div>
+
+      <div class="preview-slug">
+        ${escapeHTML(item.id)} · /${escapeHTML(item.slug)}
+      </div>
+
+      <div class="preview-grid">
+
+        <div class="preview-box">
+          <label>Category</label>
+          <div>${escapeHTML(item.category)}</div>
+        </div>
+
+        <div class="preview-box">
+          <label>Technology</label>
+          <div>${escapeHTML(item.technology)}</div>
+        </div>
+
+        <div class="preview-box">
+          <label>Status</label>
+          <div>${escapeHTML(item.status)}</div>
+        </div>
+
+        <div class="preview-box">
+          <label>Offer Price</label>
+          <div>
+            ${formatMoney(getCurrentOfferPrice(item),item.currency)}
+          </div>
+        </div>
+
+        <div class="preview-box">
+          <label>Featured</label>
+          <div>${item.featured ? "Yes" : "No"}</div>
+        </div>
+
+        <div class="preview-box">
+          <label>Updated</label>
+          <div>${formatDate(item.updatedAt)}</div>
+        </div>
+
+      </div>
+
+      <div class="preview-description">
+        ${escapeHTML(
+          item.description ||
+          item.shortDescription ||
+          "No description available."
+        )}
+      </div>
+
+    `;
+
+    $("previewEditBtn").onclick = function(){
+      editWebsite(item.id);
+    };
+
+    $("previewModal").classList.add("show");
+  };
+
+  /* =========================
+     DELETE
+  ========================== */
+
+  window.askDelete = function(id){
+
+    const item = websites.find(
+      website => website.id === id
+    );
+
+    if(!item){
+      showToast("Website not found.","error");
+      return;
+    }
+
+    pendingDeleteId = id;
+
+    $("deleteWebsiteName").textContent =
+      item.name;
+
+    $("deleteModal").classList.add("show");
+  };
+
+  $("confirmDeleteBtn").addEventListener("click",function(){
+
+    if(!pendingDeleteId){
+      return;
+    }
+
+    const item = websites.find(
+      website => website.id === pendingDeleteId
+    );
+
+    websites = websites.filter(
+      website => website.id !== pendingDeleteId
+    );
+
+    saveWebsites();
+
+    pendingDeleteId = null;
+
+    closeModal("deleteModal");
+
+    updateStats();
+    renderCategoryFilter();
+    applyFilters();
+
+    showToast(
+      item
+        ? `${item.name} deleted successfully.`
+        : "Website deleted successfully."
+    );
+  });
+
+  /* =========================
+     BULK DELETE
+  ========================== */
+
+  function getSelectedIds(){
+
+    return Array.from(
+      document.querySelectorAll(".row-check:checked")
+    ).map(
+      checkbox => checkbox.dataset.id
+    );
+  }
+
+  $("bulkDeleteBtn").addEventListener("click",function(){
+
+    const ids = getSelectedIds();
+
+    if(!ids.length){
+      showToast("Select at least one website.","error");
+      return;
+    }
+
+    $("bulkDeleteCount").textContent =
+      `${ids.length} website${ids.length === 1 ? "" : "s"}`;
+
+    $("bulkDeleteModal").classList.add("show");
+  });
+
+  $("confirmBulkDeleteBtn").addEventListener("click",function(){
+
+    const ids = getSelectedIds();
+
+    if(!ids.length){
+      closeModal("bulkDeleteModal");
+      return;
+    }
+
+    websites = websites.filter(
+      item => !ids.includes(item.id)
+    );
+
+    saveWebsites();
+
+    closeModal("bulkDeleteModal");
+
+    updateStats();
+    renderCategoryFilter();
+    applyFilters();
+
+    showToast(
+      `${ids.length} website${ids.length === 1 ? "" : "s"} deleted successfully.`
+    );
+  });
+
+  /* =========================
+     BULK FEATURE
+  ========================== */
+
+  $("bulkFeaturedBtn").addEventListener("click",function(){
+
+    const ids = getSelectedIds();
+
+    if(!ids.length){
+      showToast("Select at least one website.","error");
+      return;
+    }
+
+    websites.forEach(item => {
+
+      if(ids.includes(item.id)){
+
+        item.featured = true;
+        item.updatedAt = new Date().toISOString();
+
+      }
+
+    });
+
+    saveWebsites();
+    updateStats();
+    applyFilters();
+
+    showToast(
+      `${ids.length} website${ids.length === 1 ? "" : "s"} marked as Featured.`
+    );
+  });
+
+  /* =========================
+     RESET FILTERS
+  ========================== */
+
+  $("resetFilters").addEventListener("click",function(){
+
+    searchInput.value = "";
+    categoryFilter.value = "all";
+    statusFilter.value = "all";
+    visibilityFilter.value = "all";
+    sortFilter.value = "newest";
+
+    applyFilters();
+
+    showToast("Filters reset.");
+  });
+
+  /* =========================
+     SEARCH / FILTER EVENTS
+  ========================== */
+
+  searchInput.addEventListener("input",function(){
+    applyFilters();
+  });
+
+  categoryFilter.addEventListener("change",function(){
+    applyFilters();
+  });
+
+  statusFilter.addEventListener("change",function(){
+    applyFilters();
+  });
+
+  visibilityFilter.addEventListener("change",function(){
+    applyFilters();
+  });
+
+  sortFilter.addEventListener("change",function(){
+    applyFilters();
+  });
+
+  /* =========================
+     REFRESH
+  ========================== */
+
+  $("refreshBtn").addEventListener("click",function(){
+
+    loadData();
+
+    showToast("Website inventory refreshed.");
+  });
+
+  /* =========================
+     CSV EXPORT
+  ========================== */
+
+  $("exportBtn").addEventListener("click",function(){
+
+    if(!filteredWebsites.length){
+      showToast("There is no data to export.","error");
+      return;
+    }
+
+    const headers = [
+      "ID",
+      "Name",
+      "Slug",
+      "Category",
+      "Technology",
+      "Regular Price",
+      "Offer Price",
+      "Currency",
+      "Status",
+      "Featured",
+      "Homepage Visible",
+      "Browse Visible",
+      "Created",
+      "Updated",
+      "Demo URL"
+    ];
+
+    const rows = filteredWebsites.map(item => [
+
+      item.id,
+      item.name,
+      item.slug,
+      item.category,
+      item.technology,
+      item.regularPrice,
+      item.offerPrice,
+      item.currency,
+      item.status,
+      item.featured ? "Yes" : "No",
+      item.homepageVisible ? "Yes" : "No",
+      item.browseVisible ? "Yes" : "No",
+      item.createdAt,
+      item.updatedAt,
+      item.demoUrl
+
+    ]);
+
+    const csv = [
+      headers,
+      ...rows
+    ]
+    .map(row =>
+      row.map(escapeCSV).join(",")
+    )
+    .join("\n");
+
+    const blob = new Blob(
+      ["\uFEFF" + csv],
+      {
+        type:"text/csv;charset=utf-8;"
+      }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download =
+      `website-deals-inventory-${new Date().toISOString().slice(0,10)}.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast("CSV exported successfully.");
+  });
+
+  /* =========================
+     PRINT
+  ========================== */
+
+  $("printBtn").addEventListener("click",function(){
+    window.print();
+  });
+
+  /* =========================
+     MODALS
+  ========================== */
+
+  window.closeModal = function(id){
+
+    const modal = $(id);
+
+    if(modal){
+      modal.classList.remove("show");
+    }
+
+  };
+
+  document.querySelectorAll(".modal-backdrop")
+    .forEach(backdrop => {
+
+      backdrop.addEventListener("click",function(event){
+
+        if(event.target === backdrop){
+          backdrop.classList.remove("show");
+        }
+
+      });
+
+    });
+
+  document.addEventListener("keydown",function(event){
+
+    if(event.key === "Escape"){
+
+      document
+        .querySelectorAll(".modal-backdrop.show")
+        .forEach(modal => {
+          modal.classList.remove("show");
+        });
+
+      sidebar.classList.remove("open");
+      sidebarOverlay.classList.remove("show");
+    }
+
+  });
+
+  /* =========================
+     MOBILE SIDEBAR
+  ========================== */
+
+  mobileMenu.addEventListener("click",function(){
+
+    sidebar.classList.toggle("open");
+    sidebarOverlay.classList.toggle("show");
+
+  });
+
+  sidebarOverlay.addEventListener("click",function(){
+
+    sidebar.classList.remove("open");
+    sidebarOverlay.classList.remove("show");
+
+  });
+
+  document
+    .querySelectorAll(".nav-item")
+    .forEach(link => {
+
+      link.addEventListener("click",function(){
+
+        sidebar.classList.remove("open");
+        sidebarOverlay.classList.remove("show");
+
+      });
+
+    });
+
+  /* =========================
+     LOGOUT
+  ========================== */
+
+  $("logoutBtn").addEventListener("click",function(){
+
+    sessionStorage.removeItem(AUTH_KEY);
+
+    window.location.href = "login/";
+  });
+
+  /* =========================
+     ADMIN IDENTITY
+  ========================== */
+
+  function renderAdminIdentity(){
+
+    const name =
+      adminSession.name ||
+      adminSession.email ||
+      "Super Admin";
+
+    const role =
+      adminSession.role ||
+      "admin";
+
+    const roleText =
+      String(role).toLowerCase() === "superadmin"
+        ? "Super Administrator"
+        : String(role)
+            .replace(/[-_]/g," ")
+            .replace(/\b\w/g,char => char.toUpperCase());
+
+    $("sidebarName").textContent = name;
+    $("sidebarRole").textContent = roleText;
+
+    $("sidebarAvatar").textContent =
+      initials(name);
+  }
+
+  /* =========================
+     INIT
+  ========================== */
+
+  renderAdminIdentity();
+  loadData();
+
+})();
+</script>
+
+</body>
+</html>
